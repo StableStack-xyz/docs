@@ -1,0 +1,111 @@
+---
+title: 'Error Handling'
+description: 'Comprehensive guide to StableStack API error handling and status codes'
+---
+
+## API Error Handling
+
+This document outlines the standard error responses and status codes used in the StableStack API. All error responses follow a consistent format to help you handle errors gracefully in your application.
+
+## Error Response Format
+
+All error responses follow this JSON structure:
+
+```json
+{
+    "status":"failed",
+    "message":"internal error",
+    "error": {
+        "code": "ERROR_CODE",
+        "message": "Human readable error message",
+        "details": {} // Optional additional error details
+    }
+}
+```
+
+## HTTP Status Codes
+
+### 4xx Client Errors
+
+| Status Code | Description |
+|------------|-------------|
+| 400 | Bad Request - The request was malformed or contained invalid parameters |
+| 401 | Unauthorized - Authentication is required or failed |
+| 403 | Forbidden - The request was understood but refused |
+| 404 | Not Found - The requested resource does not exist |
+| 409 | Conflict - The request conflicts with the current state of the resource |
+| 422 | Unprocessable Entity - The request was well-formed but contained semantic errors |
+| 429 | Too Many Requests - Rate limit exceeded |
+
+### 5xx Server Errors
+
+| Status Code | Description |
+|------------|-------------|
+| 500 | Internal Server Error - An unexpected error occurred on the server |
+| 502 | Bad Gateway - The server received an invalid response from an upstream server |
+| 503 | Service Unavailable - The server is temporarily unable to handle the request |
+| 504 | Gateway Timeout - The server did not receive a timely response from an upstream server |
+
+## Common Error Codes
+
+### Authentication Errors (401)
+
+| Error Code | Description |
+|------------|-------------|
+| `INVALID_TOKEN` | The provided authentication token is invalid or expired |
+| `MISSING_TOKEN` | No authentication token was provided |
+| `INVALID_CREDENTIALS` | The provided credentials are incorrect |
+
+### Validation Errors (400, 422)
+
+| Error Code | Description |
+|------------|-------------|
+| `INVALID_PARAMETER` | One or more request parameters are invalid |
+| `MISSING_REQUIRED_FIELD` | A required field is missing from the request |
+| `INVALID_FORMAT` | The request data format is invalid |
+
+### Resource Errors (404)
+
+| Error Code | Description |
+|------------|-------------|
+| `RESOURCE_NOT_FOUND` | The requested resource does not exist |
+| `ENDPOINT_NOT_FOUND` | The requested API endpoint does not exist |
+
+### Rate Limiting (429)
+
+| Error Code | Description |
+|------------|-------------|
+| `RATE_LIMIT_EXCEEDED` | Too many requests in a given time period |
+| `QUOTA_EXCEEDED` | API quota has been exceeded |
+
+## Best Practices
+
+1. **Always check the status code** first to determine if the request was successful
+2. **Handle rate limiting** by implementing exponential backoff
+3. **Log error details** for debugging purposes
+4. **Implement retry logic** for 5xx errors
+
+
+## Rate Limiting
+
+The API implements rate limiting to ensure fair usage and system stability. Rate limits are applied per API key and are reset every minute.
+
+- Standard: 60 requests per minute
+
+When rate limited, you'll receive a 429 status code with the following response:
+
+```json
+{
+    "status":"failed",
+    "message":"Rate limit exceeded. Please try again in 60 seconds.",
+    "error": {
+        "code": "RATE_LIMIT_EXCEEDED",
+        "message": "Rate limit exceeded. Please try again in 60 seconds.",
+        "details": {
+        "retry_after": 60,
+        "limit": 60,
+        "remaining": 0
+        }
+    }
+}
+```

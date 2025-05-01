@@ -1,0 +1,107 @@
+---
+title: 'Authentication'
+description: 'Comprehensive guide to StableStack API authentication and environment setup'
+---
+
+## Overview
+
+This document outlines the authentication methods and environment setup for the StableStack API.
+
+## Base URLs
+
+The StableStack API is available in different environments. The base URL depends on your environment:
+
+| Environment | Base URL |
+|------------|----------|
+| Production | `https://api.stablestack.com/v1` |
+| Sandbox | `https://api.staging.stablestack.com/v1` |
+
+
+## Authentication
+
+The StableStack API uses Bearer token authentication. All API requests must include an Authorization header with your API token.
+
+### Getting Your API Token
+
+1. Log in to your StableStack dashboard
+2. Navigate to Settings > API Keys
+3. Generate a new API key or use an existing one
+
+### Using the API Token
+
+Include your API token in the Authorization header of all requests:
+
+```bash
+curl -X GET "https://api.stablestack.com/v1/endpoint" \
+     -H "Authorization: Bearer your_api_token_here"
+```
+
+### Environment Detection
+
+The API automatically detects the environment based on your API token. Each token is associated with a specific environment (Production, Staging, or Development). You don't need to specify the environment separately - just use the appropriate base URL for your environment.
+
+## Security Best Practices
+
+1. **Never share your API token** - Keep it secure and don't commit it to version control
+2. **Use environment variables** to store your API token
+3. **Rotate your tokens** regularly for enhanced security
+
+
+## Example Implementation
+
+### Using Environment Variables
+
+```bash
+# Set your API token as an environment variable
+export STABLESTACK_API_TOKEN="your_api_token_here"
+```
+
+### Making Authenticated Requests
+
+```javascript
+const axios = require('axios');
+
+const api = axios.create({
+  baseURL: 'https://api.stablestack.com/v1',
+  headers: {
+    'Authorization': `Bearer ${process.env.STABLESTACK_API_TOKEN}`,
+    'Content-Type': 'application/json'
+  }
+});
+
+// Example API call
+async function getData() {
+  try {
+    const response = await api.get('/endpoint');
+    return response.data;
+  } catch (error) {
+    console.error('API Error:', error.response.data);
+  }
+}
+```
+
+## Key Management
+
+Create new API key via your dashboard
+
+
+## Error Handling
+
+If authentication fails, you'll receive a 401 Unauthorized response:
+
+```json
+{
+  "status": "failed",
+  "message": "Invalid or expired token",
+  "error": {
+    "code": "INVALID_TOKEN",
+    "details": {
+      "reason": "token_expired"
+    }
+  }
+}
+```
+
+## Rate Limiting
+
+API tokens are subject to rate limiting. See the [Error Handling](/error) documentation for more details about rate limits and error responses.

@@ -1,0 +1,27 @@
+---
+title: 'Introduction'
+description: ''
+---
+
+## Overview
+Webhooks allow you to receive real-time notifications about specific events in your application. They are a powerful way to integrate external systems with StableStack's API.
+
+​
+## How Webhooks Work
+- Setup: Configure your webhook URL via the [dashboard](https://dashboard.stablestack.xyz).
+- Event Trigger: When an event occurs (e.g., a payout is completed), Stablestack sends a POST request to your webhook URL.
+- Response: Your server processes the request and responds with a 2xx status code to acknowledge receipt.
+​
+## Key Features
+Real-time Notifications: Get notified instantly when events occur.
+Customizable: Update your webhook URL or manage events as needed.
+Secure: Webhooks include a signature secret for verification.
+​
+## Example Webhook Events
+payout.initiated-transaction
+payout.completed-transaction
+payout.failed-transaction
+payout.reversed-transaction
+
+For more details on specific events, refer to the [Webhook Events](/webhooks/events) documentation.
+
