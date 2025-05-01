@@ -1,7 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "StableStack",
-  "description": "StableStack is an API-first stablecoin payment platform that helps businesses, fintechs, and developers",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
