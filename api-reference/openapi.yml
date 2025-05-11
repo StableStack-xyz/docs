@@ -1182,8 +1182,8 @@ paths:
                 propertyName: customer_type
                 mapping:
                   business: "#/components/schemas/BusinessCustomer"
-                  individual: "#/components/schemas/IndividualCustomer" 
-                
+                  individual: "#/components/schemas/IndividualCustomer"
+
       parameters:
         - name: x-api-key
           in: header
@@ -1362,7 +1362,7 @@ paths:
           schema:
             type: string
           example: ""
-            
+
         - name: customer_id
           in: path
           schema:
@@ -1385,7 +1385,7 @@ paths:
           schema:
             type: string
           example: ""
-            
+
         - name: currency
           in: query
           schema:
@@ -1521,7 +1521,7 @@ paths:
           schema:
             type: string
           example: ""
-            
+
         - name: amount
           in: query
           schema:
@@ -1783,7 +1783,7 @@ paths:
           schema:
             type: string
           example: ""
-            
+
       responses:
         "200":
           description: OK
@@ -1972,7 +1972,7 @@ paths:
           schema:
             type: string
           example: ""
-            
+
         - name: transaction_id
           in: path
           schema:
@@ -2122,7 +2122,7 @@ paths:
           schema:
             type: string
           example: ""
-            
+
         - name: reference_id
           in: path
           schema:
@@ -2292,7 +2292,7 @@ paths:
           schema:
             type: string
           example: >-
-            
+
         - name: customer_id
           in: path
           schema:
@@ -2483,23 +2483,35 @@ paths:
     post:
       tags:
         - wallets
-      summary: "merchant: create wallet"
+      summary: "merchant: create wallet for customer"
       requestBody:
+        description: Create a wallet for a customer
+        required: true
         content:
           application/json:
             schema:
               type: object
-              example:
-                currency: USDC
-                network: bep20
-                description: my USDC account
+              properties:
+                currency:
+                  type: string
+                  example: USDC
+                  description: "Supported Currencies: USDC,USDT,BUSD,USD,NGN,GBP,CNY"
+                network:
+                  type: string
+                  example: bep20
+                  description: "Supported Networks: erc20,bep20,solana,tron,matic"
+                description:
+                  type: string
+                  example: my USDC account
+
       parameters:
         - name: x-api-key
           in: header
           schema:
             type: string
+          required: true
           example: ""
-            
+
         - name: customer_id
           in: path
           schema:
@@ -2642,14 +2654,44 @@ paths:
           in: header
           schema:
             type: string
-          example: >-
-            
+          required: true
+          example: ""
         - name: customer_id
           in: path
           schema:
             type: string
           required: true
-          example: ddf723ee-5558-442d-b46f-4e3d42817448
+          example: ""
+        - name: page
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 10
+        - name: status
+          in: query
+          schema:
+            type: string
+          required: false
+          example: active
+        - name: asset_type
+          in: query
+          schema:
+            type: string
+          required: false
+          example: STABLECOIN
+        - name: currency
+          in: query
+          schema:
+            type: string
+          required: false
+          example: USDC
       responses:
         "200":
           description: OK
@@ -2803,8 +2845,45 @@ paths:
           in: header
           schema:
             type: string
+          required: true
           example: ""
-            
+        - name: page
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 10
+        - name: status
+          in: query
+          schema:
+            type: string
+          required: false
+          example: active
+        - name: asset_type
+          in: query
+          schema:
+            type: string
+          required: false
+          example: STABLECOIN
+        - name: currency
+          in: query
+          schema:
+            type: string
+          required: false
+          example: USDC
+        - name: customer_id
+          in: query
+          schema:
+            type: string
+          required: false
+          example: ddf723ee-5558-442d-b46f-4e3d42817448
+
       responses:
         "200":
           description: OK
@@ -2961,7 +3040,7 @@ paths:
           schema:
             type: string
           example: >-
-            
+
         - name: wallet_id
           in: path
           schema:
