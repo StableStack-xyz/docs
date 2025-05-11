@@ -1,0 +1,3104 @@
+openapi: 3.0.0
+info:
+  title: "StableStack: API Service"
+  description: "# Overview\n\n## Introduction\n\nStableStack offers an API first, last mile payment orchestration + liquidity router built with stablecoins. Stablecoin layer integrated into your existing payment flow, with smart accounts and blockchain abstraction. Go between digital and fiat currencies in minutes.\n\n## Getting Help\n\nWe're excited to have you build with us! If you're integrating, we will set up a communication channel. This will enable our teams to easily collaborate and ensure you launch as quickly as possible.\n\nPlease reach out to us at\_[hello@stablestack.xyz](https://mailto:hello@stablestack.xyz)\_for any questions or concerns."
+  version: 1.0.0
+servers:
+  - url: "https://api.stablestack.xyz/v1"
+    description: "StableStack API"
+tags:
+  - name: customers
+  - name: customers > kyc
+  - name: payouts
+  - name: transactions
+  - name: wallets
+paths:
+  /customers/{customer_id}/kyc:
+    post:
+      tags:
+        - customers > kyc
+      summary: "merchant: upload documents"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  type: string
+                  format: binary
+                doc_type:
+                  type: string
+                  example: all_document
+                doc_country:
+                  type: string
+                  example: Nigeria
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+        - name: customer_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+      responses:
+        "201":
+          description: Created
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "456"
+            ETag:
+              schema:
+                type: string
+                example: W/"1c8-GtfuXyt7Qww5c8AaA+nNauUZ4IE"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 15:01:16 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  id: 34f28407-6411-4b8c-9b30-d2654d9bfd1e
+                  customer_id: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+                  doc_country: Nigeria
+                  doc_type: all_document
+                  doc_file: >-
+                    https://res.cloudinary.com/dmllysomu/image/upload/v1746802874/customer_documents/85b148ab-3f6b-4d55-917f-3c8de668a48e_all_document.png
+                  is_doc_verified: false
+                  approval_status: pending
+                  created_at: "2025-05-01T18:40:26.524Z"
+                  updated_at: "2025-05-09T15:01:15.861Z"
+  /customers:
+    post:
+      tags:
+        - customers
+      summary: "merchant: create customer"
+      requestBody:
+        description: |-
+          Create a new customer. The request body should contain the customer
+          details, including personal and financial information.
+          The customer_type field determines whether the customer is an
+          individual or a business. The request body should include the
+          appropriate fields for the selected customer type.
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: Business Customer
+                  type: object
+                  required:
+                    - customer_type
+                    - business_name
+                    - business_type
+                    - email
+                    - phone
+                    - account_purpose
+                    - source_of_funds
+                    - expected_monthly_income
+                    - address
+                  properties:
+                    customer_type:
+                      type: string
+                      enum: [business]
+                    business_name:
+                      type: string
+                      example: "Example Enterprises"
+                    business_type:
+                      type: string
+                      example: "Retail"
+                    business_website:
+                      type: string
+                      example: "https://example.com"
+                    email:
+                      type: string
+                      format: email
+                      example: "contact@example.com"
+                    phone:
+                      type: string
+                      example: "+2347918945668"
+                    account_purpose:
+                      type: string
+                      example: "business operations"
+                    source_of_funds:
+                      type: string
+                      example: "business revenue"
+                    expected_monthly_income:
+                      type: number
+                      example: 5000000
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postal_code
+                      properties:
+                        line_1:
+                          type: string
+                          example: "123 Business Ave"
+                        line_2:
+                          type: string
+                          example: "Suite 456"
+                        city:
+                          type: string
+                          example: "Lagos"
+                        state:
+                          type: string
+                          example: "Lagos"
+                        postal_code:
+                          type: string
+                          example: "214578"
+                        country:
+                          type: string
+                          example: "Nigeria"
+
+                - title: Individual Customer
+                  type: object
+                  required:
+                    - customer_type
+                    - first_name
+                    - last_name
+                    - email
+                    - phone
+                    - birth_date
+                    - account_purpose
+                    - employment_status
+                    - expected_monthly_income
+                    - most_recent_occupation
+                    - source_of_funds
+                    - address
+                  properties:
+                    customer_type:
+                      type: string
+                      enum: [individual]
+                    first_name:
+                      type: string
+                      example: "John"
+                    middle_name:
+                      type: string
+                      example: "Oluwaseun"
+                    last_name:
+                      type: string
+                      example: "Ola"
+                    email:
+                      type: string
+                      format: email
+                      example: "olajohn3@gmail.com"
+                    phone:
+                      type: string
+                      example: "+2348918945668"
+                    birth_date:
+                      type: string
+                      format: date
+                      example: "1990-01-15"
+                    account_purpose:
+                      type: string
+                      example: "personal savings"
+                    employment_status:
+                      type: string
+                      example: "employed"
+                    expected_monthly_income:
+                      type: number
+                      example: 500000
+                    most_recent_occupation:
+                      type: string
+                      example: "Software Engineer"
+                    source_of_funds:
+                      type: string
+                      example: "salary"
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postal_code
+                      properties:
+                        line_1:
+                          type: string
+                          example: "123 Main St"
+                        line_2:
+                          type: string
+                          example: "Suite 456"
+                        city:
+                          type: string
+                          example: "Lagos"
+                        state:
+                          type: string
+                          example: "Lagos"
+                        postal_code:
+                          type: string
+                          example: "214578"
+                        country:
+                          type: string
+                          example: "Nigeria"
+              discriminator:
+                propertyName: customer_type
+                mapping:
+                  business: "#/components/schemas/BusinessCustomer"
+                  individual: "#/components/schemas/IndividualCustomer"
+
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          required: true
+          example: ""
+      responses:
+        "201":
+          description: Created
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "58"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "25"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "703"
+            ETag:
+              schema:
+                type: string
+                example: W/"2bf-q7Qda6ZWxoJkK7qpFG7nyl2+t/U"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 16:33:57 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: 200 individual
+                  value:
+                    status: success
+                    data:
+                      id: 11a3c37f-06bb-4e7c-9813-0e47d47e9e2d
+                      customer_type: individual
+                      email: olajohn3@gmail.com
+                      phone: "+2348918945668"
+                      created_at: "2025-05-09T16:33:57.844Z"
+                      updated_at: "2025-05-09T16:33:57.844Z"
+                      status: active
+                      address:
+                        line_1: 123 Main St
+                        line_2: Suite 456
+                        city: Lagos
+                        state: Lagos
+                        country: Nigeria
+                        postal_code: "214578"
+                      personal_info:
+                        first_name: john
+                        middle_name: Oluwaseun
+                        last_name: ola
+                        birth_date: "1990-01-14T23:00:00.000Z"
+                      financial_info:
+                        account_purpose: personal savings
+                        employment_status: employed
+                        expected_monthly_income: "500000.00"
+                        most_recent_occupation: Software Engineer
+                        source_of_funds: salary
+                example-1:
+                  summary: 200 business
+                  value:
+                    status: success
+                    data:
+                      id: e927caad-9576-40d8-b87d-ace687afa82a
+                      customer_type: business
+                      email: contact@example.com
+                      phone: "+2347918945668"
+                      created_at: "2025-05-09T16:33:21.902Z"
+                      updated_at: "2025-05-09T16:33:21.902Z"
+                      status: active
+                      address:
+                        line_1: 123 Business Ave
+                        line_2: Suite 456
+                        city: Lagos
+                        state: Lagos
+                        country: Nigeria
+                        postal_code: "214578"
+                      personal_info:
+                        first_name: null
+                        middle_name: null
+                        last_name: null
+                        birth_date: null
+                      financial_info:
+                        account_purpose: business operations
+                        employment_status: null
+                        expected_monthly_income: "5000000.00"
+                        most_recent_occupation: null
+                        source_of_funds: business revenue
+                      business_info:
+                        business_name: Example Enterprises
+                        business_type: Retail
+                        business_website: https://example.com
+    get:
+      tags:
+        - customers
+      summary: "merchant: fetch all customers"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          required: true
+          example: ""
+        - name: page
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 10
+        - name: customer_type
+          in: query
+          schema:
+            type: string
+          required: false
+          example: "business"
+        - name: search
+          in: query
+          schema:
+            type: string
+          required: false
+          example: "john"
+        - name: include_documents
+          in: query
+          schema:
+            type: boolean
+          required: false
+          example: true
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+          required: false
+          example: "2025-05-01T00:00:00Z"
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+          required: false
+          example: "2025-05-09T23:59:59Z"
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "4368"
+            ETag:
+              schema:
+                type: string
+                example: W/"1110-3TQB7l5gO9J3HYp/Fz8OqTC9wDE"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 16:18:33 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  - id: 10f07c0c-98d2-4f36-a9df-0dc75f747c52
+                    customer_type: individual
+                    email: olajohn3@gmail.com
+                    phone: "+2348918945668"
+                    created_at: "2025-05-09T14:59:51.229Z"
+                    updated_at: "2025-05-09T14:59:51.229Z"
+                    status: active
+                    address:
+                      line_1: 123 Main St
+                      line_2: Suite 456
+                      city: Lagos
+                      state: Lagos
+                      postal_code: "214578"
+                      country: Nigeria
+                    personal_info:
+                      first_name: john
+                      middle_name: Oluwaseun
+                      last_name: ola
+                      birth_date: "1990-01-14T23:00:00.000Z"
+                    financial_info:
+                      account_purpose: personal savings
+                      employment_status: employed
+                      expected_monthly_income: "500000.00"
+                      most_recent_occupation: Software Engineer
+                      source_of_funds: salary
+                  - id: 62217f2f-2f65-4aca-b613-9bcefa333af3
+                    customer_type: business
+                    email: contact@example.com
+                    phone: "+2347918945668"
+                    created_at: "2025-05-09T14:58:35.745Z"
+                    updated_at: "2025-05-09T14:58:35.745Z"
+                    status: active
+                    address:
+                      line_1: 123 Business Ave
+                      line_2: Suite 456
+                      city: Lagos
+                      state: Lagos
+                      postal_code: "214578"
+                      country: Nigeria
+                    personal_info:
+                      first_name: null
+                      middle_name: null
+                      last_name: null
+                      birth_date: null
+                    financial_info:
+                      account_purpose: business operations
+                      employment_status: null
+                      expected_monthly_income: "5000000.00"
+                      most_recent_occupation: null
+                      source_of_funds: business revenue
+                    business_info:
+                      business_name: Example Enterprises
+                      business_type: Retail
+                      business_website: https://example.com
+                  - id: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+                    customer_type: business
+                    email: contact@akande.com
+                    phone: "+2348098765432"
+                    created_at: "2025-05-01T13:47:10.689Z"
+                    updated_at: "2025-05-09T14:57:30.534Z"
+                    status: active
+                    address:
+                      line_1: 789 Business Avenue
+                      line_2: Suite 500
+                      city: Lagos
+                      state: Lagos
+                      postal_code: "100001"
+                      country: Nigeria
+                    personal_info:
+                      first_name: null
+                      middle_name: null
+                      last_name: null
+                      birth_date: null
+                    financial_info:
+                      account_purpose: business operations
+                      employment_status: null
+                      expected_monthly_income: "5000000.00"
+                      most_recent_occupation: null
+                      source_of_funds: business revenue
+                    business_info:
+                      business_name: Acme Inc.
+                      business_type: Technology Solutions
+                      business_website: https://acme.example.com
+                  - id: 3836c9c3-0f62-4229-acaf-1da597a14991
+                    customer_type: individual
+                    email: akandetunji23@gmail.com
+                    phone: "+2348098765432"
+                    created_at: "2025-05-01T13:45:30.837Z"
+                    updated_at: "2025-05-09T14:55:58.657Z"
+                    status: active
+                    address:
+                      line_1: 456 Updated Street
+                      line_2: Apt 101
+                      city: Lagos
+                      state: Lagos
+                      postal_code: "100001"
+                      country: Nigeria
+                    personal_info:
+                      first_name: John
+                      middle_name: Michael
+                      last_name: Doe
+                      birth_date: "1990-01-14T23:00:00.000Z"
+                    financial_info:
+                      account_purpose: personal savings
+                      employment_status: employed
+                      expected_monthly_income: "500000.00"
+                      most_recent_occupation: Software Engineer
+                      source_of_funds: salary
+                  - id: d75521df-4e59-48d4-938e-617e07c536b2
+                    customer_type: individual
+                    email: akandetunji0@gmail.com
+                    phone: "+2348918945660"
+                    created_at: "2025-04-29T08:15:52.097Z"
+                    updated_at: "2025-04-29T08:15:52.097Z"
+                    status: closed
+                    address:
+                      line_1: 123 Main St
+                      line_2: null
+                      city: Lagos
+                      state: Lagos
+                      postal_code: null
+                      country: Nigeria
+                    personal_info:
+                      first_name: Tunji
+                      middle_name: null
+                      last_name: Akande
+                      birth_date: "1990-01-14T23:00:00.000Z"
+                    financial_info:
+                      account_purpose: Personal savings
+                      employment_status: Employed
+                      expected_monthly_income: null
+                      most_recent_occupation: null
+                      source_of_funds: null
+                  - id: 33b60774-a9f0-48b8-be8d-c3d498782425
+                    customer_type: business
+                    email: akandetunji3@gmail.com
+                    phone: "+2348098765432"
+                    created_at: "2025-04-24T23:52:31.714Z"
+                    updated_at: "2025-04-29T08:17:00.668Z"
+                    status: active
+                    address:
+                      line_1: 123 Main St
+                      line_2: 456 Updated Address St
+                      city: Lagos
+                      state: Lagos
+                      postal_code: null
+                      country: Nigeria
+                    personal_info:
+                      first_name: Tunji
+                      middle_name: null
+                      last_name: Akande
+                      birth_date: "1990-01-14T23:00:00.000Z"
+                    financial_info:
+                      account_purpose: Personal savings
+                      employment_status: Employed
+                      expected_monthly_income: null
+                      most_recent_occupation: null
+                      source_of_funds: null
+                    business_info:
+                      business_name: null
+                      business_type: null
+                      business_website: null
+                pagination:
+                  total: 6
+                  page: 1
+                  limit: 10
+                  totalPages: 1
+  /customers/{customerId}:
+    get:
+      tags:
+        - customers
+      summary: "merchant: fetch by customer_id"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          required: true
+          example: ""
+        - name: customerId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "801"
+            ETag:
+              schema:
+                type: string
+                example: W/"321-n37zVCcWpdtQfqk1JfkCioNySN8"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 16:20:08 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  id: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+                  customer_type: business
+                  email: contact@akande.com
+                  phone: "+2348098765432"
+                  created_at: "2025-05-01T13:47:10.689Z"
+                  updated_at: "2025-05-09T14:57:30.534Z"
+                  status: active
+                  address:
+                    line_1: 789 Business Avenue
+                    line_2: Suite 500
+                    city: Lagos
+                    state: Lagos
+                    postal_code: "100001"
+                    country: Nigeria
+                  personal_info:
+                    first_name: null
+                    middle_name: null
+                    last_name: null
+                    birth_date: null
+                  financial_info:
+                    account_purpose: business operations
+                    employment_status: null
+                    expected_monthly_income: "5000000.00"
+                    most_recent_occupation: null
+                    source_of_funds: business revenue
+                  business_info:
+                    business_name: Acme Inc.
+                    business_type: Technology Solutions
+                    business_website: https://acme.example.com
+    put:
+      tags:
+        - customers
+      summary: "merchant: updates custermer data"
+      requestBody:
+        description: |-
+          Update customer information. The request body should contain the
+          updated customer details, including personal and financial
+          information. The request body should
+          include the appropriate fields for the selected customer type.
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: Business Customer
+                  type: object
+                  required:
+                    - customer_type
+                    - business_name
+                    - business_type
+                    - email
+                    - phone
+                    - account_purpose
+                    - source_of_funds
+                    - expected_monthly_income
+                    - address
+                  properties:
+                    customer_type:
+                      type: string
+                      enum: [business]
+                    business_name:
+                      type: string
+                      example: "Example Enterprises"
+                    business_type:
+                      type: string
+                      example: "Retail"
+                    business_website:
+                      type: string
+                      example: "https://example.com"
+                    email:
+                      type: string
+                      format: email
+                      example: "contact@example.com"
+                    phone:
+                      type: string
+                      example: "+2347918945668"
+                    account_purpose:
+                      type: string
+                      example: "business operations"
+                    source_of_funds:
+                      type: string
+                      example: "business revenue"
+                    expected_monthly_income:
+                      type: number
+                      example: 5000000
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postal_code
+                      properties:
+                        line_1:
+                          type: string
+                          example: "123 Business Ave"
+                        line_2:
+                          type: string
+                          example: "Suite 456"
+                        city:
+                          type: string
+                          example: "Lagos"
+                        state:
+                          type: string
+                          example: "Lagos"
+                        postal_code:
+                          type: string
+                          example: "214578"
+                        country:
+                          type: string
+                          example: "Nigeria"
+
+                - title: Individual Customer
+                  type: object
+                  required:
+                    - customer_type
+                    - first_name
+                    - last_name
+                    - email
+                    - phone
+                    - birth_date
+                    - account_purpose
+                    - employment_status
+                    - expected_monthly_income
+                    - most_recent_occupation
+                    - source_of_funds
+                    - address
+                  properties:
+                    customer_type:
+                      type: string
+                      enum: [individual]
+                    first_name:
+                      type: string
+                      example: "John"
+                    middle_name:
+                      type: string
+                      example: "Oluwaseun"
+                    last_name:
+                      type: string
+                      example: "Ola"
+                    email:
+                      type: string
+                      format: email
+                      example: "olajohn3@gmail.com"
+                    phone:
+                      type: string
+                      example: "+2348918945668"
+                    birth_date:
+                      type: string
+                      format: date
+                      example: "1990-01-15"
+                    account_purpose:
+                      type: string
+                      example: "personal savings"
+                    employment_status:
+                      type: string
+                      example: "employed"
+                    expected_monthly_income:
+                      type: number
+                      example: 500000
+                    most_recent_occupation:
+                      type: string
+                      example: "Software Engineer"
+                    source_of_funds:
+                      type: string
+                      example: "salary"
+                    address:
+                      type: object
+                      required:
+                        - line_1
+                        - city
+                        - state
+                        - country
+                        - postal_code
+                      properties:
+                        line_1:
+                          type: string
+                          example: "123 Main St"
+                        line_2:
+                          type: string
+                          example: "Suite 456"
+                        city:
+                          type: string
+                          example: "Lagos"
+                        state:
+                          type: string
+                          example: "Lagos"
+                        postal_code:
+                          type: string
+                          example: "214578"
+                        country:
+                          type: string
+                          example: "Nigeria"
+              discriminator:
+                propertyName: customer_type
+                mapping:
+                  business: "#/components/schemas/BusinessCustomer"
+                  individual: "#/components/schemas/IndividualCustomer" 
+                
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          required: true
+          example: ""
+        - name: customerId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: ""
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "835"
+            ETag:
+              schema:
+                type: string
+                example: W/"343-R+0zFz6YYdpBmSeX80Clpe0mRMw"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 16:39:51 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  id: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+                  customer_type: business
+                  email: contact@akande.com
+                  phone: "+2348098765432"
+                  created_at: "2025-05-01T13:47:10.689Z"
+                  updated_at: "2025-05-09T16:39:51.300Z"
+                  status: active
+                  address:
+                    line_1: 456 Updated Street
+                    line_2: Apt 101
+                    city: Lagos
+                    state: Lagos
+                    country: Nigeria
+                    postal_code: "100001"
+                  personal_info:
+                    first_name: John
+                    middle_name: Michael
+                    last_name: Doe
+                    birth_date: "1990-01-14T23:00:00.000Z"
+                  financial_info:
+                    account_purpose: personal savings
+                    employment_status: employed
+                    expected_monthly_income: "500000.00"
+                    most_recent_occupation: Software Engineer
+                    source_of_funds: salary
+                  business_info:
+                    business_name: Acme Inc.
+                    business_type: Technology Solutions
+                    business_website: https://acme.example.com
+  /payouts/{customer_id}:
+    post:
+      tags:
+        - payouts
+      summary: "merchant: create withdrawal"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: |-
+                {
+                  "currency": "USDC",
+                  "address": "0x53BC6d42fd6eE0efEeF4f9CAb789e264E8b895f3",
+                  "amount": 0.01,
+                  "network": "bep20",
+                  "recipient_name": "John Doe" // optional
+                }
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+            
+        - name: customer_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /payouts/validate-address:
+    get:
+      tags:
+        - payouts
+      summary: "merchant: validate address"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+            
+        - name: currency
+          in: query
+          schema:
+            type: string
+          example: usdt
+        - name: address
+          in: query
+          schema:
+            type: string
+          example: "0x53BC6d42fd6eE0efEeF4f9CAb789e264E8b895f3"
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "85"
+            ETag:
+              schema:
+                type: string
+                example: W/"55-FDGwjGE2KzVgyLjRqGJfTMRxvrE"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 15:06:35 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  valid: true
+                message: Address validation successful.
+  /payouts/fees:
+    get:
+      tags:
+        - payouts
+      summary: "merchant: fetch fee"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+            
+        - name: amount
+          in: query
+          schema:
+            type: integer
+          example: "10"
+        - name: currency
+          in: query
+          schema:
+            type: string
+          example: usdt
+        - name: network
+          in: query
+          schema:
+            type: string
+          example: erc20
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "119"
+            ETag:
+              schema:
+                type: string
+                example: W/"77-2yoqITbJUHTq3WdWeYPk7g5HjE8"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 15:09:01 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  amount: "10.00"
+                  currency: usdt
+                  network: erc20
+                  fee: "6.05"
+                  amountAfterFee: "3.95"
+        "400":
+          description: Bad Request
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "56"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "16"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "208"
+            ETag:
+              schema:
+                type: string
+                example: W/"d0-HMe4UE+zg4lOSknfCUEIYady45M"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 15:11:38 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: failed
+                message: >-
+                  Amount after fee must be at least 0.1. Please increase your
+                  amount.
+                data:
+                  minimumRequiredAmount: "5.31"
+                  currentAmount: "2.00"
+                  fee: "5.21"
+                  requiredMinimumAfterFee: "0.10"
+  /transactions:
+    get:
+      tags:
+        - transactions
+      summary: "merchant: fetch all trans."
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+            
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "56"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "22"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "1845"
+            ETag:
+              schema:
+                type: string
+                example: W/"735-9UILWLBqQtYydoZSrS/ErJPRW+M"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 17:09:16 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  - id: 7317caf6-cdc9-4375-8348-56c3d3b0c31d
+                    sender_wallet_id: null
+                    receiver_wallet_id: null
+                    transaction_id: dummy_l4bgz10ss2slxrfsvnrxs
+                    asset_code: usdt
+                    amount: "9.93890641"
+                    reference_id: dummy_u2r8ns4ys7fi6irb78gz1
+                    status: REVERSED
+                    created_at: "2025-04-07T15:11:00.295Z"
+                    updated_at: "2025-04-29T13:53:29.065Z"
+                    crypto_transaction_id: null
+                    network: null
+                    transaction_type: INTERNAL TRANSFER
+                    transaction_mode: DEBIT
+                    exchange_rate: "1.77"
+                    withdrawal_recipient_name: null
+                    fee: null
+                    balance: "0.00000000"
+                    reason: null
+                    customer_id: d75521df-4e59-48d4-938e-617e07c536b2
+                  - id: 950fcdb7-4be4-46c3-b4f4-350ddb70d854
+                    sender_wallet_id: null
+                    receiver_wallet_id: null
+                    transaction_id: dummy_kj22oti4a56l4j7rahve7
+                    asset_code: busd
+                    amount: "17.56304152"
+                    reference_id: dummy_u2r8ns4ys7fi6irb78gz1
+                    status: REVERSED
+                    created_at: "2025-04-05T10:12:07.105Z"
+                    updated_at: "2025-04-29T13:53:29.065Z"
+                    crypto_transaction_id: null
+                    network: null
+                    transaction_type: INTERNAL TRANSFER
+                    transaction_mode: CREDIT
+                    exchange_rate: "1.77"
+                    withdrawal_recipient_name: null
+                    fee: null
+                    balance: "0.00000000"
+                    reason: null
+                    customer_id: d75521df-4e59-48d4-938e-617e07c536b2
+                  - id: ee8330fd-1b91-49bb-93b7-aa90f8ff5f56
+                    sender_wallet_id: null
+                    receiver_wallet_id: null
+                    transaction_id: dummy_cwk6cjitut84661xgakqx9
+                    asset_code: usd
+                    amount: "1.98647811"
+                    reference_id: null
+                    status: PENDING
+                    created_at: "2025-04-03T04:22:41.951Z"
+                    updated_at: "2025-04-29T13:55:48.175Z"
+                    crypto_transaction_id: null
+                    network: null
+                    transaction_type: DEPOSIT
+                    transaction_mode: CREDIT
+                    exchange_rate: null
+                    withdrawal_recipient_name: null
+                    fee: null
+                    balance: "0.00000000"
+                    reason: null
+                    customer_id: d75521df-4e59-48d4-938e-617e07c536b2
+                pagination:
+                  total: 3
+                  page: 1
+                  limit: 10
+                  totalPages: 1
+  /customers/transactions/by_txid/{transaction_id}:
+    get:
+      tags:
+        - transactions
+      summary: fetch transactions by transactionid
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+            
+        - name: transaction_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 7317caf6-cdc9-4375-8348-56c3d3b0c31d
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "624"
+            ETag:
+              schema:
+                type: string
+                example: W/"270-soUBtWOESB34XsEHbzNlsZJVFIY"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 17:11:38 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  id: 7317caf6-cdc9-4375-8348-56c3d3b0c31d
+                  sender_wallet_id: null
+                  receiver_wallet_id: null
+                  transaction_id: dummy_l4bgz10ss2slxrfsvnrxs
+                  asset_code: usdt
+                  amount: "9.93890641"
+                  reference_id: dummy_u2r8ns4ys7fi6irb78gz1
+                  status: REVERSED
+                  created_at: "2025-04-07T15:11:00.295Z"
+                  updated_at: "2025-04-29T13:53:29.065Z"
+                  crypto_transaction_id: null
+                  network: null
+                  transaction_type: INTERNAL TRANSFER
+                  transaction_mode: DEBIT
+                  exchange_rate: "1.77"
+                  withdrawal_recipient_name: null
+                  fee: null
+                  balance: "0.00000000"
+                  reason: null
+                  customer_id: d75521df-4e59-48d4-938e-617e07c536b2
+  /customers/transactions/by_ref_id/{reference_id}:
+    get:
+      tags:
+        - transactions
+      summary: fetch transactions by reference id
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+            
+        - name: reference_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: dummy_u2r8ns4ys7fi6irb78gz1
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "1225"
+            ETag:
+              schema:
+                type: string
+                example: W/"4c9-c2qoc84p4WOu/v/t/GLHAfMQsDw"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 17:15:54 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  - id: 950fcdb7-4be4-46c3-b4f4-350ddb70d854
+                    sender_wallet_id: null
+                    receiver_wallet_id: null
+                    transaction_id: dummy_kj22oti4a56l4j7rahve7
+                    asset_code: busd
+                    amount: "17.56304152"
+                    reference_id: dummy_u2r8ns4ys7fi6irb78gz1
+                    status: REVERSED
+                    created_at: "2025-04-05T10:12:07.105Z"
+                    updated_at: "2025-04-29T13:53:29.065Z"
+                    crypto_transaction_id: null
+                    network: null
+                    transaction_type: INTERNAL TRANSFER
+                    transaction_mode: CREDIT
+                    exchange_rate: "1.77"
+                    withdrawal_recipient_name: null
+                    fee: null
+                    balance: "0.00000000"
+                    reason: null
+                    customer_id: d75521df-4e59-48d4-938e-617e07c536b2
+                  - id: 7317caf6-cdc9-4375-8348-56c3d3b0c31d
+                    sender_wallet_id: null
+                    receiver_wallet_id: null
+                    transaction_id: dummy_l4bgz10ss2slxrfsvnrxs
+                    asset_code: usdt
+                    amount: "9.93890641"
+                    reference_id: dummy_u2r8ns4ys7fi6irb78gz1
+                    status: REVERSED
+                    created_at: "2025-04-07T15:11:00.295Z"
+                    updated_at: "2025-04-29T13:53:29.065Z"
+                    crypto_transaction_id: null
+                    network: null
+                    transaction_type: INTERNAL TRANSFER
+                    transaction_mode: DEBIT
+                    exchange_rate: "1.77"
+                    withdrawal_recipient_name: null
+                    fee: null
+                    balance: "0.00000000"
+                    reason: null
+                    customer_id: d75521df-4e59-48d4-938e-617e07c536b2
+  /customers/transactions/by_customer_id/{customer_id}:
+    get:
+      tags:
+        - transactions
+      summary: fetch transactions by customerid
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: >-
+            
+        - name: customer_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: ddf723ee-5558-442d-b46f-4e3d42817448
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "2003"
+            ETag:
+              schema:
+                type: string
+                example: W/"7d3-sG03tv4XPr90jQ82J9lunByqTgU"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 17:09:57 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  - merchant_id: d9b40fe2-25a1-43b5-88aa-ab473004b782
+                    id: c59c1766-4ab8-45e5-8de3-d0c842a31d61
+                    sender_wallet_id: null
+                    receiver_wallet_id: null
+                    transaction_id: dummy_4tfgg2h9fw9lmivslzwz0b
+                    asset_code: busd
+                    amount: "4.09723734"
+                    reference_id: dummy_119yoff9gp7m43j18j6mtk8
+                    status: PENDING
+                    created_at: "2025-04-29T10:15:04.974Z"
+                    updated_at: "2025-04-29T14:53:25.820Z"
+                    crypto_transaction_id: null
+                    network: null
+                    transaction_type: INTERNAL TRANSFER
+                    transaction_mode: DEBIT
+                    exchange_rate: "1.50"
+                    withdrawal_recipient_name: null
+                    fee: null
+                    balance: "0.00000000"
+                    reason: null
+                    customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
+                  - merchant_id: d9b40fe2-25a1-43b5-88aa-ab473004b782
+                    id: 339af8d7-8673-4a84-8a5b-b9a94c500901
+                    sender_wallet_id: null
+                    receiver_wallet_id: null
+                    transaction_id: dummy_k2aijr1l6gdvpzdskv8hgq
+                    asset_code: usd
+                    amount: "0.55985813"
+                    reference_id: null
+                    status: FAILED
+                    created_at: "2025-04-04T23:22:36.103Z"
+                    updated_at: "2025-04-29T14:53:10.164Z"
+                    crypto_transaction_id: null
+                    network: null
+                    transaction_type: DEPOSIT
+                    transaction_mode: CREDIT
+                    exchange_rate: null
+                    withdrawal_recipient_name: null
+                    fee: null
+                    balance: "0.00000000"
+                    reason: null
+                    customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
+                  - merchant_id: d9b40fe2-25a1-43b5-88aa-ab473004b782
+                    id: cb87c546-bf86-4332-bc69-d94aa006d18d
+                    sender_wallet_id: null
+                    receiver_wallet_id: null
+                    transaction_id: dummy_3lkqh25xcukrjsfuj5dh
+                    asset_code: eth
+                    amount: "6.13971015"
+                    reference_id: dummy_119yoff9gp7m43j18j6mtk8
+                    status: PENDING
+                    created_at: "2025-03-30T21:23:27.386Z"
+                    updated_at: "2025-04-29T14:53:25.820Z"
+                    crypto_transaction_id: null
+                    network: null
+                    transaction_type: INTERNAL TRANSFER
+                    transaction_mode: CREDIT
+                    exchange_rate: "1.50"
+                    withdrawal_recipient_name: null
+                    fee: null
+                    balance: "0.00000000"
+                    reason: null
+                    customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
+                pagination:
+                  total: 3
+                  page: 1
+                  limit: 10
+                  totalPages: 1
+  /wallets/{customer_id}/customer:
+    post:
+      tags:
+        - wallets
+      summary: "merchant: create wallet"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                currency: USDC
+                network: bep20
+                description: my USDC account
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+            
+        - name: customer_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+      responses:
+        "201":
+          description: Created
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "553"
+            ETag:
+              schema:
+                type: string
+                example: W/"229-w7JrLgz4sWADAuLSxI8APqns3ew"
+            Date:
+              schema:
+                type: string
+                example: Sun, 11 May 2025 12:55:24 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  id: 49468947-4006-4b9a-bd96-f6b0d0210ad3
+                  asset_type: STABLECOIN
+                  currency: USDC
+                  balance: "0.00000000"
+                  description: my erc account
+                  status: active
+                  created_at: "2025-05-01T21:04:31.928Z"
+                  updated_at: "2025-05-01T21:04:31.928Z"
+                  customer_id: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+                  addresses:
+                    - id: 2381eeac-a592-4992-8bb9-4286634a0e94
+                      crypto_wallet_id: 49468947-4006-4b9a-bd96-f6b0d0210ad3
+                      address: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                      network: bep20
+                      created_at: "2025-05-01T21:04:32.179Z"
+    get:
+      tags:
+        - wallets
+      summary: "merchant: fetch by customer_id"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: >-
+            
+        - name: customer_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: ddf723ee-5558-442d-b46f-4e3d42817448
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "57"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "34"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "933"
+            ETag:
+              schema:
+                type: string
+                example: W/"3a5-AOTrIK6zR6fCkUg2ht3E00F5vbk"
+            Date:
+              schema:
+                type: string
+                example: Sun, 11 May 2025 12:54:32 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  - id: 2ed51ca9-e1a4-42be-91c2-a611bd2d8eba
+                    asset_type: STABLECOIN
+                    currency: USDC
+                    balance: "0.00000000"
+                    description: my erc account
+                    status: active
+                    created_at: "2025-04-30T12:22:37.246Z"
+                    updated_at: "2025-04-30T12:22:37.246Z"
+                    customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
+                    addresses:
+                      address: "0x96B42590C86F538d3a87253C6e64b32b7D35d7c7"
+                      network: bep20
+                      created_at: "2025-05-01T10:29:56.789Z"
+                  - id: f9351946-776a-4cf3-bac8-3ad7c40ad921
+                    asset_type: STABLECOIN
+                    currency: USDT
+                    balance: "0.00000000"
+                    description: my erc account
+                    status: active
+                    created_at: "2025-04-30T12:11:45.581Z"
+                    updated_at: "2025-04-30T12:11:45.581Z"
+                    customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
+                    addresses:
+                      address: "0x96B42590C86F538d3a87253C6e64b32b7D35d7c7"
+                      network: erc20
+                      created_at: "2025-04-30T12:11:45.898Z"
+                pagination:
+                  total: 2
+                  page: 1
+                  limit: 10
+                  totalPages: 1
+  /wallets:
+    get:
+      tags:
+        - wallets
+      summary: "merchant: fetch wallets"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+            
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "58"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "12"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "1025"
+            ETag:
+              schema:
+                type: string
+                example: W/"401-XsfL84RJUWMysPhYxc3TLxkiAYE"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 17:47:41 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  - id: 49468947-4006-4b9a-bd96-f6b0d0210ad3
+                    asset_type: STABLECOIN
+                    currency: USDC
+                    balance: "0.00000000"
+                    description: my erc account
+                    status: active
+                    created_at: "2025-05-01T21:04:31.928Z"
+                    updated_at: "2025-05-01T21:04:31.928Z"
+                    customer_id: 85b148ab-3f6b-4d55-917f-3c8de668a48e
+                    addresses:
+                      - id: 2381eeac-a592-4992-8bb9-4286634a0e94
+                        address: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                        network: bep20
+                        created_at: "2025-05-01T21:04:32.179Z"
+                  - id: 0062aee5-2bf2-4c62-8eb3-593be9548fbf
+                    asset_type: STABLECOIN
+                    currency: USDC
+                    balance: "0.00000000"
+                    description: my erc account
+                    status: active
+                    created_at: "2025-05-01T11:26:26.147Z"
+                    updated_at: "2025-05-01T11:26:26.147Z"
+                    customer_id: d75521df-4e59-48d4-938e-617e07c536b2
+                    addresses:
+                      - id: 7031e161-4433-492f-9279-b5e1ea89d4f4
+                        address: "0xFd135d153bD2b941b45770b11C3f809e43F69232"
+                        network: bep20
+                        created_at: "2025-05-01T11:26:26.324Z"
+                pagination:
+                  total: 2
+                  page: 1
+                  limit: 10
+                  totalPages: 1
+  /wallets/{wallet_id}:
+    get:
+      tags:
+        - wallets
+      summary: "merchant: fetch by wallet_id"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: >-
+            
+        - name: wallet_id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 2ed51ca9-e1a4-42be-91c2-a611bd2d8eba
+      responses:
+        "200":
+          description: OK
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "58"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "41"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "805"
+            ETag:
+              schema:
+                type: string
+                example: W/"325-dP8+oX4NViocsTKKEVsiZLpZZDk"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 17:48:13 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                status: success
+                data:
+                  id: 2ed51ca9-e1a4-42be-91c2-a611bd2d8eba
+                  asset_type: STABLECOIN
+                  currency: USDC
+                  balance: "0.00000000"
+                  description: my erc account
+                  status: active
+                  created_at: "2025-04-30T12:22:37.246Z"
+                  updated_at: "2025-04-30T12:22:37.246Z"
+                  customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
+                  addresses:
+                    - id: fae5a5f4-cdd3-4dd1-9b62-e4a70faf8916
+                      address: "0x96B42590C86F538d3a87253C6e64b32b7D35d7c7"
+                      network: erc20
+                      created_at: "2025-04-30T12:22:37.307Z"
+                    - id: 92e6ac2f-6d52-4f7c-b05e-766ffe97191f
+                      address: TXcXrLA94eB1Bcp6ssadJukgnMA2Waw92A
+                      network: trc20
+                      created_at: "2025-05-01T10:27:16.525Z"
+                    - id: 55f33b26-6147-4f4f-8a44-91be6826ac83
+                      address: "0x96B42590C86F538d3a87253C6e64b32b7D35d7c7"
+                      network: bep20
+                      created_at: "2025-05-01T10:29:56.789Z"

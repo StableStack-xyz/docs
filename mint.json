@@ -70,11 +70,12 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Customers",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/customers/create-customer",
+        "api-reference/customers/get-customer",
+        "api-reference/customers/get-customers",
+        "api-reference/customers/update-customer"
       ]
     }
   ],
