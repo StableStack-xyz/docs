@@ -2025,6 +2025,7 @@ paths:
                       requiredMinimumAfterFee: "5.00"
                       currency: "GHS"
                       exchangeRate: 13.12
+
   /payout-methods:
     post:
       tags:
@@ -2070,7 +2071,7 @@ paths:
                       example: "usdc wallet"
                     wallet_address:
                       type: string
-                      example: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                      example: "0x9iu41923E23DcE32d1A346e96558dA89f89DD1aB"
                     network:
                       type: string
                       example: "bep20"
@@ -2154,7 +2155,7 @@ paths:
                             example: "usdc wallet"
                           wallet_address:
                             type: string
-                            example: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                            example: "0x9iu41923E23DcE32d1A346e96558dA89f89DD1aB"
                           network:
                             type: string
                             example: bep20
@@ -2186,7 +2187,7 @@ paths:
                             example: "usdc wallet"
                           wallet_address:
                             type: string
-                            example: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                            example: "0x9iu41923E23DcE32d1A346e96558dA89f89DD1aB"
                           network:
                             type: string
                             example: bep20
@@ -2315,7 +2316,7 @@ paths:
                       type: "WALLET"
                       currency: "USDC"
                       label: "usdc wallet"
-                      wallet_address: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                      wallet_address: "0x9iu41923E23DcE32d1A346e96558dA89f89DD1aB"
                       network: "bep20"
                       created_at: "2025-05-19T19:22:34.511Z"
                       updated_at: "2025-05-19T19:22:34.511Z"
@@ -2329,7 +2330,7 @@ paths:
                       type: "WALLET"
                       currency: "USDC"
                       label: "usdc wallet"
-                      wallet_address: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                      wallet_address: "0x9iu41923E23DcE32d1A346e96558dA89f89DD1aB"
                       network: "bep20"
                       created_at: "2025-05-12T15:50:31.679Z"
                       updated_at: "2025-05-12T15:50:31.679Z"
