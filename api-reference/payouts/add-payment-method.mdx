@@ -1,0 +1,11 @@
+---
+title: "Add Payment Methods"
+description: "API reference for adding Payout Methods"
+openapi: "POST /payout-methods"
+---
+
+Adds a new payout method (either merchant-owned or customer-specific).
+Supports both BANK and WALLET types with different required fields.
+
+- Include customer_id to create for a specific customer
+- Omit customer_id to create merchant-owned payout method
