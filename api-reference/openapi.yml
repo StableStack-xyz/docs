@@ -2044,7 +2044,7 @@ paths:
         - name: currency
           in: query
           description: Currency filter (NGN or USD)
-          required: false
+          required: true
           schema:
             type: string
             enum: [NGN, USD]
@@ -2186,6 +2186,21 @@ paths:
                         bankShortName: "9JAPAY"
                         bankIdentifyCode: "090629"
                         bankCode2: "090629"
+                      - bankCode: "110072"
+                        bankName: "78 FINANCE COMPANY LIMITED"
+                        bankShortName: "78 FINANCE"
+                        bankIdentifyCode: "110072"
+                        bankCode2: "110072"
+                      - bankCode: "050005"
+                        bankName: "AAA FINANCE"
+                        bankShortName: "050005"
+                        bankIdentifyCode: "050005"
+                        bankCode2: "050005"
+                      - bankCode: "090270"
+                        bankName: "AB Microfinance bank"
+                        bankShortName: "090270"
+                        bankIdentifyCode: "090270"
+                        bankCode2: "090270"
                     message: "Bank list retrieved successfully"
                 basicResponse:
                   summary: Basic bank list
@@ -2196,6 +2211,12 @@ paths:
                         bankName: "3LINE CARD MANAGEMENT LIMITED"
                       - bankCode: "120001"
                         bankName: "9 PAYMENT SOLUTIONS BANK"
+                      - bankCode: "110072"
+                        bankName: "78 FINANCE COMPANY LIMITED"
+                      - bankCode: "050005"
+                        bankName: "AAA FINANCE"
+                      - bankCode: "090270"
+                        bankName: "AB Microfinance bank"
                     message: "Bank list retrieved successfully"
 
         "400":
