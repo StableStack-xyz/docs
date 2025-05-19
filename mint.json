@@ -49,25 +49,15 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "authentication",
-        "error"
-      ]
+      "pages": ["introduction", "quickstart", "authentication", "error"]
     },
     {
       "group": "Webhooks",
-      "pages": [
-        "webhooks/introduction",
-        "webhooks/events"
-      ]
+      "pages": ["webhooks/introduction", "webhooks/events"]
     },
     {
       "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
+      "pages": ["api-reference/introduction"]
     },
     {
       "group": "Customers",
@@ -86,6 +76,10 @@
         "api-reference/wallets/get-wallets",
         "api-reference/wallets/get-wallets-by-customer"
       ]
+    },
+    {
+      "group": "Payouts",
+      "pages": ["api-reference/payouts/get-fees"]
     }
   ],
   "footerSocials": {
