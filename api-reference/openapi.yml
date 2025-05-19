@@ -2356,6 +2356,153 @@ paths:
                     msg: "Currency must be either NGN or USD"
                     path: "currency"
                     location: "query"
+  /banks/resolve:
+    post:
+      tags:
+        - banks
+      summary: "Resolve bank account details"
+      description: |
+        Validates and resolves bank account information.
+        Returns account holder name and other relevant details.
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - account_number
+                - bank_code
+              properties:
+                account_number:
+                  type: string
+                  description: The bank account number to resolve
+                  example: "1234567890"
+                bank_code:
+                  type: string
+                  description: The bank code from the bank list
+                  example: "000008"
+      responses:
+        "200":
+          description: Bank account resolved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    oneOf:
+                      - type: object
+                        properties:
+                          sessionID:
+                            type: string
+                          destinationInstitutionCode:
+                            type: string
+                          channelCode:
+                            type: string
+                          accountNumber:
+                            type: string
+                          accountName:
+                            type: string
+                          bankVerificationNumber:
+                            type: string
+                          kycLevel:
+                            type: string
+                          responseCode:
+                            type: string
+                      - type: object
+                        properties:
+                          destinationInstitutionCode:
+                            type: string
+                          accountNumber:
+                            type: string
+                          accountName:
+                            type: string
+                  message:
+                    type: string
+              examples:
+                fullResolution:
+                  summary: Full resolution details
+                  value:
+                    status: "success"
+                    data:
+                      sessionID: "000007890512142402003980362439"
+                      destinationInstitutionCode: "000008"
+                      channelCode: "01"
+                      accountNumber: "1234567890"
+                      accountName: "JOHN DOE SMITH"
+                      bankVerificationNumber: "54900760076"
+                      kycLevel: "0"
+                      responseCode: "00"
+                    message: "Bank account resolved successfully"
+                basicResolution:
+                  summary: Basic resolution details
+                  value:
+                    status: "success"
+                    data:
+                      destinationInstitutionCode: "000008"
+                      accountNumber: "1234567890"
+                      accountName: "Lihua Ma"
+                    message: "Bank account resolved successfully"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: "Validation error"
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: field
+                        value:
+                          type: string
+                          example: ""
+                        msg:
+                          type: string
+                          example: "Account number is required"
+                        path:
+                          type: string
+                          example: "account_number"
+                        location:
+                          type: string
+                          example: "body"
+              examples:
+                missingFields:
+                  value:
+                    status: "failed"
+                    message: "Validation error"
+                    errors:
+                      - type: "field"
+                        value: ""
+                        msg: "Account number is required"
+                        path: "account_number"
+                        location: "body"
+                      - type: "field"
+                        value: ""
+                        msg: "Bank code is required"
+                        path: "bank_code"
+                        location: "body"
 
   /transactions:
     get:

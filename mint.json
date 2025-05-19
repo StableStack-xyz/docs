@@ -82,7 +82,8 @@
       "pages": [
         "api-reference/payouts/get-fees",
         "api-reference/payouts/get-validate-address",
-        "api-reference/payouts/bank/get-bank-list"
+        "api-reference/payouts/bank/get-bank-list",
+        "api-reference/payouts/bank/resolve-bank"
       ]
     }
   ],
