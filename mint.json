@@ -1,0 +1,96 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "StableStack",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373",
+    "anchors": {
+      "from": "#0D9373",
+      "to": "#07C983"
+    }
+  },
+  "search": {
+    "prompt": "Search the guides, API reference, and more."
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:hello@stablestack.xyz"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://dashboard.stablestack.xyz"
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Documentation",
+      "icon": "book-open-cover",
+      "url": "https://docs.stablestack.xyz"
+    },
+    {
+      "name": "Blog",
+      "icon": "newspaper",
+      "url": "https://blog.stablestack.xyz"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "introduction",
+        "quickstart",
+        "authentication",
+        "error"
+      ]
+    },
+    {
+      "group": "Webhooks",
+      "pages": [
+        "webhooks/introduction",
+        "webhooks/events"
+      ]
+    },
+    {
+      "group": "API Documentation",
+      "pages": [
+        "api-reference/introduction"
+      ]
+    },
+    {
+      "group": "Customers",
+      "pages": [
+        "api-reference/customers/create-customer",
+        "api-reference/customers/get-customer",
+        "api-reference/customers/get-customers",
+        "api-reference/customers/update-customer"
+      ]
+    },
+    {
+      "group": "Wallets",
+      "pages": [
+        "api-reference/wallets/create-wallet",
+        "api-reference/wallets/get-wallet",
+        "api-reference/wallets/get-wallets",
+        "api-reference/wallets/get-wallets-by-customer"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "x": "https://x.com/stablestack",
+    "github": "https://github.com/StableStack-xyz",
+    "linkedin": "https://www.linkedin.com/company/stablestack"
+  }
+}
