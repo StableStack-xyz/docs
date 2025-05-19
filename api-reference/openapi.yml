@@ -10,6 +10,7 @@ tags:
   - name: customers
   - name: customers > kyc
   - name: payouts
+  - name: banks
   - name: transactions
   - name: wallets
 paths:

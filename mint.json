@@ -80,10 +80,15 @@
     {
       "group": "Payouts",
       "pages": [
-        "api-reference/payouts/bank/resolve-bank",
-        "api-reference/payouts/bank/get-bank-list",
         "api-reference/payouts/get-fees",
         "api-reference/payouts/get-validate-address"
+      ]
+    },
+    {
+      "group": "Banks",
+      "pages": [
+        "api-reference/banks/resolve-bank",
+        "api-reference/banks/get-bank-list"
       ]
     }
   ],
