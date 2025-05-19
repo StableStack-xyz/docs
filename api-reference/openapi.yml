@@ -1387,14 +1387,21 @@ paths:
           schema:
             type: string
           example: ""
+          required: true
 
         - name: currency
           in: query
+          description: Stablecoin symbol (e.g., usdt, usdc)
+          required: true
           schema:
             type: string
+            enum: [usdt, usdc]
           example: usdt
+
         - name: address
           in: query
+          description: Stablecoin address to validate
+          required: true
           schema:
             type: string
           example: "0x53BC6d42fd6eE0efEeF4f9CAb789e264E8b895f3"
@@ -1507,11 +1514,171 @@ paths:
             application/json:
               schema:
                 type: object
-              example:
-                status: success
-                data:
-                  valid: true
-                message: Address validation successful.
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      valid:
+                        type: boolean
+                  message:
+                    type: string
+              examples:
+                validAddress:
+                  summary: Valid address example
+                  value:
+                    status: "success"
+                    data:
+                      valid: true
+                    message: "Address validation successful."
+        "400":
+          description: Bad Request
+          headers:
+            Content-Security-Policy:
+              schema:
+                type: string
+                example: >-
+                  default-src 'self';base-uri 'self';font-src 'self' https:
+                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
+                  data:;object-src 'none';script-src 'self';script-src-attr
+                  'none';style-src 'self' https:
+                  'unsafe-inline';upgrade-insecure-requests
+            Cross-Origin-Opener-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Cross-Origin-Resource-Policy:
+              schema:
+                type: string
+                example: same-origin
+            Origin-Agent-Cluster:
+              schema:
+                type: string
+                example: "?1"
+            Referrer-Policy:
+              schema:
+                type: string
+                example: no-referrer
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=31536000; includeSubDomains
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-DNS-Prefetch-Control:
+              schema:
+                type: string
+                example: "off"
+            X-Download-Options:
+              schema:
+                type: string
+                example: noopen
+            X-Frame-Options:
+              schema:
+                type: string
+                example: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies:
+              schema:
+                type: string
+                example: none
+            X-XSS-Protection:
+              schema:
+                type: integer
+                example: "0"
+            Vary:
+              schema:
+                type: string
+                example: Origin
+            Access-Control-Allow-Credentials:
+              schema:
+                type: boolean
+                example: "true"
+            RateLimit-Policy:
+              schema:
+                type: string
+                example: 60;w=60
+            RateLimit-Limit:
+              schema:
+                type: integer
+                example: "60"
+            RateLimit-Remaining:
+              schema:
+                type: integer
+                example: "59"
+            RateLimit-Reset:
+              schema:
+                type: integer
+                example: "60"
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: "85"
+            ETag:
+              schema:
+                type: string
+                example: W/"55-FDGwjGE2KzVgyLjRqGJfTMRxvrE"
+            Date:
+              schema:
+                type: string
+                example: Fri, 09 May 2025 15:06:35 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        value:
+                          type: string
+                        msg:
+                          type: string
+                        path:
+                          type: string
+                        location:
+                          type: string
+              examples:
+                invalidCurrency:
+                  summary: Invalid currency error
+                  value:
+                    status: "failed"
+                    message: "Bad Request"
+                    errors:
+                      - type: "field"
+                        value: "usd"
+                        msg: "Only USDT and USDC are supported"
+                        path: "currency"
+                        location: "query"
+                invalidAddress:
+                  summary: Invalid address error
+                  value:
+                    status: "failed"
+                    message: "The recipient address provided is invalid or not supported."
 
   /payouts/fees:
     get:
@@ -1694,7 +1861,7 @@ paths:
               schema:
                 type: object
               examples:
-                example-0:
+                stablecoinSuccess:
                   summary: Stablecoin Success Example
                   value:
                     status: "success"
@@ -1705,7 +1872,7 @@ paths:
                       fee: "10.75"
                       amountAfterFee: "489.25"
                       network: "erc20"
-                example-1:
+                fiatSuccess:
                   summary: Fiat Success Example
                   value:
                     status: "success"
@@ -1827,7 +1994,15 @@ paths:
               schema:
                 type: object
               examples:
-                example-0:
+                invalidAmount:
+                  summary: Invalid Amount Example
+                  value:
+                    status: "failed"
+                    message: "Minimum amount for usdt is 0.1."
+                    data:
+                      minimumRequiredAmount: "0.01"
+                      currentAmount: "0.01"
+                stablecoinError:
                   summary: Stablecoin Error Example
                   value:
                     status: "failed"
@@ -1837,7 +2012,7 @@ paths:
                       currentAmount: "0.01"
                       fee: "10.75"
                       requiredMinimumAfterFee: "0.10"
-                example-1:
+                fiatError:
                   summary: Fiat Error Example
                   value:
                     status: "failed"

@@ -79,7 +79,10 @@
     },
     {
       "group": "Payouts",
-      "pages": ["api-reference/payouts/get-fees"]
+      "pages": [
+        "api-reference/payouts/get-fees",
+        "api-reference/payouts/get-validate-address"
+      ]
     }
   ],
   "footerSocials": {
