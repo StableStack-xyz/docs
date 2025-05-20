@@ -1,0 +1,19 @@
+---
+title: "Update Payout Method"
+description: "API reference for updating payout methods"
+openapi: "PUT /payout-methods/{payout_method_id}"
+---
+
+Updates an existing payout method (either merchant-owned or customer-specific). 
+Supports partial updates - only include fields that need to be modified.
+
+### Key Features:
+- Update both BANK and WALLET type payout methods
+- Include `customer_id` only when updating customer-specific methods
+- All fields are optional (only include what needs to be updated)
+- Returns the complete updated payout method object
+
+### Validation Rules:
+- Payout method ID must be a valid UUID
+- Field-specific validations match create operation requirements
+- Customer ID validation when provided

@@ -82,6 +82,7 @@
       "pages": [
         "api-reference/payouts/add-payment-method",
         "api-reference/payouts/get-payment-method",
+        "api-reference/payouts/update-payment-method",
         "api-reference/payouts/get-fees",
         "api-reference/payouts/get-validate-address"
       ]

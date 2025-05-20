@@ -2708,6 +2708,290 @@ paths:
                           type: string
                           example: "query"
 
+  /payout-methods/{payout_method_id}:
+    put:
+      tags:
+        - payouts
+      summary: "Update payout method"
+      description: |
+        Updates an existing payout method (either merchant-owned or customer-specific).
+        - Include customer_id only when updating a customer-specific payout method
+        - Omit customer_id when updating merchant-owned payout method
+        - Only include fields that need to be updated (partial updates supported)
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+          required: true
+        - name: payout_method_id
+          in: path
+          description: "ID of the payout method to update"
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "46a75b50-4bdc-4f59-b891-602dc247effe"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  properties:
+                    customer_id:
+                      type: string
+                      nullable: true
+                      description: "Required only when updating customer-specific payout method"
+                      example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                    label:
+                      type: string
+                      maxLength: 100
+                      example: "usdc wallet"
+                    wallet_address:
+                      type: string
+                      example: "0x9iu41923E23DcE32d1A346e96558dA89f89DD1aB"
+                    network:
+                      type: string
+                      example: "bep20"
+                    currency:
+                      type: string
+                      minLength: 3
+                      maxLength: 5
+                      example: "USDC"
+                - type: object
+                  properties:
+                    customer_id:
+                      type: string
+                      nullable: true
+                      description: "Required only when updating customer-specific payout method"
+                      example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                    account_name:
+                      type: string
+                      example: "John Doe"
+                    account_number:
+                      type: string
+                      example: "1234567890"
+                    bank_name:
+                      type: string
+                      example: "Test Bank"
+                    currency:
+                      type: string
+                      minLength: 3
+                      maxLength: 5
+                      example: "NGN"
+                    bank_code:
+                      type: string
+                      example: "000006"
+                    sort_code:
+                      type: string
+                      example: "045"
+                    swift_code:
+                      type: string
+                      example: ""
+                    routing_number:
+                      type: string
+                      example: ""
+                    iban:
+                      type: string
+                      example: ""
+      responses:
+        "200":
+          description: Payout method updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    oneOf:
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "46a75b50-4bdc-4f59-b891-602dc247effe"
+                          type:
+                            type: string
+                            example: WALLET
+                          currency:
+                            type: string
+                            example: USDC
+                          label:
+                            type: string
+                            example: "usdc wallet"
+                          wallet_address:
+                            type: string
+                            example: "0x9iu41923E23DcE32d1A346e96558dA89f89DD1aB"
+                          network:
+                            type: string
+                            example: bep20
+                          created_at:
+                            type: string
+                            format: date-time
+                            example: "2025-05-12T15:50:31.679Z"
+                          updated_at:
+                            type: string
+                            format: date-time
+                            example: "2025-05-20T10:15:45.123Z"
+                          customer_id:
+                            type: string
+                            nullable: true
+                            example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                      - type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "b6d3af87-e67f-42a2-b24a-d33f220a0d37"
+                          type:
+                            type: string
+                            example: BANK
+                          currency:
+                            type: string
+                            example: NGN
+                          account_name:
+                            type: string
+                            example: "John Doe"
+                          account_number:
+                            type: string
+                            example: "1234567890"
+                          bank_name:
+                            type: string
+                            example: "Test Bank"
+                          bank_code:
+                            type: string
+                            example: "000006"
+                          sort_code:
+                            type: string
+                            nullable: true
+                            example: "045"
+                          swift_code:
+                            type: string
+                            nullable: true
+                            example: null
+                          routing_number:
+                            type: string
+                            nullable: true
+                            example: null
+                          iban:
+                            type: string
+                            nullable: true
+                            example: null
+                          created_at:
+                            type: string
+                            format: date-time
+                            example: "2025-05-12T15:30:56.623Z"
+                          updated_at:
+                            type: string
+                            format: date-time
+                            example: "2025-05-20T10:15:45.123Z"
+                          customer_id:
+                            type: string
+                            nullable: true
+                            example: null
+                  message:
+                    type: string
+                    example: "Payout method updated successfully"
+              examples:
+                walletUpdate:
+                  value:
+                    status: "success"
+                    data:
+                      id: "46a75b50-4bdc-4f59-b891-602dc247effe"
+                      type: "WALLET"
+                      currency: "USDC"
+                      label: "updated wallet label"
+                      wallet_address: "0x9iu41923E23DcE32d1A346e96558dA89f89DD1aB"
+                      network: "bep20"
+                      created_at: "2025-05-12T15:50:31.679Z"
+                      updated_at: "2025-05-20T10:15:45.123Z"
+                      customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                    message: "Payout method updated successfully"
+                bankUpdate:
+                  value:
+                    status: "success"
+                    data:
+                      id: "b6d3af87-e67f-42a2-b24a-d33f220a0d37"
+                      type: "BANK"
+                      currency: "NGN"
+                      account_name: "Updated Name"
+                      account_number: "1234567890"
+                      bank_name: "Test Bank"
+                      bank_code: "000006"
+                      sort_code: "045"
+                      swift_code: null
+                      routing_number: null
+                      iban: null
+                      created_at: "2025-05-12T15:30:56.623Z"
+                      updated_at: "2025-05-20T10:15:45.123Z"
+                      customer_id: null
+                    message: "Payout method updated successfully"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: "Validation error"
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: field
+                        value:
+                          type: string
+                          example: ""
+                        msg:
+                          type: string
+                          example: "Invalid payout method ID"
+                        path:
+                          type: string
+                          example: "payout_method_id"
+                        location:
+                          type: string
+                          example: "params"
+              examples:
+                validationError:
+                  value:
+                    status: "failed"
+                    message: "Validation error"
+                    errors:
+                      - type: "field"
+                        value: ""
+                        msg: "Invalid payout method ID"
+                        path: "payout_method_id"
+                        location: "params"
+        "404":
+          description: Payout method not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: "Payout method not found"
+              examples:
+                notFound:
+                  value:
+                    status: "failed"
+                    message: "Payout method not found"
   /banks:
     get:
       tags:
