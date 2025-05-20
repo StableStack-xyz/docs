@@ -2992,6 +2992,117 @@ paths:
                   value:
                     status: "failed"
                     message: "Payout method not found"
+    delete:
+      tags:
+        - payouts
+      summary: "Delete payout method"
+      description: |
+        Permanently deletes a payout method.
+        - For merchant-owned methods: No request body needed
+        - For customer-specific methods: Include customer_id in request body
+        - Returns appropriate success message based on method ownership
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+          required: true
+        - name: payout_method_id
+          in: path
+          description: "ID of the payout method to delete"
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "46a75b50-4bdc-4f59-b891-602dc247effe"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: string
+                  format: uuid
+                  description: "Required only when deleting customer-specific payout method"
+                  example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+      responses:
+        "200":
+          description: Payout method deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: "Payout method deleted successfully"
+              examples:
+                merchantSuccess:
+                  value:
+                    status: "success"
+                    message: "Merchant payout method deleted successfully"
+                customerSuccess:
+                  value:
+                    status: "success"
+                    message: "Customer payout method deleted successfully"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: "Validation error"
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: field
+                        value:
+                          type: string
+                          example: ""
+                        msg:
+                          type: string
+                          example: "Invalid customer ID format"
+                        path:
+                          type: string
+                          example: "customer_id"
+                        location:
+                          type: string
+                          example: "body"
+        "404":
+          description: Payout method not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: "Payout method not found or doesn't belong to requester"
+              examples:
+                notFound:
+                  value:
+                    status: "failed"
+                    message: "Payout method not found or doesn't belong to requester"
+
   /banks:
     get:
       tags:
