@@ -72,8 +72,8 @@
       "group": "Wallets",
       "pages": [
         "api-reference/wallets/create-wallet",
-        "api-reference/wallets/get-wallet",
         "api-reference/wallets/get-wallets",
+        "api-reference/wallets/get-wallet",
         "api-reference/wallets/get-wallets-by-customer"
       ]
     },

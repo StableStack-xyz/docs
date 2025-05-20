@@ -4523,7 +4523,7 @@ paths:
                 network:
                   type: string
                   nullable: true
-                  enum: [erc20, bep20, solana, tron, matic]
+                  enum: [erc20, bep20, solana, trc20, polygon]
                   example: bep20
                   description: "Required for STABLECOIN only"
                 description:
