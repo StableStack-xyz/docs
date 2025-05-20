@@ -4682,11 +4682,11 @@ paths:
                         msg: "Currency is required"
                         path: "currency"
                         location: "body"
-
     get:
       tags:
         - wallets
-      summary: "merchant: fetch wallets"
+      summary: "Fetch wallets"
+      description: "Retrieves a list of all wallets with filtering options"
       parameters:
         - name: x-api-key
           in: header
@@ -4698,184 +4698,156 @@ paths:
           in: query
           schema:
             type: integer
+            minimum: 1
           required: false
           example: 1
         - name: limit
           in: query
           schema:
             type: integer
+            minimum: 1
+            maximum: 100
           required: false
           example: 10
         - name: status
           in: query
           schema:
             type: string
+            enum: [active, pending]
           required: false
           example: active
         - name: asset_type
           in: query
           schema:
             type: string
+            enum: [STABLECOIN, FIAT]
           required: false
           example: STABLECOIN
         - name: currency
           in: query
           schema:
             type: string
+            enum: [USDC, USDT, USD, NGN, GBP, EUR, CAD]
           required: false
           example: USDC
         - name: customer_id
           in: query
           schema:
             type: string
+            format: uuid
           required: false
-          example: ddf723ee-5558-442d-b46f-4e3d42817448
-
+          example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
       responses:
         "200":
-          description: OK
-          headers:
-            Content-Security-Policy:
-              schema:
-                type: string
-                example: >-
-                  default-src 'self';base-uri 'self';font-src 'self' https:
-                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
-                  data:;object-src 'none';script-src 'self';script-src-attr
-                  'none';style-src 'self' https:
-                  'unsafe-inline';upgrade-insecure-requests
-            Cross-Origin-Opener-Policy:
-              schema:
-                type: string
-                example: same-origin
-            Cross-Origin-Resource-Policy:
-              schema:
-                type: string
-                example: same-origin
-            Origin-Agent-Cluster:
-              schema:
-                type: string
-                example: "?1"
-            Referrer-Policy:
-              schema:
-                type: string
-                example: no-referrer
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=31536000; includeSubDomains
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: "off"
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
-                example: none
-            X-XSS-Protection:
-              schema:
-                type: integer
-                example: "0"
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
-                example: "true"
-            RateLimit-Policy:
-              schema:
-                type: string
-                example: 60;w=60
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: "60"
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: "58"
-            RateLimit-Reset:
-              schema:
-                type: integer
-                example: "12"
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: "1025"
-            ETag:
-              schema:
-                type: string
-                example: W/"401-XsfL84RJUWMysPhYxc3TLxkiAYE"
-            Date:
-              schema:
-                type: string
-                example: Fri, 09 May 2025 17:47:41 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
+          description: Wallets retrieved successfully
           content:
             application/json:
               schema:
                 type: object
-              example:
-                status: success
-                data:
-                  - id: 49468947-4006-4b9a-bd96-f6b0d0210ad3
-                    asset_type: STABLECOIN
-                    currency: USDC
-                    balance: "0.00000000"
-                    description: my erc account
-                    status: active
-                    created_at: "2025-05-01T21:04:31.928Z"
-                    updated_at: "2025-05-01T21:04:31.928Z"
-                    customer_id: 85b148ab-3f6b-4d55-917f-3c8de668a48e
-                    addresses:
-                      - id: 2381eeac-a592-4992-8bb9-4286634a0e94
-                        address: "0x78D41923E23DcE32d1A346e96558dA89f89DD1aB"
-                        network: bep20
-                        created_at: "2025-05-01T21:04:32.179Z"
-                  - id: 0062aee5-2bf2-4c62-8eb3-593be9548fbf
-                    asset_type: STABLECOIN
-                    currency: USDC
-                    balance: "0.00000000"
-                    description: my erc account
-                    status: active
-                    created_at: "2025-05-01T11:26:26.147Z"
-                    updated_at: "2025-05-01T11:26:26.147Z"
-                    customer_id: d75521df-4e59-48d4-938e-617e07c536b2
-                    addresses:
-                      - id: 7031e161-4433-492f-9279-b5e1ea89d4f4
-                        address: "0xFd135d153bD2b941b45770b11C3f809e43F69232"
-                        network: bep20
-                        created_at: "2025-05-01T11:26:26.324Z"
-                pagination:
-                  total: 2
-                  page: 1
-                  limit: 10
-                  totalPages: 1
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          example: "49468947-4006-4b9a-bd96-f6b0d0210ad3"
+                        asset_type:
+                          type: string
+                          enum: [STABLECOIN, FIAT]
+                          example: STABLECOIN
+                        currency:
+                          type: string
+                          example: USDC
+                        balance:
+                          type: string
+                          example: "0.00000000"
+                        description:
+                          type: string
+                          nullable: true
+                          example: "My wallet"
+                        status:
+                          type: string
+                          example: active
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        customer_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                        addresses:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uuid
+                              address:
+                                type: string
+                              network:
+                                type: string
+                              created_at:
+                                type: string
+                                format: date-time
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 2
+                      page:
+                        type: integer
+                        example: 1
+                      limit:
+                        type: integer
+                        example: 10
+                      totalPages:
+                        type: integer
+                        example: 1
+              examples:
+                success:
+                  value:
+                    status: success
+                    data:
+                      - id: "49468947-4006-4b9a-bd96-f6b0d0210ad3"
+                        asset_type: STABLECOIN
+                        currency: USDC
+                        balance: "0.00000000"
+                        description: "my erc account"
+                        status: active
+                        created_at: "2025-05-01T21:04:31.928Z"
+                        updated_at: "2025-05-01T21:04:31.928Z"
+                        customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                        addresses:
+                          - id: "2381eeac-a592-4992-8bb9-4286634a0e94"
+                            address: "0x78D41923E23DcE32d1A346e96558dA89f89DD1aB"
+                            network: bep20
+                            created_at: "2025-05-01T21:04:32.179Z"
+                      - id: "2acf9413-4db9-4602-9b91-22357b256e51"
+                        asset_type: FIAT
+                        currency: CAD
+                        balance: "0.00"
+                        description: "my cad account"
+                        status: pending
+                        created_at: "2025-05-12T16:53:15.383Z"
+                        updated_at: "2025-05-12T16:53:15.383Z"
+                        customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                        addresses: []
+                    pagination:
+                      total: 2
+                      page: 1
+                      limit: 10
+                      totalPages: 1
 
   /wallets/{wallet_id}:
     get:
