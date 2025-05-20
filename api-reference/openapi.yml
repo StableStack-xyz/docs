@@ -2511,7 +2511,7 @@ paths:
                               example: "usdc wallet"
                             wallet_address:
                               type: string
-                              example: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                              example: "0xDt541923E23DcE32d1A346e96558dA89f87WD1aB"
                             network:
                               type: string
                               example: bep20
@@ -4461,7 +4461,7 @@ paths:
                     updated_at: "2025-04-30T12:22:37.246Z"
                     customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
                     addresses:
-                      address: "0x96B42590C86F538d3a87253C6e64b32b7D35d7c7"
+                      address: "0x67B42590C86F538d3a87253C6e64b32b7D35dhg5"
                       network: bep20
                       created_at: "2025-05-01T10:29:56.789Z"
                   - id: f9351946-776a-4cf3-bac8-3ad7c40ad921
@@ -4474,7 +4474,7 @@ paths:
                     updated_at: "2025-04-30T12:11:45.581Z"
                     customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
                     addresses:
-                      address: "0x96B42590C86F538d3a87253C6e64b32b7D35d7c7"
+                      address: "0x67B42590C86F538d3a87253C6e64b32b7D35dhg5"
                       network: erc20
                       created_at: "2025-04-30T12:11:45.898Z"
                 pagination:
@@ -4611,7 +4611,7 @@ paths:
                       addresses:
                         - id: "2381eeac-a592-4992-8bb9-4286634a0e94"
                           crypto_wallet_id: "49468947-4006-4b9a-bd96-f6b0d0210ad3"
-                          address: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                          address: "0xDt541923E23DcE32d1A346e96558dA89f87WD1aB"
                           network: "bep20"
                           created_at: "2025-05-01T21:04:32.179Z"
                 fiat:
@@ -4990,15 +4990,15 @@ paths:
                   customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
                   addresses:
                     - id: fae5a5f4-cdd3-4dd1-9b62-e4a70faf8916
-                      address: "0x96B42590C86F538d3a87253C6e64b32b7D35d7c7"
+                      address: "0x67B42590C86F538d3a87253C6e64b32b7D35dhg5"
                       network: erc20
                       created_at: "2025-04-30T12:22:37.307Z"
                     - id: 92e6ac2f-6d52-4f7c-b05e-766ffe97191f
-                      address: TXcXrLA94eB1Bcp6ssadJukgnMA2Waw92A
+                      address: TXvzrLA94eB1Bcp6ssadJukgnMA2Waw98R
                       network: trc20
                       created_at: "2025-05-01T10:27:16.525Z"
                     - id: 55f33b26-6147-4f4f-8a44-91be6826ac83
-                      address: "0x96B42590C86F538d3a87253C6e64b32b7D35d7c7"
+                      address: "0x67B42590C86F538d3a87253C6e64b32b7D35dhg5"
                       network: bep20
                       created_at: "2025-05-01T10:29:56.789Z"
 
