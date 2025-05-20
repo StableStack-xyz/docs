@@ -2423,6 +2423,290 @@ paths:
                         msg: "Bank code is required"
                         path: "bank_code"
                         location: "body"
+    get:
+      tags:
+        - payouts
+      summary: "Fetch payout methods"
+      description: |
+        Retrieves all payout methods for a merchant.
+        - Without customer_id: Returns both merchant-owned and customer payout methods
+        - With customer_id: Filters to only that customer's payout methods
+        Supports filtering by type (BANK/WALLET) and currency.
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: ""
+          required: true
+        - name: customer_id
+          in: query
+          description: "Filter by specific customer ID"
+          required: false
+          schema:
+            type: string
+            nullable: true
+          example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+        - name: type
+          in: query
+          description: "Filter by type (BANK or WALLET)"
+          required: false
+          schema:
+            type: string
+            enum: [BANK, WALLET]
+          example: "BANK"
+        - name: currency
+          in: query
+          description: "Filter by currency"
+          required: false
+          schema:
+            type: string
+          example: "NGN"
+        - name: page
+          in: query
+          description: "Page number for pagination"
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          example: 1
+        - name: limit
+          in: query
+          description: "Number of items per page"
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          example: 10
+      responses:
+        "200":
+          description: Payout methods retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      oneOf:
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "46a75b50-4bdc-4f59-b891-602dc247effe"
+                            type:
+                              type: string
+                              example: WALLET
+                            currency:
+                              type: string
+                              example: USDC
+                            label:
+                              type: string
+                              nullable: true
+                              example: "usdc wallet"
+                            wallet_address:
+                              type: string
+                              example: "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB"
+                            network:
+                              type: string
+                              example: bep20
+                            created_at:
+                              type: string
+                              format: date-time
+                              example: "2025-05-12T15:50:31.679Z"
+                            updated_at:
+                              type: string
+                              format: date-time
+                              example: "2025-05-12T15:50:31.679Z"
+                            customer_id:
+                              type: string
+                              nullable: true
+                              example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "b6d3af87-e67f-42a2-b24a-d33f220a0d37"
+                            type:
+                              type: string
+                              example: BANK
+                            currency:
+                              type: string
+                              example: NGN
+                            account_name:
+                              type: string
+                              example: "John Doe"
+                            account_number:
+                              type: string
+                              example: "1234567890"
+                            bank_name:
+                              type: string
+                              example: "Test Bank"
+                            bank_code:
+                              type: string
+                              nullable: true
+                              example: "000006"
+                            sort_code:
+                              type: string
+                              nullable: true
+                              example: null
+                            swift_code:
+                              type: string
+                              nullable: true
+                              example: null
+                            routing_number:
+                              type: string
+                              nullable: true
+                              example: null
+                            iban:
+                              type: string
+                              nullable: true
+                              example: null
+                            created_at:
+                              type: string
+                              format: date-time
+                              example: "2025-05-12T15:30:56.623Z"
+                            updated_at:
+                              type: string
+                              format: date-time
+                              example: "2025-05-12T15:30:56.623Z"
+                            customer_id:
+                              type: string
+                              nullable: true
+                              example: null
+                  pagination:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 15
+                      page:
+                        type: integer
+                        example: 1
+                      limit:
+                        type: integer
+                        example: 10
+                      totalPages:
+                        type: integer
+                        example: 2
+                      hasNextPage:
+                        type: boolean
+                        example: true
+                      hasPreviousPage:
+                        type: boolean
+                        example: false
+                  message:
+                    type: string
+                    example: "Payout methods retrieved successfully"
+              examples:
+                withCustomerFilter:
+                  value:
+                    status: "success"
+                    data:
+                      - id: "46a75b50-4bdc-4f59-b891-602dc247effe"
+                        type: "WALLET"
+                        currency: "USDC"
+                        label: "usdc wallet"
+                        wallet_address: "0x7hj656EC7ab90b098defB751B7401B5f6d8976F"
+                        network: "bep20"
+                        created_at: "2025-05-12T15:50:31.679Z"
+                        updated_at: "2025-05-12T15:50:31.679Z"
+                        customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                      - id: "b6d3af87-e67f-42a2-b24a-d33f220a0d37"
+                        type: "BANK"
+                        currency: "NGN"
+                        account_name: "John Doe"
+                        account_number: "1234567890"
+                        bank_name: "Test Bank"
+                        bank_code: "000006"
+                        sort_code: null
+                        swift_code: null
+                        routing_number: null
+                        iban: null
+                        created_at: "2025-05-12T15:30:56.623Z"
+                        updated_at: "2025-05-12T15:30:56.623Z"
+                        customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                    pagination:
+                      total: 2
+                      page: 1
+                      limit: 10
+                      totalPages: 1
+                      hasNextPage: false
+                      hasPreviousPage: false
+                    message: "Customer payout methods retrieved successfully"
+                merchantMethods:
+                  value:
+                    status: "success"
+                    data:
+                      - id: "85850de9-b69c-4db0-9f1b-45f853691a88"
+                        type: "BANK"
+                        currency: "NGN"
+                        account_name: "John Doe"
+                        account_number: "1234567890"
+                        bank_name: "Test Bank"
+                        bank_code: "000006"
+                        sort_code: "045"
+                        swift_code: "090"
+                        routing_number: "i59859"
+                        iban: "0979707090"
+                        created_at: "2025-05-12T15:24:53.563Z"
+                        updated_at: "2025-05-12T15:47:59.305Z"
+                        customer_id: null
+                      - id: "eea12ff2-421c-40f7-a170-5b38c706744c"
+                        type: "WALLET"
+                        currency: "USDT"
+                        label: "My Primary Wallet"
+                        wallet_address: "0x7hj656EC7ab90b098defB751B7401B5f6d8976F"
+                        network: "Erc20"
+                        created_at: "2025-04-21T18:12:38.702Z"
+                        updated_at: "2025-05-10T11:59:31.368Z"
+                        customer_id: null
+                    pagination:
+                      total: 2
+                      page: 1
+                      limit: 10
+                      totalPages: 1
+                      hasNextPage: false
+                      hasPreviousPage: false
+                    message: "Merchant payout methods retrieved successfully"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: failed
+                  message:
+                    type: string
+                    example: "Validation error"
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: field
+                        value:
+                          type: string
+                          example: ""
+                        msg:
+                          type: string
+                          example: "Invalid page number"
+                        path:
+                          type: string
+                          example: "page"
+                        location:
+                          type: string
+                          example: "query"
 
   /banks:
     get:
