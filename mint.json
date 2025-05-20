@@ -82,6 +82,13 @@
       ]
     },
     {
+      "group": "Banks",
+      "pages": [
+        "api-reference/banks/resolve-bank",
+        "api-reference/banks/get-bank-list"
+      ]
+    },
+    {
       "group": "Payouts",
       "pages": [
         "api-reference/payouts/add-payment-method",
@@ -90,13 +97,6 @@
         "api-reference/payouts/delete-payment-method",
         "api-reference/payouts/get-fees",
         "api-reference/payouts/get-validate-address"
-      ]
-    },
-    {
-      "group": "Banks",
-      "pages": [
-        "api-reference/banks/resolve-bank",
-        "api-reference/banks/get-bank-list"
       ]
     }
   ],
