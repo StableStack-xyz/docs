@@ -69,6 +69,10 @@
       ]
     },
     {
+      "group": "Wallet Assets",
+      "pages": ["api-reference/assets/get-wallet-assets"]
+    },
+    {
       "group": "Wallets",
       "pages": [
         "api-reference/wallets/create-wallet",
