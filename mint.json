@@ -104,7 +104,8 @@
         "api-reference/payouts/update-payment-method",
         "api-reference/payouts/delete-payment-method",
         "api-reference/payouts/get-fees",
-        "api-reference/payouts/get-validate-address"
+        "api-reference/payouts/get-validate-address",
+        "api-reference/payouts/create-withdrawal"
       ]
     },
     {

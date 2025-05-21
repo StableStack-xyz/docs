@@ -777,7 +777,7 @@ paths:
                       business_website: https://acme.example.com
                   - id: 3836c9c3-0f62-4229-acaf-1da597a14991
                     customer_type: individual
-                    email: akandetunji23@gmail.com
+                    email: johnDoe23@gmail.com
                     phone: "+2348098765432"
                     created_at: "2025-05-01T13:45:30.837Z"
                     updated_at: "2025-05-09T14:55:58.657Z"
@@ -802,7 +802,7 @@ paths:
                       source_of_funds: salary
                   - id: d75521df-4e59-48d4-938e-617e07c536b2
                     customer_type: individual
-                    email: akandetunji0@gmail.com
+                    email: johnDoe0@gmail.com
                     phone: "+2348918945660"
                     created_at: "2025-04-29T08:15:52.097Z"
                     updated_at: "2025-04-29T08:15:52.097Z"
@@ -815,9 +815,9 @@ paths:
                       postal_code: null
                       country: Nigeria
                     personal_info:
-                      first_name: Tunji
+                      first_name: John
                       middle_name: null
-                      last_name: Akande
+                      last_name: Doe
                       birth_date: "1990-01-14T23:00:00.000Z"
                     financial_info:
                       account_purpose: Personal savings
@@ -827,7 +827,7 @@ paths:
                       source_of_funds: null
                   - id: 33b60774-a9f0-48b8-be8d-c3d498782425
                     customer_type: business
-                    email: akandetunji3@gmail.com
+                    email:  johnDoe3@gmail.com
                     phone: "+2348098765432"
                     created_at: "2025-04-24T23:52:31.714Z"
                     updated_at: "2025-04-29T08:17:00.668Z"
@@ -840,9 +840,9 @@ paths:
                       postal_code: null
                       country: Nigeria
                     personal_info:
-                      first_name: Tunji
+                      first_name: John
                       middle_name: null
-                      last_name: Akande
+                      last_name: Doe
                       birth_date: "1990-01-14T23:00:00.000Z"
                     financial_info:
                       account_purpose: Personal savings
@@ -1343,42 +1343,7 @@ paths:
                     business_name: Acme Inc.
                     business_type: Technology Solutions
                     business_website: https://acme.example.com
-  /payouts/{customer_id}:
-    post:
-      tags:
-        - payouts
-      summary: "merchant: create withdrawal"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example: |-
-                {
-                  "currency": "USDC",
-                  "address": "0x53BC6d42fd6eE0efEeF4f9CAb789e264E8b895f3",
-                  "amount": 0.01,
-                  "network": "bep20",
-                  "recipient_name": "John Doe" // optional
-                }
-      parameters:
-        - name: x-api-key
-          in: header
-          schema:
-            type: string
-          example: ""
 
-        - name: customer_id
-          in: path
-          schema:
-            type: string
-          required: true
-          example: 85b148ab-3f6b-4d55-917f-3c8de668a48e
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json: {}
   /payouts/validate-address:
     get:
       tags:
@@ -1407,7 +1372,7 @@ paths:
           required: true
           schema:
             type: string
-          example: "0x53BC6d42fd6eE0efEeF4f9CAb789e264E8b895f3"
+          example: "0x598C6d42fd6eE0ekleF4f9CAb789e264E8b895f3"
       responses:
         "200":
           description: OK
@@ -3104,6 +3069,140 @@ paths:
                   value:
                     status: "failed"
                     message: "Payout method not found or doesn't belong to requester"
+
+  /payouts:
+    post:
+      tags:
+        - payouts
+      summary: "Create withdrawal payout"
+      description: "Creates a withdrawal payout to either a cryptocurrency wallet or bank account"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          required: true
+          example: "merchant_api_key_12345"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/CustomerWalletWithdrawal"
+                - $ref: "#/components/schemas/MerchantWalletWithdrawal"
+                - $ref: "#/components/schemas/CustomerBankWithdrawal"
+                - $ref: "#/components/schemas/MerchantBankWithdrawal"
+            examples:
+              customerWallet:
+                value:
+                  customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                  currency: "USDC"
+                  address: "0x598C6d42fd6eE0ekleF4f9CAb789e264E8b895f3"
+                  amount: 0.1
+                  network: "bep20"
+                  recipient_name: "John Doe"
+              merchantWallet:
+                value:
+                  currency: "USDC"
+                  address: "0x598C6d42fd6eE0ekleF4f9CAb789e264E8b895f3"
+                  amount: 0.1
+                  network: "bep20"
+              customerBank:
+                value:
+                  customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                  currency: "USDT"
+                  account_number: "1234567890"
+                  bank_name: "United Bank for Africa"
+                  bank_code: "000004"
+                  amount: "100"
+                  recipient_name: "John Doe""
+                  recipient_currency: "NGN"
+                  recipient_country: "Nigeria"
+              merchantBank:
+                value:
+                  currency: "USDT"
+                  account_number: "1234567890"
+                  bank_name: "United Bank for Africa"
+                  bank_code: "000004"
+                  amount: "100"
+                  recipient_name: "John Doe"
+                  recipient_currency: "NGN"
+                  recipient_country: "Nigeria"
+      responses:
+        "200":
+          description: Payout created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: "#/components/schemas/PayoutTransaction"
+              examples:
+                success:
+                  value:
+                    status: success
+                    data:
+                      id: "a33102a6-71be-4e47-b367-f230330b88f9"
+                      sender_wallet_id: null
+                      receiver_wallet_id: null
+                      transaction_id: "OWW383RA7S"
+                      asset_code: "USDT"
+                      amount: "100.00000000"
+                      reference_id: "624267ab-8524-41c9-b943-ffd992578b29"
+                      status: "PENDING"
+                      created_at: "2025-05-21T19:28:42.687Z"
+                      updated_at: "2025-05-21T19:28:42.687Z"
+                      crypto_transaction_id: null
+                      network: null
+                      transaction_type: "PAYOUT"
+                      transaction_mode: "DEBIT"
+                      exchange_rate: null
+                      withdrawal_recipient_name: "John Doe"
+                      fee: null
+                      balance: "0.00000000"
+                      reason: "Withdraw to 1234567890/000004"
+                      customer_id: null
+                      recipient_currency: "NGN"
+                      recipient_country: "Nigeria"
+                      bank_name: "United Bank for Africa"
+                      bank_code: "000004"
+                      address: null
+                      bank_account: "1234567890"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                insufficientBalance:
+                  value:
+                    status: error
+                    message: Insufficient balance for withdrawal
+                    code: INSUFFICIENT_BALANCE
+                invalidBankDetails:
+                  value:
+                    status: error
+                    message: Invalid bank account details
+                    code: INVALID_BANK_DETAILS
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 
   /banks:
     get:
@@ -5437,7 +5536,7 @@ paths:
           schema:
             type: string
           required: true
-          example: "merchant_api_key_12345"
+          example: ""
       requestBody:
         required: true
         content:
@@ -5509,7 +5608,6 @@ paths:
                         balance: "1.16240000"
                         reason: null
                         customer_id: null
-                        merchant_id: "9d95744e-7ef0-4beb-88a0-c8e562b2f9c4"
                       creditTransaction:
                         id: "0ea5afd1-3a83-4f54-8116-062fe4680666"
                         sender_wallet_id: "7c1c1825-75c2-4031-86ff-9c46ece29f6c"
@@ -5531,7 +5629,6 @@ paths:
                         balance: "1.10000000"
                         reason: null
                         customer_id: null
-                        merchant_id: "9d95744e-7ef0-4beb-88a0-c8e562b2f9c4"
                       swapId: "e60637ec-e5d0-4c68-9bc8-a12658e5735e"
                     message: "Swap transaction successful"
         "400":
@@ -5762,3 +5859,222 @@ components:
         from_amount:
           type: string
           example: "20"
+
+    # WITHDRAWAL COMPONENTS
+    CustomerWalletWithdrawal:
+      type: object
+      required:
+        - customer_id
+        - currency
+        - address
+        - amount
+        - network
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+        currency:
+          type: string
+          example: "USDC"
+        address:
+          type: string
+          example: "0x53BC6d42fd6eE0efEeF4f9CAb789e264E8b895f3"
+        amount:
+          type: number
+          example: 0.1
+        network:
+          type: string
+          example: "bep20"
+        recipient_name:
+          type: string
+          nullable: true
+          example: "John Doe"
+
+    MerchantWalletWithdrawal:
+      type: object
+      required:
+        - currency
+        - address
+        - amount
+        - network
+      properties:
+        currency:
+          type: string
+          example: "USDC"
+        address:
+          type: string
+          example: "0x53BC6d42fd6eE0efEeF4f9CAb789e264E8b895f3"
+        amount:
+          type: number
+          example: 0.1
+        network:
+          type: string
+          example: "bep20"
+
+    CustomerBankWithdrawal:
+      type: object
+      required:
+        - customer_id
+        - currency
+        - account_number
+        - bank_name
+        - bank_code
+        - amount
+        - recipient_name
+        - recipient_currency
+        - recipient_country
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+        currency:
+          type: string
+          example: "USDT"
+        account_number:
+          type: string
+          example: "1234567890"
+        bank_name:
+          type: string
+          example: "United Bank for Africa"
+        bank_code:
+          type: string
+          example: "000004"
+        amount:
+          type: string
+          example: "100"
+        recipient_name:
+          type: string
+          example: "John Doe"
+        recipient_currency:
+          type: string
+          example: "NGN"
+        recipient_country:
+          type: string
+          example: "Nigeria"
+
+    MerchantBankWithdrawal:
+      type: object
+      required:
+        - currency
+        - account_number
+        - bank_name
+        - bank_code
+        - amount
+        - recipient_name
+        - recipient_currency
+        - recipient_country
+      properties:
+        currency:
+          type: string
+          example: "USDT"
+        account_number:
+          type: string
+          example: "1234567890"
+        bank_name:
+          type: string
+          example: "United Bank for Africa"
+        bank_code:
+          type: string
+          example: "000004"
+        amount:
+          type: string
+          example: "100"
+        recipient_name:
+          type: string
+          example: "John Doe"
+        recipient_currency:
+          type: string
+          example: "NGN"
+        recipient_country:
+          type: string
+          example: "Nigeria"
+
+    PayoutTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sender_wallet_id:
+          type: string
+          format: uuid
+          nullable: true
+        receiver_wallet_id:
+          type: string
+          format: uuid
+          nullable: true
+        transaction_id:
+          type: string
+        asset_code:
+          type: string
+        amount:
+          type: string
+        reference_id:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        crypto_transaction_id:
+          type: string
+          nullable: true
+        network:
+          type: string
+          nullable: true
+        transaction_type:
+          type: string
+        transaction_mode:
+          type: string
+        exchange_rate:
+          type: string
+          nullable: true
+        withdrawal_recipient_name:
+          type: string
+          nullable: true
+        fee:
+          type: string
+          nullable: true
+        balance:
+          type: string
+        reason:
+          type: string
+          nullable: true
+        customer_id:
+          type: string
+          format: uuid
+          nullable: true
+        recipient_currency:
+          type: string
+          nullable: true
+        recipient_country:
+          type: string
+          nullable: true
+        bank_name:
+          type: string
+          nullable: true
+        bank_code:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        bank_account:
+          type: string
+          nullable: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Error message
+        code:
+          type: string
+          example: ERROR_CODE

@@ -1,0 +1,72 @@
+---
+title: "Create Withdrawal"
+description: "API reference for creating withdrawal payouts to wallets or banks"
+openapi: "POST /payouts"
+---
+
+Creates a withdrawal payout to either a cryptocurrency wallet or bank account. Supports both customer and merchant withdrawals.
+
+### Key Features:
+
+- Supports both wallet and bank withdrawals
+- Handles both customer and merchant payouts
+- Provides detailed transaction records
+- Supports multiple currencies and networks
+- Includes recipient verification details
+
+### Request Body:
+
+**Wallet Withdrawal (Customer)**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e",
+  "currency": "USDC",
+  "address": "0x598C6d42fd6eE0ekleF4f9CAb789e264E8b895f3",
+  "amount": 0.1,
+  "network": "bep20",
+  "recipient_name": "John Doe"
+}
+```
+
+**Wallet Withdrawal (Merchant)**:
+
+```json
+{
+  "currency": "USDC",
+  "address": "0x598C6d42fd6eE0ekleF4f9CAb789e264E8b895f3",
+  "amount": 0.1,
+  "network": "bep20"
+}
+```
+
+**Bank Withdrawal (Customer)**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e",
+  "currency": "USDT",
+  "account_number": "1234567890",
+  "bank_name": "United Bank for Africa",
+  "bank_code": "000004",
+  "amount": "100",
+  "recipient_name": "Tunji",
+  "recipient_currency": "NGN",
+  "recipient_country": "Nigeria"
+}
+```
+
+**Bank Withdrawal (Merchant)**:
+
+```json
+{
+  "currency": "USDT",
+  "account_number": "1234567890",
+  "bank_name": "United Bank for Africa",
+  "bank_code": "000004",
+  "amount": "100",
+  "recipient_name": "Tunji",
+  "recipient_currency": "NGN",
+  "recipient_country": "Nigeria"
+}
+```
