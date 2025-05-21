@@ -1,0 +1,42 @@
+---
+title: "Refresh Swap Quote"
+description: "API reference for refreshing a currency swap quote"
+openapi: "POST /swaps/{swapId}/refresh"
+---
+
+Refreshes the quoted price for an existing currency swap. Maintains the same swap ID while updating the exchange rate and expiration time.
+
+### Key Features:
+
+- Updates the quoted exchange rate for an existing swap
+- Extends the expiration time of the quote
+- Preserves all original swap details
+- Supports both customer and merchant swaps
+- Returns updated swap information with new rate
+
+### Path Parameters:
+
+- `swapId`: The ID from `create instant swap` (UUID, required). e.g `"id": "1795e32f-1b1d-47e5-97b4-c8f022da3e87"`
+
+### Request Body:
+
+**Customer Refresh**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e",
+  "from_currency": "USDT",
+  "to_currency": "USDC",
+  "from_amount": "20"
+}
+```
+
+**Merchant Refresh**:
+
+```json
+{
+  "from_currency": "USDT",
+  "to_currency": "USDC",
+  "amount": "20"
+}
+```

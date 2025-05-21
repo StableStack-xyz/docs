@@ -5312,6 +5312,119 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /swaps/{swapId}/refresh:
+    post:
+      tags:
+        - swaps
+      summary: "Refresh swap quote"
+      description: "Refreshes the quoted price for an existing currency swap"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          required: true
+          example: "merchant_api_key_12345"
+        - name: swapId
+          in: path
+          schema:
+            type: string
+            format: uuid
+          required: true
+          example: "324bc043-688f-4c78-9952-02fa7ab92331"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/CustomerRefreshRequest"
+                - $ref: "#/components/schemas/MerchantRefreshRequest"
+            examples:
+              customerRefresh:
+                value:
+                  customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                  from_currency: "USDT"
+                  to_currency: "USDC"
+                  from_amount: "20"
+              merchantRefresh:
+                value:
+                  from_currency: "USDT"
+                  to_currency: "USDC"
+                  from_amount: "20"
+      responses:
+        "200":
+          description: Swap refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SwapResponse"
+              examples:
+                success:
+                  value:
+                    status: success
+                    data:
+                      status: success
+                      message: Successful
+                      data:
+                        id: "324bc043-688f-4c78-9952-02fa7ab92331"
+                        from_currency: "USDT"
+                        to_currency: "USDC"
+                        quoted_price: "0.9802941274500001"
+                        quoted_currency: "USDC"
+                        from_amount: "20.0"
+                        to_amount: "19.6"
+                        confirmed: false
+                        expires_at: "2025-05-13T13:25:16.000Z"
+                        created_at: "2025-05-13T13:22:25.000Z"
+                        updated_at: "2025-05-13T13:25:01.000Z"
+                        user:
+                          id: "97075f40-1885-4034-92f6-e3e61c0679c5"
+                          sn: "QDXTF3IK5BH"
+                          email: "contact@akande.com"
+                          reference: null
+                          first_name: "Akande Enterprises"
+                          last_name: "Akande Enterprises"
+                          display_name: null
+                          created_at: "2025-05-01T21:03:56.000Z"
+                          updated_at: "2025-05-01T21:03:56.000Z"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                swapExpired:
+                  value:
+                    status: error
+                    message: Swap has expired
+                    code: SWAP_EXPIRED
+        "404":
+          description: Swap not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                notFound:
+                  value:
+                    status: error
+                    message: Swap not found
+                    code: SWAP_NOT_FOUND
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 # COMPONENTS
 components:
   schemas:
@@ -5452,3 +5565,42 @@ components:
         updated_at:
           type: string
           format: date-time
+
+    CustomerRefreshRequest:
+      type: object
+      required:
+        - customer_id
+        - from_currency
+        - to_currency
+        - from_amount
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+        from_currency:
+          type: string
+          example: "USDT"
+        to_currency:
+          type: string
+          example: "USDC"
+        from_amount:
+          type: string
+          example: "20"
+
+    MerchantRefreshRequest:
+      type: object
+      required:
+        - from_currency
+        - to_currency
+        - from_amount
+      properties:
+        from_currency:
+          type: string
+          example: "USDT"
+        to_currency:
+          type: string
+          example: "USDC"
+        from_amount:
+          type: string
+          example: "20"

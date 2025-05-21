@@ -83,7 +83,10 @@
     },
     {
       "group": "Swap",
-      "pages": ["api-reference/swap/create-instant-swap"]
+      "pages": [
+        "api-reference/swap/create-instant-swap",
+        "api-reference/swap/refresh-swap"
+      ]
     },
     {
       "group": "Banks",
