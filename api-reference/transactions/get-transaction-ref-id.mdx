@@ -1,0 +1,20 @@
+---
+title: "Get by Reference ID"
+description: "API reference for fetching a transaction by Reference ID"
+openapi: "GET /customers/transactions/by_ref_id/{reference_id}"
+---
+
+Retrieves detailed information about a specific transaction using its unique reference ID.
+
+### Key Features:
+
+- Returns complete transaction details including sender/receiver information
+- Provides status and timestamp information
+- Includes all relevant financial details (amount, fees, exchange rate)
+- Shows transaction type and mode
+- Returns bank details for payout transactions
+
+### Path Parameters:
+
+- `reference_id`: The unique reference ID to retrieve (string, required).
+  e.g `980ddbf6-b145-4d43-bd13-93b05cc202a2`

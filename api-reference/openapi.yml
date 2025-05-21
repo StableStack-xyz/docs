@@ -3918,13 +3918,13 @@ paths:
           schema:
             type: string
           required: true
-          example: "merchant_api_key_12345"
+          example: ""
         - name: transaction_id
           in: path
           schema:
             type: string
           required: true
-          example: "X2APAWCOE6"
+          example: "790ddbf6-b145-4d43-bd13-93b05cc202a2"
       responses:
         "200":
           description: Transaction retrieved successfully
@@ -4054,388 +4054,349 @@ paths:
                   code:
                     type: string
                     example: "TRANSACTION_NOT_FOUND"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "429":
-          description: Too many requests
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
 
   /customers/transactions/by_ref_id/{reference_id}:
     get:
       tags:
         - transactions
-      summary: fetch transactions by reference id
+      summary: "Fetch transactions by reference ID"
+      description: "Retrieves all transactions associated with a specific reference ID"
       parameters:
         - name: x-api-key
           in: header
           schema:
             type: string
+          required: true
           example: ""
-
         - name: reference_id
           in: path
           schema:
             type: string
           required: true
-          example: dummy_u2r8ns4ys7fi6irb78gz1
+          example: "980ddbf6-b145-4d43-bd13-93b05cc202a2"
       responses:
         "200":
-          description: OK
-          headers:
-            Content-Security-Policy:
-              schema:
-                type: string
-                example: >-
-                  default-src 'self';base-uri 'self';font-src 'self' https:
-                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
-                  data:;object-src 'none';script-src 'self';script-src-attr
-                  'none';style-src 'self' https:
-                  'unsafe-inline';upgrade-insecure-requests
-            Cross-Origin-Opener-Policy:
-              schema:
-                type: string
-                example: same-origin
-            Cross-Origin-Resource-Policy:
-              schema:
-                type: string
-                example: same-origin
-            Origin-Agent-Cluster:
-              schema:
-                type: string
-                example: "?1"
-            Referrer-Policy:
-              schema:
-                type: string
-                example: no-referrer
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=31536000; includeSubDomains
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: "off"
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
-                example: none
-            X-XSS-Protection:
-              schema:
-                type: integer
-                example: "0"
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
-                example: "true"
-            RateLimit-Policy:
-              schema:
-                type: string
-                example: 60;w=60
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: "60"
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: "59"
-            RateLimit-Reset:
-              schema:
-                type: integer
-                example: "60"
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: "1225"
-            ETag:
-              schema:
-                type: string
-                example: W/"4c9-c2qoc84p4WOu/v/t/GLHAfMQsDw"
-            Date:
-              schema:
-                type: string
-                example: Fri, 09 May 2025 17:15:54 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
+          description: Transactions retrieved successfully
           content:
             application/json:
               schema:
                 type: object
-              example:
-                status: success
-                data:
-                  - id: 950fcdb7-4be4-46c3-b4f4-350ddb70d854
-                    sender_wallet_id: null
-                    receiver_wallet_id: null
-                    transaction_id: dummy_kj22oti4a56l4j7rahve7
-                    asset_code: busd
-                    amount: "17.56304152"
-                    reference_id: dummy_u2r8ns4ys7fi6irb78gz1
-                    status: REVERSED
-                    created_at: "2025-04-05T10:12:07.105Z"
-                    updated_at: "2025-04-29T13:53:29.065Z"
-                    crypto_transaction_id: null
-                    network: null
-                    transaction_type: INTERNAL TRANSFER
-                    transaction_mode: CREDIT
-                    exchange_rate: "1.77"
-                    withdrawal_recipient_name: null
-                    fee: null
-                    balance: "0.00000000"
-                    reason: null
-                    customer_id: d75521df-4e59-48d4-938e-617e07c536b2
-                  - id: 7317caf6-cdc9-4375-8348-56c3d3b0c31d
-                    sender_wallet_id: null
-                    receiver_wallet_id: null
-                    transaction_id: dummy_l4bgz10ss2slxrfsvnrxs
-                    asset_code: usdt
-                    amount: "9.93890641"
-                    reference_id: dummy_u2r8ns4ys7fi6irb78gz1
-                    status: REVERSED
-                    created_at: "2025-04-07T15:11:00.295Z"
-                    updated_at: "2025-04-29T13:53:29.065Z"
-                    crypto_transaction_id: null
-                    network: null
-                    transaction_type: INTERNAL TRANSFER
-                    transaction_mode: DEBIT
-                    exchange_rate: "1.77"
-                    withdrawal_recipient_name: null
-                    fee: null
-                    balance: "0.00000000"
-                    reason: null
-                    customer_id: d75521df-4e59-48d4-938e-617e07c536b2
-  
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          example: "790ddbf6-b145-4d43-bd13-93b05cc202a2"
+                        sender_wallet_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                          example: "6684cc88-7434-4a0e-bc2c-abee383368b7"
+                        receiver_wallet_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                        transaction_id:
+                          type: string
+                          example: "X2APAWCOE6"
+                        asset_code:
+                          type: string
+                          example: "usdt"
+                        amount:
+                          type: string
+                          example: "1.00000000"
+                        reference_id:
+                          type: string
+                          example: "980ddbf6-b145-4d43-bd13-93b05cc202a2"
+                        status:
+                          type: string
+                          example: "COMPLETED"
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        crypto_transaction_id:
+                          type: string
+                          nullable: true
+                        network:
+                          type: string
+                          nullable: true
+                        transaction_type:
+                          type: string
+                          example: "INTERNAL TRANSFER"
+                        transaction_mode:
+                          type: string
+                          example: "DEBIT"
+                        exchange_rate:
+                          type: string
+                          nullable: true
+                        withdrawal_recipient_name:
+                          type: string
+                          nullable: true
+                        fee:
+                          type: string
+                          nullable: true
+                        balance:
+                          type: string
+                          example: "0.00000000"
+                        reason:
+                          type: string
+                          nullable: true
+                        customer_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                        recipient_currency:
+                          type: string
+                          nullable: true
+                        recipient_country:
+                          type: string
+                          nullable: true
+                        bank_name:
+                          type: string
+                          nullable: true
+                        bank_code:
+                          type: string
+                          nullable: true
+                        address:
+                          type: string
+                          nullable: true
+                        bank_account:
+                          type: string
+                          nullable: true
+              examples:
+                success:
+                  value:
+                    status: success
+                    data:
+                      - id: "790ddbf6-b145-4d43-bd13-93b05cc202a2"
+                        sender_wallet_id: "6684cc88-7434-4a0e-bc2c-abee383368b7"
+                        receiver_wallet_id: null
+                        transaction_id: "X2APAWCOE6"
+                        asset_code: "usdt"
+                        amount: "1.00000000"
+                        reference_id: "980ddbf6-b145-4d43-bd13-93b05cc202a2"
+                        status: "COMPLETED"
+                        created_at: "2025-04-02T22:06:03.507Z"
+                        updated_at: "2025-04-02T22:06:03.507Z"
+                        crypto_transaction_id: null
+                        network: null
+                        transaction_type: "INTERNAL TRANSFER"
+                        transaction_mode: "DEBIT"
+                        exchange_rate: null
+                        withdrawal_recipient_name: null
+                        fee: null
+                        balance: "0.00000000"
+                        reason: null
+                        customer_id: null
+                        recipient_currency: null
+                        recipient_country: null
+                        bank_name: null
+                        bank_code: null
+                        address: null
+                        bank_account: null
+        "400":
+          description: Invalid reference ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: "Invalid reference ID format"
+                  code:
+                    type: string
+                    example: "INVALID_REFERENCE_ID"
+        "404":
+          description: No transactions found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: "No transactions found with this reference ID"
+                  code:
+                    type: string
+                    example: "TRANSACTIONS_NOT_FOUND"
+
   /customers/transactions/by_customer_id/{customer_id}:
     get:
       tags:
         - transactions
-      summary: fetch transactions by customerid
+      summary: "Fetch transactions by customer ID"
+      description: "Retrieves a paginated list of transactions for a specific customer with filtering options"
       parameters:
         - name: x-api-key
           in: header
           schema:
             type: string
-          example: >-
-
+          required: true
+          example: "merchant_api_key_12345"
         - name: customer_id
           in: path
           schema:
             type: string
+            format: uuid
           required: true
-          example: ddf723ee-5558-442d-b46f-4e3d42817448
+          example: "ddf723ee-5558-442d-b46f-4e3d42817448"
+        - name: search
+          in: query
+          schema:
+            type: string
+          required: false
+          example: "dummy_k2aijr1l6gdvpzdskv8hgq"
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [PENDING, COMPLETED, FAILED, REVERSED]
+          required: false
+          example: "PENDING"
+        - name: transaction_type
+          in: query
+          schema:
+            type: string
+            enum: [DEPOSIT, PAYOUT, INTERNAL TRANSFER]
+          required: false
+          example: "DEPOSIT"
+        - name: transaction_mode
+          in: query
+          schema:
+            type: string
+            enum: [CREDIT, DEBIT]
+          required: false
+          example: "CREDIT"
+        - name: currency
+          in: query
+          schema:
+            type: string
+          required: false
+          example: "USD"
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date
+          required: false
+          example: "2025-03-03"
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date
+          required: false
+          example: "2025-04-29"
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+          required: false
+          example: 2
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          required: false
+          example: 20
       responses:
         "200":
-          description: OK
-          headers:
-            Content-Security-Policy:
-              schema:
-                type: string
-                example: >-
-                  default-src 'self';base-uri 'self';font-src 'self' https:
-                  data:;form-action 'self';frame-ancestors 'self';img-src 'self'
-                  data:;object-src 'none';script-src 'self';script-src-attr
-                  'none';style-src 'self' https:
-                  'unsafe-inline';upgrade-insecure-requests
-            Cross-Origin-Opener-Policy:
-              schema:
-                type: string
-                example: same-origin
-            Cross-Origin-Resource-Policy:
-              schema:
-                type: string
-                example: same-origin
-            Origin-Agent-Cluster:
-              schema:
-                type: string
-                example: "?1"
-            Referrer-Policy:
-              schema:
-                type: string
-                example: no-referrer
-            Strict-Transport-Security:
-              schema:
-                type: string
-                example: max-age=31536000; includeSubDomains
-            X-Content-Type-Options:
-              schema:
-                type: string
-                example: nosniff
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-                example: "off"
-            X-Download-Options:
-              schema:
-                type: string
-                example: noopen
-            X-Frame-Options:
-              schema:
-                type: string
-                example: SAMEORIGIN
-            X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
-                example: none
-            X-XSS-Protection:
-              schema:
-                type: integer
-                example: "0"
-            Vary:
-              schema:
-                type: string
-                example: Origin
-            Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
-                example: "true"
-            RateLimit-Policy:
-              schema:
-                type: string
-                example: 60;w=60
-            RateLimit-Limit:
-              schema:
-                type: integer
-                example: "60"
-            RateLimit-Remaining:
-              schema:
-                type: integer
-                example: "59"
-            RateLimit-Reset:
-              schema:
-                type: integer
-                example: "60"
-            Content-Type:
-              schema:
-                type: string
-                example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-                example: "2003"
-            ETag:
-              schema:
-                type: string
-                example: W/"7d3-sG03tv4XPr90jQ82J9lunByqTgU"
-            Date:
-              schema:
-                type: string
-                example: Fri, 09 May 2025 17:09:57 GMT
-            Connection:
-              schema:
-                type: string
-                example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-                example: timeout=5
+          description: Transactions retrieved successfully
           content:
             application/json:
               schema:
                 type: object
-              example:
-                status: success
-                data:
-                  - merchant_id: d9b40fe2-25a1-43b5-88aa-ab473004b782
-                    id: c59c1766-4ab8-45e5-8de3-d0c842a31d61
-                    sender_wallet_id: null
-                    receiver_wallet_id: null
-                    transaction_id: dummy_4tfgg2h9fw9lmivslzwz0b
-                    asset_code: busd
-                    amount: "4.09723734"
-                    reference_id: dummy_119yoff9gp7m43j18j6mtk8
-                    status: PENDING
-                    created_at: "2025-04-29T10:15:04.974Z"
-                    updated_at: "2025-04-29T14:53:25.820Z"
-                    crypto_transaction_id: null
-                    network: null
-                    transaction_type: INTERNAL TRANSFER
-                    transaction_mode: DEBIT
-                    exchange_rate: "1.50"
-                    withdrawal_recipient_name: null
-                    fee: null
-                    balance: "0.00000000"
-                    reason: null
-                    customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
-                  - merchant_id: d9b40fe2-25a1-43b5-88aa-ab473004b782
-                    id: 339af8d7-8673-4a84-8a5b-b9a94c500901
-                    sender_wallet_id: null
-                    receiver_wallet_id: null
-                    transaction_id: dummy_k2aijr1l6gdvpzdskv8hgq
-                    asset_code: usd
-                    amount: "0.55985813"
-                    reference_id: null
-                    status: FAILED
-                    created_at: "2025-04-04T23:22:36.103Z"
-                    updated_at: "2025-04-29T14:53:10.164Z"
-                    crypto_transaction_id: null
-                    network: null
-                    transaction_type: DEPOSIT
-                    transaction_mode: CREDIT
-                    exchange_rate: null
-                    withdrawal_recipient_name: null
-                    fee: null
-                    balance: "0.00000000"
-                    reason: null
-                    customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
-                  - merchant_id: d9b40fe2-25a1-43b5-88aa-ab473004b782
-                    id: cb87c546-bf86-4332-bc69-d94aa006d18d
-                    sender_wallet_id: null
-                    receiver_wallet_id: null
-                    transaction_id: dummy_3lkqh25xcukrjsfuj5dh
-                    asset_code: eth
-                    amount: "6.13971015"
-                    reference_id: dummy_119yoff9gp7m43j18j6mtk8
-                    status: PENDING
-                    created_at: "2025-03-30T21:23:27.386Z"
-                    updated_at: "2025-04-29T14:53:25.820Z"
-                    crypto_transaction_id: null
-                    network: null
-                    transaction_type: INTERNAL TRANSFER
-                    transaction_mode: CREDIT
-                    exchange_rate: "1.50"
-                    withdrawal_recipient_name: null
-                    fee: null
-                    balance: "0.00000000"
-                    reason: null
-                    customer_id: ddf723ee-5558-442d-b46f-4e3d42817448
-                pagination:
-                  total: 3
-                  page: 1
-                  limit: 10
-                  totalPages: 1
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TransactionDetail"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+              examples:
+                success:
+                  value:
+                    status: success
+                    data:
+                      - merchant_id: "d9b40fe2-25a1-43b5-88aa-ab473004b782"
+                        id: "c59c1766-4ab8-45e5-8de3-d0c842a31d61"
+                        sender_wallet_id: null
+                        receiver_wallet_id: null
+                        transaction_id: "E6TH890JID"
+                        asset_code: "busd"
+                        amount: "4.09723734"
+                        reference_id: "8h8c1766-4ab8-45e5-8de3-d0c842a31d61"
+                        status: "PENDING"
+                        created_at: "2025-04-29T10:15:04.974Z"
+                        updated_at: "2025-04-29T14:53:25.820Z"
+                        crypto_transaction_id: null
+                        network: null
+                        transaction_type: "INTERNAL TRANSFER"
+                        transaction_mode: "DEBIT"
+                        exchange_rate: "1.50"
+                        withdrawal_recipient_name: null
+                        fee: null
+                        balance: "0.00000000"
+                        reason: null
+                        customer_id: "ddf723ee-5558-442d-b46f-4e3d42817448"
+                        recipient_currency: null
+                        recipient_country: null
+                        bank_name: null
+                        bank_code: null
+                        address: null
+                        bank_account: null
+                    pagination:
+                      total: 3
+                      page: 1
+                      limit: 10
+                      totalPages: 1
+        "400":
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                invalidDate:
+                  value:
+                    status: error
+                    message: Invalid date format. Please use YYYY-MM-DD
+                    code: INVALID_DATE_FORMAT
+        "404":
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                notFound:
+                  value:
+                    status: error
+                    message: Customer not found
+                    code: CUSTOMER_NOT_FOUND
 
   /asset-codes:
     get:
