@@ -4,7 +4,7 @@ info:
   description: "# Overview\n\n## Introduction\n\nStableStack offers an API first, last mile payment orchestration + liquidity router built with stablecoins. Stablecoin layer integrated into your existing payment flow, with smart accounts and blockchain abstraction. Go between digital and fiat currencies in minutes.\n\n## Getting Help\n\nWe're excited to have you build with us! If you're integrating, we will set up a communication channel. This will enable our teams to easily collaborate and ensure you launch as quickly as possible.\n\nPlease reach out to us at\_[hello@stablestack.xyz](https://mailto:hello@stablestack.xyz)\_for any questions or concerns."
   version: 1.0.0
 servers:
-  - url: "https://api.stablestack.xyz/v1"
+  - url: "https://api-service-9dtn.onrender.com/api"
     description: "StableStack API"
 tags:
   - name: customers
@@ -14,6 +14,7 @@ tags:
   - name: transactions
   - name: wallets
   - name: assets
+  - name: swap
 paths:
   /customers/{customer_id}/kyc:
     post:
@@ -5212,9 +5213,109 @@ paths:
                       network: bep20
                       created_at: "2025-05-01T10:29:56.789Z"
 
-# BANK COMPONENTS
+  /instant-swaps:
+    post:
+      tags:
+        - swaps
+      summary: "Create instant currency swap"
+      description: "Creates an instant currency swap between supported assets"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          required: true
+          example: "merchant_api_key_12345"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/CustomerSwapRequest"
+                - $ref: "#/components/schemas/MerchantSwapRequest"
+            examples:
+              customerSwap:
+                value:
+                  customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                  from_currency: "USDT"
+                  to_currency: "USDC"
+                  amount: "20"
+              merchantSwap:
+                value:
+                  from_currency: "USDT"
+                  to_currency: "USDC"
+                  amount: "20"
+      responses:
+        "200":
+          description: Swap created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SwapResponse"
+              examples:
+                success:
+                  value:
+                    status: success
+                    data:
+                      status: success
+                      message: Successful
+                      data:
+                        id: "751935b6-4574-4837-90d6-5039d2c165dd"
+                        from_currency: "USDT"
+                        to_currency: "USDC"
+                        quoted_price: "0.9802941274500001"
+                        quoted_currency: "USDC"
+                        from_amount: "20.0"
+                        to_amount: "19.6"
+                        confirmed: false
+                        expires_at: "2025-05-13T13:24:46.000Z"
+                        created_at: "2025-05-13T13:24:31.000Z"
+                        updated_at: "2025-05-13T13:24:31.000Z"
+                        user:
+                          id: "97075f40-1885-4034-92f6-e3e61c0679c5"
+                          sn: "QDXTF3IK5BH"
+                          email: "contact@akande.com"
+                          reference: null
+                          first_name: "Akande Enterprises"
+                          last_name: "Akande Enterprises"
+                          display_name: null
+                          created_at: "2025-05-01T21:03:56.000Z"
+                          updated_at: "2025-05-01T21:03:56.000Z"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                insufficientBalance:
+                  value:
+                    status: error
+                    message: Insufficient balance for swap
+                    code: INSUFFICIENT_BALANCE
+                unsupportedPair:
+                  value:
+                    status: error
+                    message: Unsupported currency pair
+                    code: UNSUPPORTED_CURRENCY_PAIR
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+# COMPONENTS
 components:
   schemas:
+    # BANK COMPONENTS
     DetailedBank:
       type: object
       properties:
@@ -5229,3 +5330,125 @@ components:
       properties:
         bankCode: { type: string }
         bankName: { type: string }
+
+    # SWAP COMPONENTS
+    CustomerSwapRequest:
+      type: object
+      required:
+        - customer_id
+        - from_currency
+        - to_currency
+        - amount
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+        from_currency:
+          type: string
+          example: "USDT"
+        to_currency:
+          type: string
+          example: "USDC"
+        amount:
+          type: string
+          example: "20"
+
+    MerchantSwapRequest:
+      type: object
+      required:
+        - from_currency
+        - to_currency
+        - amount
+      properties:
+        from_currency:
+          type: string
+          example: "USDT"
+        to_currency:
+          type: string
+          example: "USDC"
+        amount:
+          type: string
+          example: "20"
+
+    SwapResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: object
+          properties:
+            status:
+              type: string
+              example: success
+            message:
+              type: string
+              example: Successful
+            data:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  example: "751935b6-4574-4837-90d6-5039d2c165dd"
+                from_currency:
+                  type: string
+                  example: "USDT"
+                to_currency:
+                  type: string
+                  example: "USDC"
+                quoted_price:
+                  type: string
+                  example: "0.9802941274500001"
+                quoted_currency:
+                  type: string
+                  example: "USDC"
+                from_amount:
+                  type: string
+                  example: "20.0"
+                to_amount:
+                  type: string
+                  example: "19.6"
+                confirmed:
+                  type: boolean
+                  example: false
+                expires_at:
+                  type: string
+                  format: date-time
+                created_at:
+                  type: string
+                  format: date-time
+                updated_at:
+                  type: string
+                  format: date-time
+                user:
+                  $ref: "#/components/schemas/UserInfo"
+
+    UserInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sn:
+          type: string
+        email:
+          type: string
+        reference:
+          type: string
+          nullable: true
+        first_name:
+          type: string
+        last_name:
+          type: string
+        display_name:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time

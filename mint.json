@@ -82,6 +82,10 @@
       ]
     },
     {
+      "group": "Swap",
+      "pages": ["api-reference/swap/create-instant-swap"]
+    },
+    {
       "group": "Banks",
       "pages": [
         "api-reference/banks/resolve-bank",
