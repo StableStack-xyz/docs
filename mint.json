@@ -98,6 +98,13 @@
         "api-reference/payouts/get-fees",
         "api-reference/payouts/get-validate-address"
       ]
+    },
+    {
+      "group": "Transactions",
+      "pages": [
+        "api-reference/transactions/get-transactions",
+        "api-reference/transactions/get-transaction-txid"
+      ]
     }
   ],
   "footerSocials": {
