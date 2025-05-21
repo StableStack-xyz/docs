@@ -5425,6 +5425,164 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /swaps:
+    post:
+      tags:
+        - swaps
+      summary: "Confirm and execute swap"
+      description: "Executes a previously quoted currency swap transaction"
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          required: true
+          example: "merchant_api_key_12345"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/CustomerSwapRequest"
+                - $ref: "#/components/schemas/MerchantSwapRequest"
+            examples:
+              customerSwap:
+                value:
+                  customer_id: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+                  from_currency: "USDT"
+                  to_currency: "USDC"
+                  amount: "1"
+              merchantSwap:
+                value:
+                  from_currency: "USDT"
+                  to_currency: "USDC"
+                  amount: "0.13"
+      responses:
+        "200":
+          description: Swap executed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      debitTransaction:
+                        $ref: "#/components/schemas/TransactionDetail"
+                      creditTransaction:
+                        $ref: "#/components/schemas/TransactionDetail"
+                      swapId:
+                        type: string
+                        format: uuid
+                        example: "e60637ec-e5d0-4c68-9bc8-a12658e5735e"
+                  message:
+                    type: string
+                    example: "Swap transaction successful"
+              examples:
+                success:
+                  value:
+                    status: success
+                    data:
+                      debitTransaction:
+                        id: "552e8bb6-e9bf-4956-ab3b-9e56cad65a04"
+                        sender_wallet_id: "7c1c1825-75c2-4031-86ff-9c46ece29f6c"
+                        receiver_wallet_id: "a0d8df69-5cb4-43e7-8746-5652576d7b8b"
+                        transaction_id: "ICNZ1RG2VM"
+                        asset_code: "usdt"
+                        amount: "0.13000000"
+                        reference_id: "e60637ec-e5d0-4c68-9bc8-a12658e5735e"
+                        status: "PENDING"
+                        created_at: "2025-05-21T13:25:08.478Z"
+                        updated_at: "2025-05-21T13:25:08.478Z"
+                        network: null
+                        crypto_transaction_id: null
+                        transaction_type: "INTERNAL TRANSFER"
+                        transaction_mode: "DEBIT"
+                        exchange_rate: "0.98"
+                        fee: null
+                        withdrawal_recipient_name: null
+                        balance: "1.16240000"
+                        reason: null
+                        customer_id: null
+                        merchant_id: "9d95744e-7ef0-4beb-88a0-c8e562b2f9c4"
+                      creditTransaction:
+                        id: "0ea5afd1-3a83-4f54-8116-062fe4680666"
+                        sender_wallet_id: "7c1c1825-75c2-4031-86ff-9c46ece29f6c"
+                        receiver_wallet_id: "a0d8df69-5cb4-43e7-8746-5652576d7b8b"
+                        transaction_id: "8OXM5O9NPM"
+                        asset_code: "usdc"
+                        amount: "0.12000000"
+                        reference_id: "e60637ec-e5d0-4c68-9bc8-a12658e5735e"
+                        status: "PENDING"
+                        created_at: "2025-05-21T13:25:08.478Z"
+                        updated_at: "2025-05-21T13:25:08.478Z"
+                        network: null
+                        crypto_transaction_id: null
+                        transaction_type: "INTERNAL TRANSFER"
+                        transaction_mode: "CREDIT"
+                        exchange_rate: "0.98"
+                        fee: null
+                        withdrawal_recipient_name: null
+                        balance: "1.10000000"
+                        reason: null
+                        customer_id: null
+                        merchant_id: "9d95744e-7ef0-4beb-88a0-c8e562b2f9c4"
+                      swapId: "e60637ec-e5d0-4c68-9bc8-a12658e5735e"
+                    message: "Swap transaction successful"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                insufficientBalance:
+                  value:
+                    status: error
+                    message: Insufficient balance to complete swap
+                    code: INSUFFICIENT_BALANCE
+                swapExpired:
+                  value:
+                    status: error
+                    message: Swap quote has expired
+                    code: SWAP_EXPIRED
+        "404":
+          description: Swap not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                unauthorized:
+                  value:
+                    status: error
+                    message: "Authentication required"
+                    code: "UNAUTHORIZED"
+
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                rate_limit_exceeded:
+                  value:
+                    status: error
+                    message: "Too many requests. Please slow down."
+                    code: "RATE_LIMIT_EXCEEDED"
+
 # COMPONENTS
 components:
   schemas:

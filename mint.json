@@ -85,7 +85,8 @@
       "group": "Swap",
       "pages": [
         "api-reference/swap/create-instant-swap",
-        "api-reference/swap/refresh-swap"
+        "api-reference/swap/refresh-swap",
+        "api-reference/swap/confirm-swap"
       ]
     },
     {
