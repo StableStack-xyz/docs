@@ -4640,18 +4640,7 @@ paths:
             type: string
           required: true
           example: ""
-        - name: page
-          in: query
-          schema:
-            type: integer
-          required: false
-          example: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-          required: false
-          example: 10
+
         - name: status
           in: query
           schema:
@@ -4670,6 +4659,18 @@ paths:
             type: string
           required: false
           example: USDC
+        - name: page
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 10
       responses:
         "200":
           description: OK
