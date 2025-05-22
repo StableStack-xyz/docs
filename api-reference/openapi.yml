@@ -5025,26 +5025,18 @@ paths:
             type: string
           required: true
           example: ""
-        - name: page
+        - name: customer_id
           in: query
           schema:
-            type: integer
-            minimum: 1
+            type: string
+            format: uuid
           required: false
-          example: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-          required: false
-          example: 10
+          example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
         - name: status
           in: query
           schema:
             type: string
-            enum: [active, pending]
+            enum: [active, pending, suspended]
           required: false
           example: active
         - name: asset_type
@@ -5061,13 +5053,22 @@ paths:
             enum: [USDC, USDT, USD, NGN, GBP, EUR, CAD]
           required: false
           example: USDC
-        - name: customer_id
+
+        - name: page
           in: query
           schema:
-            type: string
-            format: uuid
+            type: integer
+            minimum: 1
           required: false
-          example: "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+          example: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+          required: false
+          example: 10
       responses:
         "200":
           description: Wallets retrieved successfully
