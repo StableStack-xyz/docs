@@ -65,7 +65,8 @@
         "api-reference/customers/create-customer",
         "api-reference/customers/get-customer",
         "api-reference/customers/get-customers",
-        "api-reference/customers/update-customer"
+        "api-reference/customers/update-customer",
+        "api-reference/customers/upload-document"
       ]
     },
     {

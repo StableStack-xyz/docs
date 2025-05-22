@@ -1,7 +1,39 @@
 ---
-title: 'Create Customer'
-description: 'API reference for creating new customers'
-openapi: 'POST /customers'
+title: "Create Customer"
+description: "API reference for creating customer accounts (individual or business)"
+openapi: "POST /customers"
 ---
 
-Creates a new customer profile in the StableStack platform. Supports both individual and business customer types.
+Creates a new customer account, supporting both individual and business customer types.
+
+### Key Features:
+
+- Supports both individual and business customer types
+- Comprehensive address information collection
+- Type-specific validation rules
+- Email and phone uniqueness validation
+- Returns complete customer profile with financial/business info
+
+### Request Body:
+
+**Business Customer**:
+
+```json
+{
+  "customer_type": "business",
+  "business_name": "Akande Enterprises",
+  "business_type": "Retail",
+  "business_website": "https://akandeyu.com",
+  "email": "contact@akandeyu.com",
+  "phone": "+2347918905668",
+  "account_purpose": "Business operations",
+  "address": {
+    "line_1": "123 Business Ave",
+    "line_2": "Suite 456",
+    "city": "Lagos",
+    "state": "Lagos",
+    "country": "Nigeria",
+    "postal_code": "214578"
+  }
+}
+```
