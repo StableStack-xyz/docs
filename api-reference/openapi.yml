@@ -178,7 +178,7 @@ paths:
                   approval_status: pending
                   created_at: "2025-05-01T18:40:26.524Z"
                   updated_at: "2025-05-09T15:01:15.861Z"
-  
+
   /customers:
     post:
       tags:
@@ -211,7 +211,11 @@ paths:
                   properties:
                     customer_type:
                       type: string
-                      enum: [business]
+                      enum:
+                        - business
+                        - individual
+                      default: individual
+                      example: individual
                     business_name:
                       type: string
                       example: "Example Enterprises"
@@ -283,7 +287,11 @@ paths:
                   properties:
                     customer_type:
                       type: string
-                      enum: [individual]
+                      enum:
+                        - business
+                        - individual
+                      default: individual
+                      example: individual
                     first_name:
                       type: string
                       example: "John"
@@ -836,7 +844,7 @@ paths:
                       source_of_funds: null
                   - id: 33b60774-a9f0-48b8-be8d-c3d498782425
                     customer_type: business
-                    email:  johnDoe3@gmail.com
+                    email: johnDoe3@gmail.com
                     phone: "+2348098765432"
                     created_at: "2025-04-24T23:52:31.714Z"
                     updated_at: "2025-04-29T08:17:00.668Z"
@@ -3211,7 +3219,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-
 
   /banks:
     get:
