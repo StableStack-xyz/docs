@@ -553,36 +553,23 @@ paths:
             type: string
           required: true
           example: ""
-        - name: page
-          in: query
-          schema:
-            type: integer
-          required: false
-          example: 1
-        - name: limit
-          in: query
-          schema:
-            type: integer
-          required: false
-          example: 10
-        - name: customer_type
-          in: query
-          schema:
-            type: string
-          required: false
-          example: "business"
         - name: search
           in: query
           schema:
             type: string
           required: false
           example: "john"
-        - name: include_documents
+
+        - name: customer_type
           in: query
           schema:
-            type: boolean
+            type: string
+            enum:
+              - individual
+              - business
           required: false
-          example: true
+          example: "business"
+
         - name: start_date
           in: query
           schema:
@@ -597,6 +584,24 @@ paths:
             format: date-time
           required: false
           example: "2025-05-09T23:59:59Z"
+        - name: include_documents
+          in: query
+          schema:
+            type: boolean
+          required: false
+          example: true
+        - name: page
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          required: false
+          example: 10
       responses:
         "200":
           description: OK
