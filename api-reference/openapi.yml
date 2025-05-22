@@ -3116,7 +3116,7 @@ paths:
                   bank_name: "United Bank for Africa"
                   bank_code: "000004"
                   amount: "100"
-                  recipient_name: "John Doe""
+                  recipient_name: "John Doe"
                   recipient_currency: "NGN"
                   recipient_country: "Nigeria"
               merchantBank:
