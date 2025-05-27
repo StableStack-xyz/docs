@@ -1,7 +1,71 @@
 ---
-title: 'GET Wallets'
-description: 'API reference for fetching all wallets'
-openapi: 'GET /wallets'
+title: "GET Wallets"
+description: "API reference for fetching all wallets"
+openapi: "GET /wallets"
 ---
 
 Retrieves a list of all wallets associated with your merchant account.
+
+### Key Features:
+
+- Returns both STABLECOIN and FIAT wallets
+- Supports filtering by status, asset_type, currency, and customer_id
+- Includes pagination metadata
+
+### Query Parameters:
+
+- `page`: Page number (default: 1)
+- `limit`: Items per page (default: 10)
+- `status`: Filter by status (active/pending/suspended)
+- `asset_type`: Filter by type (STABLECOIN/FIAT)
+- `currency`: Filter by currency (USDC, USDT, etc.)
+- `customer_id`: Filter by customer ID
+
+### Response Examples:
+
+**Success Response**:
+
+```json
+{
+  "status": "success",
+  "data": [
+    {
+      "id": "49468947-4006-4b9a-bd96-f6b0d0210ad3",
+      "asset_type": "STABLECOIN",
+      "currency": "USDC",
+      "balance": "0.00000000",
+      "description": "my erc account",
+      "status": "active",
+      "created_at": "2025-05-01T21:04:31.928Z",
+      "updated_at": "2025-05-01T21:04:31.928Z",
+      "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e",
+      "addresses": [
+        {
+          "id": "2381eeac-a592-4992-8bb9-4286634a0e94",
+          "address": "0x78D41923E23DcE32d1A346e96558dA89f89DD1aB",
+          "network": "bep20",
+          "created_at": "2025-05-01T21:04:32.179Z"
+        }
+      ]
+    },
+    {
+      "id": "2acf9413-4db9-4602-9b91-22357b256e51",
+      "asset_type": "FIAT",
+      "currency": "CAD",
+      "balance": "0.00",
+      "description": "my cad account",
+      "status": "pending",
+      "created_at": "2025-05-12T16:53:15.383Z",
+      "updated_at": "2025-05-12T16:53:15.383Z",
+      "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e",
+      "addresses": []
+    }
+  ],
+  "pagination": {
+    "total": 2,
+    "page": 1,
+    "limit": 10,
+    "totalPages": 1
+  }
+}
+```

@@ -1,0 +1,38 @@
+---
+title: "Update Bank Account"
+description: "API reference for updating bank payout methods"
+openapi: "PUT /payout/methods/banks/{payout_method_id}"
+---
+
+Updates an existing bank payout method (either merchant-owned or customer-specific).
+
+### Key Features:
+
+- Supports partial updates - only include fields that need to be modified
+- Include `customer_id` only when updating customer-specific bank accounts
+- Returns the complete updated bank account object
+
+### Request Parameters:
+
+- `payout_method_id` (path, required): The ID of the bank account to update
+
+### Request Body:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e", // optional
+  "account_name": "Updated Name",
+  "account_number": "9876543210",
+  "bank_name": "Updated Bank",
+  "currency": "USD",
+  "bank_code": "000007",
+  "sort_code": "202525", // optional
+  "swift_code": "SWIFT123", // optional
+  "routing_number": "ROUT456", // optional
+  "iban": "IBAN789" // optional
+}
+```
+
+```
+
+```

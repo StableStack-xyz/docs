@@ -1,0 +1,28 @@
+---
+title: "Create Wallet Withdrawal"
+description: "API reference for creating withdrawal payouts to cryptocurrency wallets"
+openapi: "POST /payouts/wallets"
+---
+
+Creates a withdrawal payout to a cryptocurrency wallet. Supports both customer and merchant withdrawals.
+
+### Key Features:
+
+- Supports multiple stablecoin and networks
+- Handles both customer and merchant payouts
+- Includes recipient verification details
+
+### Request Body:
+
+**Wallet Withdrawal**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e", //optional
+  "currency": "USDC",
+  "address": "0x598C6d42fd6eE0ekleF4f9CAb789e264E8b895f3",
+  "amount": 0.1,
+  "network": "bep20",
+  "recipient_name": "John Doe"
+}
+```

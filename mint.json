@@ -49,42 +49,83 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "authentication",
-        "error"
-      ]
+      "pages": ["introduction", "quickstart", "authentication", "error"]
     },
     {
       "group": "Webhooks",
-      "pages": [
-        "webhooks/introduction",
-        "webhooks/events"
-      ]
+      "pages": ["webhooks/introduction", "webhooks/events"]
     },
     {
       "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
+      "pages": ["api-reference/introduction"]
     },
     {
       "group": "Customers",
       "pages": [
-        "api-reference/customers/create-customer",
+        "api-reference/customers/create-business-customer",
+        "api-reference/customers/create-individual-customer",
         "api-reference/customers/get-customer",
         "api-reference/customers/get-customers",
-        "api-reference/customers/update-customer"
+        "api-reference/customers/update-business-customer",
+        "api-reference/customers/update-individual-customer",
+        "api-reference/customers/upload-document"
       ]
+    },
+    {
+      "group": "Wallet Assets",
+      "pages": ["api-reference/assets/get-wallet-assets"]
     },
     {
       "group": "Wallets",
       "pages": [
         "api-reference/wallets/create-wallet",
-        "api-reference/wallets/get-wallet",
         "api-reference/wallets/get-wallets",
+        "api-reference/wallets/get-wallet",
         "api-reference/wallets/get-wallets-by-customer"
+      ]
+    },
+    {
+      "group": "Swap",
+      "pages": [
+        "api-reference/swap/create-instant-swap",
+        "api-reference/swap/refresh-swap",
+        "api-reference/swap/confirm-swap"
+      ]
+    },
+    {
+      "group": "Banks",
+      "pages": [
+        "api-reference/banks/resolve-bank",
+        "api-reference/banks/get-bank-list"
+      ]
+    },
+    {
+      "group": "Payouts Methods",
+      "pages": [
+        "api-reference/payout-methods/add-wallet-method",
+        "api-reference/payout-methods/add-bank-method",
+        "api-reference/payout-methods/get-payment-method",
+        "api-reference/payout-methods/update-wallet-method",
+        "api-reference/payout-methods/update-bank-method",
+        "api-reference/payout-methods/delete-payment-method"
+      ]
+    },
+    {
+      "group": "Payouts",
+      "pages": [
+        "api-reference/payouts/get-fees",
+        "api-reference/payouts/get-validate-address",
+        "api-reference/payouts/create-wallet-withdrawal",
+        "api-reference/payouts/create-bank-withdrawal"
+      ]
+    },
+    {
+      "group": "Transactions",
+      "pages": [
+        "api-reference/transactions/get-transactions",
+        "api-reference/transactions/get-transaction-txid",
+        "api-reference/transactions/get-transaction-ref-id",
+        "api-reference/transactions/get-transaction-customerid"
       ]
     }
   ],

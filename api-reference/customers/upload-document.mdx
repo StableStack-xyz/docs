@@ -1,0 +1,29 @@
+---
+title: "Upload Document"
+description: "API reference for uploading customer KYC documents"
+openapi: "POST /customers/{customer_id}/kyc"
+---
+
+## Upload Customer Document
+
+Allows a merchant to upload customer KYC documents. The API validates the customer ID, document type, and country before storing the uploaded file.
+
+### **Key Features**
+
+- Supports document uploads for customer KYC verification
+- Requires a valid `customer_id` in UUID format
+- Accepts multipart file uploads
+- Validates required fields (`doc_type`, `doc_country`, and file presence)
+- Returns the document verification status and approval details
+
+### **Request Body**
+
+#### **Multipart Form Data**
+
+```json
+{
+  "document": "binary file",
+  "doc_type": "all_document",
+  "doc_country": "Nigeria"
+}
+```

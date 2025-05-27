@@ -1,0 +1,35 @@
+---
+title: "Update Business"
+description: "API reference for updating business customer information"
+openapi: "PUT /business-customers/{customerId}"
+---
+
+Updates the information of an existing business customer.
+
+### Request Parameters:
+
+- `customerId` (path, required): The ID of the business customer to update
+
+### Request Body:
+
+```json
+{
+  "customer_type": "business",
+  "business_name": "Updated Enterprises",
+  "business_type": "Wholesale",
+  "business_website": "https://updated.example.com",
+  "email": "updated@example.com",
+  "phone": "+2347918945668",
+  "account_purpose": "business expansion",
+  "source_of_funds": "business revenue",
+  "expected_monthly_income": 7000000,
+  "address": {
+    "line_1": "456 Business Ave",
+    "line_2": "Suite 789",
+    "city": "Lagos",
+    "state": "Lagos",
+    "postal_code": "100001",
+    "country": "Nigeria"
+  }
+}
+```

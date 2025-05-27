@@ -1,0 +1,22 @@
+---
+title: "Add Wallet"
+description: "API reference for adding wallet payout methods"
+openapi: "POST /payout/methods/wallets"
+---
+
+Adds a new wallet payout method (either merchant-owned or customer-specific).
+
+- Include `customer_id` to create for a specific customer
+- Omit `customer_id` to create merchant-owned wallet
+
+### Request Body:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e", // optional
+  "label": "usdc wallet", // optional
+  "wallet_address": "0x7fD41923E23DcE32d1A346e96558dA89f89DD1aB",
+  "network": "bep20",
+  "currency": "USDC"
+}
+```

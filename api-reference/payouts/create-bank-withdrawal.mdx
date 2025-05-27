@@ -1,0 +1,31 @@
+---
+title: "Create Bank Withdrawal"
+description: "API reference for creating withdrawal payouts to bank accounts"
+openapi: "POST /payouts/banks"
+---
+
+Creates a withdrawal payout to a bank account. Supports both customer and merchant withdrawals.
+
+### Key Features:
+
+- Supports multiple currencies and banks
+- Handles both customer and merchant payouts
+- Includes recipient verification details
+
+### Request Body:
+
+**Bank Withdrawal**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e", //optional
+  "currency": "USDT",
+  "account_number": "1234567890",
+  "bank_name": "United Bank for Africa",
+  "bank_code": "000004",
+  "amount": "100",
+  "recipient_name": "John Doe",
+  "recipient_currency": "NGN",
+  "recipient_country": "Nigeria"
+}
+```

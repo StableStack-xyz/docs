@@ -1,0 +1,31 @@
+---
+title: "Get by Customer ID"
+description: "API reference for fetching transactions by customer ID"
+openapi: "GET /customers/transactions/by_customer_id/{customer_id}"
+---
+
+Retrieves a paginated list of transactions for a specific customer with filtering options.
+
+### Key Features:
+
+- Returns all transactions associated with a customer ID
+- Supports filtering by status, type, mode, currency, and date range
+- Includes search functionality by transaction ID
+- Provides pagination metadata
+- Returns complete transaction details including merchant information
+
+### Path Parameters:
+
+- `customer_id`: The customer's unique identifier (UUID, required)
+
+### Query Parameters:
+
+- `search`: Search by transaction ID (partial or full match)
+- `status`: Filter by transaction status (`PENDING`, `COMPLETED`, `FAILED`, `REVERSED`)
+- `transaction_type`: Filter by type (`DEPOSIT`, `PAYOUT`, `INTERNAL TRANSFER`)
+- `transaction_mode`: Filter by mode (`CREDIT`, `DEBIT`)
+- `currency`: Filter by currency (`USDC`, `USDT`)
+- `start_date`: Filter by start date (format: `YYYY-MM-DD`)
+- `end_date`: Filter by end date (format: `YYYY-MM-DD`)
+- `page`: Page number (default: 1)
+- `limit`: Items per page (default: 20, max: 100)

@@ -1,0 +1,41 @@
+---
+title: "Create Individual"
+description: "API reference for creating individual customer accounts"
+openapi: "POST /individual-customers"
+---
+
+Creates a new individual customer account.
+
+### Key Features:
+
+- Comprehensive personal information collection
+- Individual-specific validation rules
+- Email and phone uniqueness validation
+- Returns complete personal profile with financial info
+
+### Request Body:
+
+```json
+{
+  "customer_type": "individual",
+  "first_name": "john",
+  "middle_name": "Oluwaseun",
+  "last_name": "ola",
+  "email": "olajohn3@gmail.com",
+  "phone": "+2348918945668",
+  "birth_date": "1990-01-15",
+  "account_purpose": "personal savings",
+  "employment_status": "employed",
+  "expected_monthly_income": 500000,
+  "most_recent_occupation": "Software Engineer",
+  "source_of_funds": "salary",
+  "address": {
+    "line_1": "123 Main St",
+    "line_2": "Suite 456",
+    "city": "Lagos",
+    "state": "Lagos",
+    "country": "Nigeria",
+    "postal_code": "214578"
+  }
+}
+```

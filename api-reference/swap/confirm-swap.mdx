@@ -1,0 +1,38 @@
+---
+title: "Confirm Swap"
+description: "API reference for confirming and executing a currency swap"
+openapi: "POST /swaps"
+---
+
+Executes a previously quoted currency swap transaction. This endpoint debits the from_currency amount and credits the to_currency amount.
+
+### Key Features:
+
+- Executes the actual currency conversion
+- Processes both debit and credit transactions automically
+- Supports both customer and merchant swaps
+- Returns detailed transaction records for both legs
+- Maintains transaction linkage through reference_id
+
+### Request Body:
+
+**Customer Swap**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e",
+  "from_currency": "USDT",
+  "to_currency": "USDC",
+  "amount": "1"
+}
+```
+
+**Merchant Swap**:
+
+```json
+{
+  "from_currency": "USDT",
+  "to_currency": "USDC",
+  "amount": "1"
+}
+```

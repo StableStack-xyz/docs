@@ -1,7 +1,56 @@
 ---
-title: 'Create Wallet'
-description: 'API reference for creating new wallet for customer'
-openapi: 'POST /wallets/{customer_id}/customer'
+title: "Create Wallet"
+description: "API reference for creating wallets (both merchant and customer)"
+openapi: "POST /wallets"
 ---
 
-Creates a new customer wallet.
+Creates a new wallet for either merchant or customer.
+
+### Key Features:
+
+- Supports both STABLECOIN (with network) and FIAT wallets
+- `customer_id` is optional (null for merchant wallets)
+- Automatic network validation based on currency type
+- Returns complete wallet details with addresses (for crypto)
+
+### Request Body:
+
+**Customer STABLECOIN Wallet**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e",
+  "currency": "USDC",
+  "network": "solana",
+  "description": "my USDC account"
+}
+```
+
+**Customer FIAT Wallet**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e",
+  "currency": "CAD",
+  "description": "my cad account"
+}
+```
+
+**Merchant STABLECOIN Wallet**:
+
+```json
+{
+  "currency": "USDC",
+  "network": "solana",
+  "description": "merchant USDC account"
+}
+```
+
+**Merchant FIAT Wallet**:
+
+```json
+{
+  "currency": "CAD",
+  "description": "merchant CAD account"
+}
+```

@@ -1,0 +1,38 @@
+---
+title: "Create Instant Swap"
+description: "API reference for creating instant currency swaps"
+openapi: "POST /instant-swaps"
+---
+
+Creates an instant currency swap between supported assets. Supports both customer and merchant-initiated swaps.
+
+### Key Features:
+
+- Instant conversion between supported currencies
+- Returns quoted price and conversion amounts
+- Supports both customer and merchant swaps
+- Provides expiration time for quoted rate
+- Detailed user information in response
+
+### Request Body:
+
+**Customer Swap**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e",
+  "from_currency": "USDT",
+  "to_currency": "USDC",
+  "amount": "20"
+}
+```
+
+**Merchant Swap**:
+
+```json
+{
+  "from_currency": "USDT",
+  "to_currency": "USDC",
+  "amount": "20"
+}
+```

@@ -1,0 +1,31 @@
+---
+title: "Add Bank Account"
+description: "API reference for adding bank payout methods"
+openapi: "POST /payout/methods/banks"
+---
+
+Adds a new bank payout method (either merchant-owned or customer-specific).
+
+- Include `customer_id` to create for a specific customer
+- Omit `customer_id` to create merchant-owned bank account
+
+### Request Body:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e", // optional
+  "account_name": "John Doe",
+  "account_number": "1234567890",
+  "bank_name": "Test Bank",
+  "currency": "NGN",
+  "bank_code": "000006",
+  "sort_code": "202524", // For GBP
+  "swift_code": "", // For international transfers
+  "routing_number": "", // For USD
+  "iban": "" // For international accounts
+}
+```
+
+```
+
+```

@@ -1,0 +1,38 @@
+---
+title: "Create Business"
+description: "API reference for creating business customer accounts"
+openapi: "POST /business-customers"
+---
+
+Creates a new business customer account.
+
+### Key Features:
+
+- Comprehensive business information collection
+- Business-specific validation rules
+- Email and phone uniqueness validation
+- Returns complete business profile with financial info
+
+### Request Body:
+
+```json
+{
+  "customer_type": "business",
+  "business_name": "Akande Enterprises",
+  "business_type": "Retail",
+  "business_website": "https://akandeyu.com",
+  "email": "contact@akandeyu.com",
+  "phone": "+2347918905668",
+  "account_purpose": "Business operations",
+  "source_of_funds": "business revenue",
+  "expected_monthly_income": 5000000,
+  "address": {
+    "line_1": "123 Business Ave",
+    "line_2": "Suite 456",
+    "city": "Lagos",
+    "state": "Lagos",
+    "country": "Nigeria",
+    "postal_code": "214578"
+  }
+}
+```

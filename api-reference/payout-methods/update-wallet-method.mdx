@@ -1,0 +1,29 @@
+---
+title: "Update Wallet"
+description: "API reference for updating wallet payout methods"
+openapi: "PUT /payout/methods/wallets/{payout_method_id}"
+---
+
+Updates an existing wallet payout method (either merchant-owned or customer-specific).
+
+### Key Features:
+
+- Supports partial updates - only include fields that need to be modified
+- Include `customer_id` only when updating customer-specific wallets
+- Returns the complete updated wallet object
+
+### Request Parameters:
+
+- `payout_method_id` (path, required): The ID of the wallet to update
+
+### Request Body:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e", // optional
+  "label": "updated usdc wallet", // optional
+  "wallet_address": "0x9iu41923E23DcE32d1A346e96558dA89f89DD1aB",
+  "network": "erc20",
+  "currency": "USDT"
+}
+```

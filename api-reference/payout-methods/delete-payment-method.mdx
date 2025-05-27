@@ -1,0 +1,29 @@
+---
+title: "Delete Payout Method"
+description: "API reference for deleting payout methods"
+openapi: "DELETE /payout/methods/{payout_method_id}"
+---
+
+Permanently deletes a payout method.
+
+### Key Features:
+
+- Deletes both merchant-owned and customer-specific payout methods
+- **For merchant methods**: No request body required
+- **For customer methods**: Must include `customer_id` in request body
+- Returns appropriate success message based on method ownership
+- Returns 404 if payout method doesn't exist or access denied
+
+### Request:
+
+**Path Parameters**:
+
+- `payout_method_id`: UUID of the payout method to delete
+
+**Request Body (for customer methods only)**:
+
+```json
+{
+  "customer_id": "85b148ab-3f6b-4d55-917f-3c8de668a48e"
+}
+```
