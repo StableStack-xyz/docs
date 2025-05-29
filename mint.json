@@ -55,9 +55,16 @@
       "group": "Webhooks",
       "pages": ["webhooks/introduction", "webhooks/events"]
     },
-     {
+    {
       "group": "Coverage",
       "pages": ["coverage/stablecoins", "coverage/currencies"]
+    },
+    {
+      "group": "Prohibited",
+      "pages": [
+        "prohibited/prohibited-businesses",
+        "prohibited/prohibited-countries"
+      ]
     },
     {
       "group": "API Documentation",
