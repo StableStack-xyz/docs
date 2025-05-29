@@ -55,6 +55,10 @@
       "group": "Webhooks",
       "pages": ["webhooks/introduction", "webhooks/events"]
     },
+     {
+      "group": "Coverage",
+      "pages": ["coverage/stablecoins", "coverage/currencies"]
+    },
     {
       "group": "API Documentation",
       "pages": ["api-reference/introduction"]
