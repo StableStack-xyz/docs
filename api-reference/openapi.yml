@@ -1294,160 +1294,125 @@ paths:
                       currency_type: "STABLECOIN"
                       from_currency: "usdt"
                       fee: "10.75"
-                      amountAfterFee: "489.25"
+                      amount_after_fee: "489.25"
                       network: "erc20"
                 fiatSuccess:
                   summary: Fiat Success Example
                   value:
                     status: "success"
                     data:
-                      amount: "500.00"
+                      amount: "10.00"
                       currency_type: "FIAT"
                       from_currency: "USDT"
-                      fee: "16160.90"
-                      amountAfterFee: "791884.10"
-                      exchangeRate: 1616.09
+                      fee: "0.020"
+                      amount_after_fee: "15929.88"
+                      exchangeRate: 1601.19
                       to_currency: "NGN"
+                      bank_fee: "50.00"
                       market_pair: "usdtngn"
         "400":
           description: Bad Request
-          headers:
-            Content-Security-Policy:
-              schema:
-                type: string
-              example: >-
-                default-src 'self';base-uri 'self';font-src 'self' https:
-                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
-                data:;object-src 'none';script-src 'self';script-src-attr
-                'none';style-src 'self' https:
-                'unsafe-inline';upgrade-insecure-requests
-            Cross-Origin-Opener-Policy:
-              schema:
-                type: string
-              example: same-origin
-            Cross-Origin-Resource-Policy:
-              schema:
-                type: string
-              example: same-origin
-            Origin-Agent-Cluster:
-              schema:
-                type: string
-              example: "?1"
-            Referrer-Policy:
-              schema:
-                type: string
-              example: no-referrer
-            Strict-Transport-Security:
-              schema:
-                type: string
-              example: max-age=31536000; includeSubDomains
-            X-Content-Type-Options:
-              schema:
-                type: string
-              example: nosniff
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-              example: "off"
-            X-Download-Options:
-              schema:
-                type: string
-              example: noopen
-            X-Frame-Options:
-              schema:
-                type: string
-              example: SAMEORIGIN
-            X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
-              example: none
-            X-XSS-Protection:
-              schema:
-                type: integer
-              example: "0"
-            Vary:
-              schema:
-                type: string
-              example: Origin
-            Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
-              example: "true"
-            RateLimit-Policy:
-              schema:
-                type: string
-              example: 60;w=60
-            RateLimit-Limit:
-              schema:
-                type: integer
-              example: "60"
-            RateLimit-Remaining:
-              schema:
-                type: integer
-              example: "56"
-            RateLimit-Reset:
-              schema:
-                type: integer
-              example: "16"
-            Content-Type:
-              schema:
-                type: string
-              example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-              example: "208"
-            ETag:
-              schema:
-                type: string
-              example: W/"d0-HMe4UE+zg4lOSknfCUEIYady45M"
-            Date:
-              schema:
-                type: string
-              example: Fri, 09 May 2025 15:11:38 GMT
-            Connection:
-              schema:
-                type: string
-              example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-              example: timeout=5
           content:
             application/json:
               schema:
-                type: object
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        example: failed
+                      message:
+                        type: string
+                        example: "Bad Request"
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: field
+                            value:
+                              type: string
+                              example: "0.1"
+                            msg:
+                              type: string
+                              example: "Amount must be at least 1"
+                            path:
+                              type: string
+                              example: "amount"
+                            location:
+                              type: string
+                              example: "query"
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        example: failed
+                      message:
+                        type: string
+                        example: "Insufficient amount. You need at least 2.10 usdt to proceed."
+                      data:
+                        type: object
+                        properties:
+                          minimum_required_amount:
+                            type: string
+                            example: "2.10"
+                          fee:
+                            type: string
+                            example: "1.105"
+                          current_amount:
+                            type: string
+                            example: "1.00"
               examples:
-                invalidAmount:
-                  summary: Invalid Amount Example
+                validationError:
                   value:
                     status: "failed"
-                    message: "Minimum amount for usdt is 0.1."
-                    data:
-                      minimumRequiredAmount: "0.01"
-                      currentAmount: "0.01"
-                stablecoinError:
-                  summary: Stablecoin Error Example
+                    message: "Bad Request"
+                    errors:
+                      - type: "field"
+                        value: "0.1"
+                        msg: "Amount must be at least 1"
+                        path: "amount"
+                        location: "query"
+                insufficientAmount:
                   value:
                     status: "failed"
-                    message: "Amount after fee must be at least 0.1. Please increase your amount."
+                    message: "Insufficient amount. You need at least 2.10 usdt to proceed."
                     data:
-                      minimumRequiredAmount: "10.85"
-                      currentAmount: "0.01"
-                      fee: "10.75"
-                      requiredMinimumAfterFee: "0.10"
-                fiatError:
-                  summary: Fiat Error Example
+                      minimum_required_amount: "2.10"
+                      fee: "1.105"
+                      current_amount: "1.00"
+                invalidCurrencyType:
                   value:
                     status: "failed"
-                    message: "Amount after fee must be at least 5 GHS. Please increase your amount."
-                    data:
-                      minimumRequiredAmount: "0.38"
-                      currentAmount: "0.10"
-                      fee: "0.03"
-                      requiredMinimumAfterFee: "5.00"
-                      currency: "GHS"
-                      exchangeRate: 13.12
+                    message: "Bad Request"
+                    errors:
+                      - type: "field"
+                        value: "crypto"
+                        msg: "currency_type must be either STABLECOIN or FIAT"
+                        path: "currency_type"
+                        location: "query"
+                missingNetwork:
+                  value:
+                    status: "failed"
+                    message: "Bad Request"
+                    errors:
+                      - type: "field"
+                        value: null
+                        msg: "network is required for STABLECOIN transactions"
+                        path: "network"
+                        location: "query"
+                missingToCurrency:
+                  value:
+                    status: "failed"
+                    message: "Bad Request"
+                    errors:
+                      - type: "field"
+                        value: null
+                        msg: "to_currency is required for FIAT transactions"
+                        path: "to_currency"
+                        location: "query"
 
   /payout/methods/wallets:
     post:
@@ -3048,7 +3013,7 @@ paths:
         - banks
       summary: "Fetch bank list"
       description: |
-        Retrieves list of supported banks. 
+        Retrieves list of supported banks.
         Response format may vary based on request parameters.
       parameters:
         - name: x-api-key
@@ -3070,108 +3035,6 @@ paths:
       responses:
         "200":
           description: Bank list retrieved successfully
-          headers:
-            Content-Security-Policy:
-              schema:
-                type: string
-              example: >-
-                default-src 'self';base-uri 'self';font-src 'self' https:
-                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
-                data:;object-src 'none';script-src 'self';script-src-attr
-                'none';style-src 'self' https:
-                'unsafe-inline';upgrade-insecure-requests
-            Cross-Origin-Opener-Policy:
-              schema:
-                type: string
-              example: same-origin
-            Cross-Origin-Resource-Policy:
-              schema:
-                type: string
-              example: same-origin
-            Origin-Agent-Cluster:
-              schema:
-                type: string
-              example: "?1"
-            Referrer-Policy:
-              schema:
-                type: string
-              example: no-referrer
-            Strict-Transport-Security:
-              schema:
-                type: string
-              example: max-age=31536000; includeSubDomains
-            X-Content-Type-Options:
-              schema:
-                type: string
-              example: nosniff
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-              example: "off"
-            X-Download-Options:
-              schema:
-                type: string
-              example: noopen
-            X-Frame-Options:
-              schema:
-                type: string
-              example: SAMEORIGIN
-            X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
-              example: none
-            X-XSS-Protection:
-              schema:
-                type: integer
-              example: "0"
-            Vary:
-              schema:
-                type: string
-              example: Origin
-            Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
-              example: "true"
-            RateLimit-Policy:
-              schema:
-                type: string
-              example: 60;w=60
-            RateLimit-Limit:
-              schema:
-                type: integer
-              example: "60"
-            RateLimit-Remaining:
-              schema:
-                type: integer
-              example: "59"
-            RateLimit-Reset:
-              schema:
-                type: integer
-              example: "60"
-            Content-Type:
-              schema:
-                type: string
-              example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-              example: "119"
-            ETag:
-              schema:
-                type: string
-              example: W/"77-2yoqITbJUHTq3WdWeYPk7g5HjE8"
-            Date:
-              schema:
-                type: string
-              example: Fri, 09 May 2025 15:09:01 GMT
-            Connection:
-              schema:
-                type: string
-              example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-              example: timeout=5
           content:
             application/json:
               schema:
@@ -3179,135 +3042,33 @@ paths:
                 properties:
                   status:
                     type: string
+                    example: success
                   data:
                     type: array
                     items:
-                      allOf:
-                        - $ref: "#/components/schemas/BasicBank"
+                      type: object
+                      properties:
+                        bank_code:
+                          type: string
+                          example: "110005"
+                        bank_name:
+                          type: string
+                          example: "3LINE CARD MANAGEMENT LIMITED"
                   message:
                     type: string
+                    example: "Bank list retrieved successfully"
               examples:
                 basicResponse:
-                  summary: Basic bank list
                   value:
                     status: "success"
                     data:
-                      - bankCode: "110005"
-                        bankName: "3LINE CARD MANAGEMENT LIMITED"
-                      - bankCode: "120001"
-                        bankName: "9 PAYMENT SOLUTIONS BANK"
-                      - bankCode: "110072"
-                        bankName: "78 FINANCE COMPANY LIMITED"
-                      - bankCode: "050005"
-                        bankName: "AAA FINANCE"
-                      - bankCode: "090270"
-                        bankName: "AB Microfinance bank"
+                      - bank_code: "110005"
+                        bank_name: "3LINE CARD MANAGEMENT LIMITED"
+                      - bank_code: "120001"
+                        bank_name: "9 PAYMENT SOLUTIONS BANK"
                     message: "Bank list retrieved successfully"
-
         "400":
           description: Bad Request
-          headers:
-            Content-Security-Policy:
-              schema:
-                type: string
-              example: >-
-                default-src 'self';base-uri 'self';font-src 'self' https:
-                data:;form-action 'self';frame-ancestors 'self';img-src 'self'
-                data:;object-src 'none';script-src 'self';script-src-attr
-                'none';style-src 'self' https:
-                'unsafe-inline';upgrade-insecure-requests
-            Cross-Origin-Opener-Policy:
-              schema:
-                type: string
-              example: same-origin
-            Cross-Origin-Resource-Policy:
-              schema:
-                type: string
-              example: same-origin
-            Origin-Agent-Cluster:
-              schema:
-                type: string
-              example: "?1"
-            Referrer-Policy:
-              schema:
-                type: string
-              example: no-referrer
-            Strict-Transport-Security:
-              schema:
-                type: string
-              example: max-age=31536000; includeSubDomains
-            X-Content-Type-Options:
-              schema:
-                type: string
-              example: nosniff
-            X-DNS-Prefetch-Control:
-              schema:
-                type: string
-              example: "off"
-            X-Download-Options:
-              schema:
-                type: string
-              example: noopen
-            X-Frame-Options:
-              schema:
-                type: string
-              example: SAMEORIGIN
-            X-Permitted-Cross-Domain-Policies:
-              schema:
-                type: string
-              example: none
-            X-XSS-Protection:
-              schema:
-                type: integer
-              example: "0"
-            Vary:
-              schema:
-                type: string
-              example: Origin
-            Access-Control-Allow-Credentials:
-              schema:
-                type: boolean
-              example: "true"
-            RateLimit-Policy:
-              schema:
-                type: string
-              example: 60;w=60
-            RateLimit-Limit:
-              schema:
-                type: integer
-              example: "60"
-            RateLimit-Remaining:
-              schema:
-                type: integer
-              example: "56"
-            RateLimit-Reset:
-              schema:
-                type: integer
-              example: "16"
-            Content-Type:
-              schema:
-                type: string
-              example: application/json; charset=utf-8
-            Content-Length:
-              schema:
-                type: integer
-              example: "208"
-            ETag:
-              schema:
-                type: string
-              example: W/"d0-HMe4UE+zg4lOSknfCUEIYady45M"
-            Date:
-              schema:
-                type: string
-              example: Fri, 09 May 2025 15:11:38 GMT
-            Connection:
-              schema:
-                type: string
-              example: keep-alive
-            Keep-Alive:
-              schema:
-                type: string
-              example: timeout=5
           content:
             application/json:
               schema:
@@ -3315,8 +3076,10 @@ paths:
                 properties:
                   status:
                     type: string
+                    example: failed
                   message:
                     type: string
+                    example: "Validation error"
                   errors:
                     type: array
                     items:
@@ -3324,23 +3087,41 @@ paths:
                       properties:
                         type:
                           type: string
+                          example: field
                         value:
                           type: string
+                          example: "eur"
                         msg:
                           type: string
+                          example: "Currency must be either NGN or USD"
                         path:
                           type: string
+                          example: "currency"
                         location:
                           type: string
-              example:
-                status: "failed"
-                message: "Currency must be either NGN or USD"
-                errors:
-                  - type: "field"
-                    value: "eur"
-                    msg: "Currency must be either NGN or USD"
-                    path: "currency"
-                    location: "query"
+                          example: "query"
+              examples:
+                invalidCurrency:
+                  value:
+                    status: "failed"
+                    message: "Validation error"
+                    errors:
+                      - type: "field"
+                        value: "eur"
+                        msg: "Currency must be either NGN or USD"
+                        path: "currency"
+                        location: "query"
+                missingCurrency:
+                  value:
+                    status: "failed"
+                    message: "Validation error"
+                    errors:
+                      - type: "field"
+                        value: null
+                        msg: "currency is required"
+                        path: "currency"
+                        location: "query"
+
   /banks/resolve:
     post:
       tags:
@@ -3386,44 +3167,28 @@ paths:
                     type: string
                     example: success
                   data:
-                    oneOf:
-                      - type: object
-                        properties:
-                          sessionID:
-                            type: string
-                          destinationInstitutionCode:
-                            type: string
-                          channelCode:
-                            type: string
-                          accountNumber:
-                            type: string
-                          accountName:
-                            type: string
-                          bankVerificationNumber:
-                            type: string
-                          kycLevel:
-                            type: string
-                          responseCode:
-                            type: string
-                      - type: object
-                        properties:
-                          destinationInstitutionCode:
-                            type: string
-                          accountNumber:
-                            type: string
-                          accountName:
-                            type: string
+                    type: object
+                    properties:
+                      destination_institution_code:
+                        type: string
+                        example: "000008"
+                      account_number:
+                        type: string
+                        example: "1234567890"
+                      account_name:
+                        type: string
+                        example: "Lihua Ma"
                   message:
                     type: string
+                    example: "Bank account resolved successfully"
               examples:
                 basicResolution:
-                  summary: Basic resolution details
                   value:
                     status: "success"
                     data:
-                      destinationInstitutionCode: "000008"
-                      accountNumber: "1234567890"
-                      accountName: "Lihua Ma"
+                      destination_institution_code: "000008"
+                      account_number: "1234567890"
+                      account_name: "Lihua Ma"
                     message: "Bank account resolved successfully"
         "400":
           description: Validation error
@@ -3473,6 +3238,16 @@ paths:
                         value: ""
                         msg: "Bank code is required"
                         path: "bank_code"
+                        location: "body"
+                invalidAccount:
+                  value:
+                    status: "failed"
+                    message: "Validation error"
+                    errors:
+                      - type: "field"
+                        value: "123"
+                        msg: "Account number must be at least 10 characters"
+                        path: "account_number"
                         location: "body"
 
   /transactions:
@@ -5746,20 +5521,11 @@ components:
               example: "salary"
 
     # BANK COMPONENTS
-    DetailedBank:
-      type: object
-      properties:
-        bankCode: { type: string }
-        bankName: { type: string }
-        bankShortName: { type: string }
-        bankIdentifyCode: { type: string }
-        bankCode2: { type: string }
-
     BasicBank:
       type: object
       properties:
-        bankCode: { type: string }
-        bankName: { type: string }
+        bank_code: { type: string }
+        bank_name: { type: string }
 
     # SWAP COMPONENTS
     SwapRequest:
