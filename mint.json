@@ -56,6 +56,10 @@
       "pages": ["webhooks/introduction", "webhooks/events"]
     },
     {
+      "group": "Libraries",
+      "pages": ["libraries/mcp"]
+    },
+    {
       "group": "Coverage",
       "pages": ["coverage/stablecoins", "coverage/currencies"]
     },
