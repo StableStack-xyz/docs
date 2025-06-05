@@ -34,13 +34,19 @@ paths:
                   type: string
                   enum:
                     - all_document
-                    - passport
-                    - national_id
-                    - driver_license
                     - utility_bill
                     - bank_statement
                     - proof_of_address
-                  example: passport
+                    - incorporation
+                    - memorandum
+                    - status_report
+                    - operating_license
+                    - valid_ids
+                    - company_resolution
+                    - aml_policy
+                    - kyc_policy
+                    - data_protection
+                  example: utility_bill
                 doc_country:
                   type: string
                   example: Nigeria
