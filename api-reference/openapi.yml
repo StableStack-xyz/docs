@@ -4,7 +4,7 @@ info:
   description: "# Overview\n\n## Introduction\n\nStableStack offers an API first, last mile payment orchestration + liquidity router built with stablecoins. Stablecoin layer integrated into your existing payment flow, with smart accounts and blockchain abstraction. Go between digital and fiat currencies in minutes.\n\n## Getting Help\n\nWe're excited to have you build with us! If you're integrating, we will set up a communication channel. This will enable our teams to easily collaborate and ensure you launch as quickly as possible.\n\nPlease reach out to us at\_[hello@stablestack.xyz](https://mailto:hello@stablestack.xyz)\_for any questions or concerns."
   version: 1.0.0
 servers:
-  - url: "https://api.stablestack.xyz/api"
+  - url: "https://api-staging.stablestack.xyz/api"
     description: "StableStack API"
 tags:
   - name: customers
