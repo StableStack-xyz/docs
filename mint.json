@@ -115,7 +115,7 @@
       ]
     },
     {
-      "group": "Payouts Methods",
+      "group": "Beneficiary",
       "pages": [
         "api-reference/payout-methods/add-wallet-method",
         "api-reference/payout-methods/add-bank-method",
