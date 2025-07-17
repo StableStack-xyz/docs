@@ -4,13 +4,14 @@ description: "API reference for creating individual customer accounts"
 openapi: "POST /individual-customers"
 ---
 
-Creates a new individual customer account.
+Creates a new individual customer account with comprehensive KYC processing.
 
 ### Key Features:
 
 - Comprehensive personal information collection
 - Individual-specific validation rules
 - Email and phone uniqueness validation
+- Document upload for compliance
 - Returns complete personal profile with financial info
 
 ### Request Body:
@@ -24,18 +25,62 @@ Creates a new individual customer account.
   "email": "olajohn3@gmail.com",
   "phone": "+2348918945668",
   "birth_date": "1990-01-15",
-  "account_purpose": "personal savings",
-  "employment_status": "employed",
+  "account_purpose": "PERSONAL_OR_LIVING_EXPENSES",
+  "employment_status": "EMPLOYED",
   "expected_monthly_income": 500000,
-  "most_recent_occupation": "Software Engineer",
-  "source_of_funds": "salary",
-  "address": {
-    "line_1": "123 Main St",
-    "line_2": "Suite 456",
-    "city": "Lagos",
-    "state": "Lagos",
-    "country": "Nigeria",
-    "postal_code": "214578"
-  }
+  "most_recent_occupation": "151211",
+  "source_of_funds": "SALARY",
+  "phone_country_code": "+234",
+  "account_purpose_explanation": "To save money for future investments and handle personal transactions",
+  "expected_monthly_payments_usd": 1000,
+  "acting_as_intermediary": false,
+  "tax_identification_number": "TIN987654321",
+  "user_documents": [
+    {
+      "doc_type": "valid_ids",
+      "sub_type": "front",
+      "doc_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+      "doc_country": "NG"
+    },
+    {
+      "doc_type": "utility_bill",
+      "doc_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+      "doc_country": "NG"
+    }
+  ]
 }
 ```
+
+### Enhanced Individual Fields:
+
+- **phone_country_code**: Country code for phone number
+- **account_purpose_explanation**: Detailed explanation of account purpose
+- **expected_monthly_payments_usd**: Expected monthly payments in USD
+- **acting_as_intermediary**: Whether acting as an intermediary for third parties
+- **tax_identification_number**: Tax identification number
+- **most_recent_occupation**: SOC occupation code (e.g., "151211" for Computer Systems Analyst)
+- **user_documents**: Array of supporting documents for KYC
+
+
+### Document Requirements:
+
+Common document types for individual customers:
+- `valid_ids` (passport, driver's license, national ID)
+- `utility_bill` (proof of address)
+- `BANK_STATEMENT`
+- `PROOF_OF_ADDRESS`
+- `OTHER` (additional supporting documents)
+
+### KYC Integration:
+
+The system automatically submits customer information to WalaPay for KYC processing. All provided documents are:
+1. Stored locally in the `customer_documents` table
+2. Sent to WalaPay for verification
+3. Tracked through the KYC processing queue
+
+### Validation Notes:
+
+- All monetary amounts can be provided in local currency
+- Phone numbers should include country codes
+- Document images can be provided as base64 strings or URLs
+- Address information is required for compliance

@@ -4,13 +4,15 @@ description: "API reference for creating business customer accounts"
 openapi: "POST /business-customers"
 ---
 
-Creates a new business customer account.
+Creates a new business customer account with comprehensive KYC processing.
 
 ### Key Features:
 
 - Comprehensive business information collection
 - Business-specific validation rules
 - Email and phone uniqueness validation
+- Support for business owners/associated persons
+- Document upload for compliance
 - Returns complete business profile with financial info
 
 ### Request Body:
@@ -19,20 +21,104 @@ Creates a new business customer account.
 {
   "customer_type": "business",
   "business_name": "Akande Enterprises",
-  "business_type": "Retail",
+  "business_type": "LIMITED_LIABILITY_COMPANY",
   "business_website": "https://akandeyu.com",
   "email": "contact@akandeyu.com",
   "phone": "+2347918905668",
-  "account_purpose": "Business operations",
-  "source_of_funds": "business revenue",
+  "account_purpose": "OPERATING_A_COMPANY",
+  "source_of_funds": "SALES_OF_GOODS_AND_SERVICES",
   "expected_monthly_income": 5000000,
-  "address": {
-    "line_1": "123 Business Ave",
-    "line_2": "Suite 456",
+  "legal_structure": "LLC",
+  "trading_name": "Akande Trading Co",
+  "nature_of_business": "Retail and e-commerce operations",
+  "industry": "541512",
+  "contact_person_email": "ceo@akandeyu.com",
+  "contact_person_phone": "+2347918905669",
+  "registered_address": {
+    "street1": "456 Corporate Plaza",
+    "street2": "Floor 5",
     "city": "Lagos",
-    "state": "Lagos",
-    "country": "Nigeria",
-    "postal_code": "214578"
-  }
+    "state": "LA",
+    "postal_code": "214578",
+    "country": "NG"
+  },
+  "estimated_annual_revenue_usd": "HUNDRED_THOUSAND_TO_MILLION",
+  "operates_in_prohibited_countries": false,
+  "is_dao": false,
+  "registration_number": "REG123456789",
+  "registration_date": "2020-01-15",
+  "tax_identification_number": "TIN123456789",
+  "phone_country_code": "+234",
+  "account_purpose_explanation": "To facilitate international payments for our e-commerce business and manage supplier payments",
+  "expected_monthly_payments_usd": 10000,
+  "business_owners": [
+    {
+      "first_name": "Adebayo",
+      "last_name": "Akande",
+      "email": "adebayo@akandeyu.com",
+      "phone_number": "+2347918905670",
+      "date_of_birth": "1985-03-20",
+      "relationship_establishment_date": "2020-01-15",
+      "ownership_percentage": 60,
+      "is_control_person": true,
+      "is_signer": true,
+      "is_beneficial_owner": true,
+      "title": "Chief Executive Officer",
+      "address": {
+        "street1": "789 Owner Ave",
+        "street2": "Apt 123",
+        "city": "Lagos",
+        "state": "LA",
+        "postal_code": "214578",
+        "country": "NG"
+      },
+      "id_number": "ID123456789",
+      "nationality": "NG",
+      "front_image": "https://example.com/id-front.jpg"
+    }
+  ],
+  "user_documents": [
+    {
+      "doc_type": "BUSINESS_FORMATION",
+      "doc_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+      "doc_country": "NG"
+    },
+    {
+      "doc_type": "PROOF_OF_TAX_IDENTIFICATION",
+      "doc_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+      "doc_country": "NG"
+    }
+  ]
 }
 ```
+
+### Enhanced Business Fields:
+
+- **legal_structure**: Legal structure of the business (LLC, Corporation, etc.)
+- **trading_name**: Trading or DBA name if different from legal name
+- **nature_of_business**: Description of business activities
+- **industry**: Industry classification (use NAICS codes like "541512" for Computer Systems Design)
+- **contact_person_email**: Contact person email address
+- **contact_person_phone**: Contact person phone number
+- **registered_address**: Official registered business address
+- **estimated_annual_revenue_usd**: Estimated annual revenue range in USD (enum values: "UNDER_HUNDRED_THOUSAND", "HUNDRED_THOUSAND_TO_MILLION", "MILLION_TO_TEN_MILLION", "TEN_MILLION_TO_FIFTY_MILLION", "FIFTY_MILLION_TO_HUNDRED_MILLION", "OVER_HUNDRED_MILLION")
+- **operates_in_prohibited_countries**: Whether business operates in prohibited countries
+- **is_dao**: Whether the business is a DAO
+- **registration_number**: Business registration number
+- **registration_date**: Business registration date
+- **business_owners**: Array of business owners/associated persons
+- **user_documents**: Array of supporting documents for KYC
+
+
+### Business Owners Array:
+
+Each business owner object should include personal information, ownership details, and identification documents for compliance purposes.
+
+### Document Requirements:
+
+Common document types for business customers:
+- `BUSINESS_FORMATION` (incorporation certificate)
+- `PROOF_OF_TAX_IDENTIFICATION` (tax certificate)
+- `REGULATORY_LICENSE_REGISTRATION` (business license)
+- `PROOF_OF_NATURE_OF_BUSINESS` (memorandum of association)
+- `OWNERSHIP_INFORMATION` (articles of incorporation)

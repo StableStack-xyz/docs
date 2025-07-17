@@ -5268,7 +5268,10 @@ components:
         - account_purpose
         - source_of_funds
         - expected_monthly_income
-        - address
+        - registered_address
+        - industry
+        - estimated_annual_revenue_usd
+
       properties:
         customer_type:
           type: string
@@ -5278,30 +5281,486 @@ components:
         business_name:
           type: string
           example: "Example Enterprises"
+          description: "Legal name of the business"
         business_type:
           type: string
-          example: "Retail"
+          enum:
+            - "GENERAL_PARTNERSHIP"
+            - "LIMITED_PARTNERSHIP"
+            - "LIMITED_LIABILITY_PARTNERSHIP"
+            - "LIMITED_LIABILITY_COMPANY"
+            - "NONPROFIT_CORPORATION"
+            - "SOLE_PROPRIETORSHIP"
+            - "TRUST"
+            - "NON_US"
+          example: "LIMITED_LIABILITY_COMPANY"
+          description: "Legal structure of the business"
         business_website:
           type: string
+          format: uri
           example: "https://example.com"
+          description: "Business website URL (optional)"
         email:
           type: string
           format: email
           example: "contact@example.com"
+          description: "Business email address"
         phone:
           type: string
+          pattern: '^\+[1-9]\d{1,14}$'
           example: "+2347918945668"
+          description: "Business phone number with country code e.g +100000000"
         account_purpose:
           type: string
-          example: "business operations"
+          enum:
+            - "CHARITABLE_DONATIONS"
+            - "ECOMMERCE_RETAIL_PAYMENTS"
+            - "INVESTMENT_PURPOSES"
+            - "OPERATING_A_COMPANY"
+            - "PAYMENTS_TO_FRIENDS_OR_FAMILY_ABROAD"
+            - "OTHER"
+            - "PERSONAL_OR_LIVING_EXPENSES"
+            - "PROTECT_WEALTH"
+            - "PURCHASE_GOODS_AND_SERVICES"
+            - "RECEIVE_PAYMENT_FOR_FREELANCING"
+            - "RECEIVE_SALARY"
+          example: "OPERATING_A_COMPANY"
+          description: "Primary purpose for using the account"
         source_of_funds:
           type: string
-          example: "business revenue"
+          enum:
+            - "BUSINESS_LOANS"
+            - "GRANTS"
+            - "INTER_COMPANY_FUNDS"
+            - "INVESTMENT_PROCEEDS"
+            - "LEGAL_SETTLEMENT"
+            - "OWNERS_CAPITAL"
+            - "PENSION_RETIREMENT"
+            - "SALE_OF_ASSETS"
+            - "SALES_OF_GOODS_AND_SERVICES"
+            - "TAX_REFUND"
+            - "THIRD_PARTY_FUNDS"
+            - "TREASURY_RESERVES"
+            - "ASSETS_SALE"
+            - "BUSINESS_INCOME"
+            - "CASH_DEPOSITS"
+            - "COMPANY_FUNDS"
+            - "ECOMMERCE_RESELLER"
+            - "GAMBLING_PROCEEDS"
+            - "GIFTS"
+            - "GOVERNMENT_BENEFITS"
+            - "INHERITANCE"
+            - "INVESTMENTS_LOANS"
+            - "SALARY"
+            - "SALE_OF_ASSETS_REAL_ESTATE"
+            - "SAVINGS"
+            - "SOMEONE_ELSES_FUNDS"
+          example: "SALES_OF_GOODS_AND_SERVICES"
+          description: "Primary source of funds for the business"
         expected_monthly_income:
           type: number
+          minimum: 0
           example: 5000000
-        address:
-          $ref: "#/components/schemas/Address"
+          description: "Expected monthly income in local currency"
+        industry:
+          type: string
+          enum:
+            - "111120"
+            - "111219"
+            - "111336"
+            - "111421"
+            - "111998"
+            - "112111"
+            - "112210"
+            - "112310"
+            - "112410"
+            - "112519"
+            - "112990"
+            - "113110"
+            - "113210"
+            - "113310"
+            - "114119"
+            - "114210"
+            - "115113"
+            - "115210"
+            - "115310"
+            - "211130"
+            - "212114"
+            - "212290"
+            - "212390"
+            - "213113"
+            - "221122"
+            - "221210"
+            - "221320"
+            - "236118"
+            - "236210"
+            - "237130"
+            - "237210"
+            - "237310"
+            - "237990"
+            - "238191"
+            - "238211"
+            - "238391"
+            - "238991"
+            - "311119"
+            - "311212"
+            - "311314"
+            - "311422"
+            - "311511"
+            - "311612"
+            - "311710"
+            - "311811"
+            - "311999"
+            - "312111"
+            - "312230"
+            - "313110"
+            - "313240"
+            - "313310"
+            - "314120"
+            - "314999"
+            - "315120"
+            - "315250"
+            - "315990"
+            - "316110"
+            - "316210"
+            - "316990"
+            - "321113"
+            - "321211"
+            - "321918"
+            - "322120"
+            - "322299"
+            - "323120"
+            - "324110"
+            - "325180"
+            - "325220"
+            - "325320"
+            - "325412"
+            - "325510"
+            - "325611"
+            - "325998"
+            - "326111"
+            - "326220"
+            - "327120"
+            - "327212"
+            - "327310"
+            - "327410"
+            - "327999"
+            - "331110"
+            - "331210"
+            - "331313"
+            - "331410"
+            - "331511"
+            - "332111"
+            - "332215"
+            - "332311"
+            - "332410"
+            - "332510"
+            - "332613"
+            - "332710"
+            - "332812"
+            - "332999"
+            - "333111"
+            - "333248"
+            - "333310"
+            - "333413"
+            - "333517"
+            - "333611"
+            - "333618"
+            - "334118"
+            - "334210"
+            - "334310"
+            - "334413"
+            - "334511"
+            - "334610"
+            - "335131"
+            - "335220"
+            - "335311"
+            - "335999"
+            - "336110"
+            - "336211"
+            - "336390"
+            - "336412"
+            - "336510"
+            - "336611"
+            - "336999"
+            - "337122"
+            - "337214"
+            - "337920"
+            - "339112"
+            - "339999"
+            - "423120"
+            - "423220"
+            - "423310"
+            - "423490"
+            - "423520"
+            - "423620"
+            - "423710"
+            - "423840"
+            - "423990"
+            - "424110"
+            - "424210"
+            - "424310"
+            - "424490"
+            - "424590"
+            - "424690"
+            - "424720"
+            - "424820"
+            - "424990"
+            - "425120"
+            - "441110"
+            - "441227"
+            - "441330"
+            - "449110"
+            - "449129"
+            - "449210"
+            - "444180"
+            - "444240"
+            - "445110"
+            - "445298"
+            - "445320"
+            - "456110"
+            - "457110"
+            - "458110"
+            - "458210"
+            - "458320"
+            - "459120"
+            - "459210"
+            - "455110"
+            - "455219"
+            - "459310"
+            - "459410"
+            - "459510"
+            - "459999"
+            - "454113"
+            - "445132"
+            - "454390"
+            - "481111"
+            - "481211"
+            - "482111"
+            - "483112"
+            - "483212"
+            - "484110"
+            - "484220"
+            - "485119"
+            - "485210"
+            - "485310"
+            - "485410"
+            - "485510"
+            - "485999"
+            - "486110"
+            - "486210"
+            - "486990"
+            - "487110"
+            - "487210"
+            - "487990"
+            - "488190"
+            - "488210"
+            - "488390"
+            - "488490"
+            - "488510"
+            - "488999"
+            - "492110"
+            - "492210"
+            - "493190"
+            - "513130"
+            - "513210"
+            - "512199"
+            - "512290"
+            - "516120"
+            - "515210"
+            - "517111"
+            - "517112"
+            - "517410"
+            - "517810"
+            - "518210"
+            - "519290"
+            - "521110"
+            - "522130"
+            - "522298"
+            - "522390"
+            - "523150"
+            - "523210"
+            - "523999"
+            - "524128"
+            - "524298"
+            - "525190"
+            - "525910"
+            - "531190"
+            - "531210"
+            - "531390"
+            - "532111"
+            - "532289"
+            - "532310"
+            - "532490"
+            - "533110"
+            - "541199"
+            - "541213"
+            - "541310"
+            - "541490"
+            - "541512"
+            - "541618"
+            - "541720"
+            - "541810"
+            - "541690"
+            - "551114"
+            - "561110"
+            - "561210"
+            - "561311"
+            - "561499"
+            - "561599"
+            - "561611"
+            - "561790"
+            - "561990"
+            - "562111"
+            - "562211"
+            - "562998"
+            - "611110"
+            - "611210"
+            - "611310"
+            - "611420"
+            - "611519"
+            - "611699"
+            - "611710"
+            - "621111"
+            - "621210"
+            - "621399"
+            - "621498"
+            - "621511"
+            - "621610"
+            - "621999"
+            - "622110"
+            - "622210"
+            - "622310"
+            - "623110"
+            - "623210"
+            - "623311"
+            - "623990"
+            - "624190"
+            - "624230"
+            - "624310"
+            - "624410"
+            - "711190"
+            - "711219"
+            - "711310"
+            - "711410"
+            - "711510"
+            - "712120"
+            - "713110"
+            - "713290"
+            - "713990"
+            - "721199"
+            - "721211"
+            - "721310"
+            - "722310"
+            - "722410"
+            - "722511"
+            - "811198"
+            - "811210"
+            - "811310"
+            - "811411"
+            - "812199"
+            - "812210"
+            - "812320"
+            - "812990"
+            - "813110"
+            - "813211"
+            - "813319"
+            - "813410"
+            - "813930"
+            - "814110"
+            - "921140"
+            - "922190"
+            - "923130"
+            - "924110"
+            - "925120"
+            - "926110"
+            - "927110"
+            - "928110"
+          example: "541512"
+          description: "Industry classification based on NAICS codes - use the code value for API requests"
+        registered_address:
+          $ref: "#/components/schemas/RegisteredAddress"
+        # Optional enhanced fields
+        legal_structure:
+          type: string
+          example: "LLC"
+          description: "Legal structure of the business (deprecated - use business_type)"
+        trading_name:
+          type: string
+          example: "Example Trading Co"
+          description: "Trading or DBA name if different from legal name"
+        nature_of_business:
+          type: string
+          maxLength: 500
+          example: "Online retail and e-commerce platform specializing in consumer electronics"
+          description: "Detailed description of business activities"
+        contact_person_email:
+          type: string
+          format: email
+          example: "ceo@example.com"
+          description: "Contact person email address"
+        contact_person_phone:
+          type: string
+          pattern: '^\+[1-9]\d{1,14}$'
+          example: "+2347918945669"
+          description: "Contact person phone number"
+        estimated_annual_revenue_usd:
+          type: string
+          enum:
+            - "UNDER_HUNDRED_THOUSAND"
+            - "HUNDRED_THOUSAND_TO_MILLION"
+            - "MILLION_TO_TEN_MILLION"
+            - "TEN_MILLION_TO_FIFTY_MILLION"
+            - "FIFTY_MILLION_TO_HUNDRED_MILLION"
+            - "OVER_HUNDRED_MILLION"
+          example: "HUNDRED_THOUSAND_TO_MILLION"
+          description: "Estimated annual revenue range in USD"
+        operates_in_prohibited_countries:
+          type: boolean
+          default: false
+          description: "Whether business operates in prohibited countries"
+        is_dao:
+          type: boolean
+          default: false
+          description: "Whether the business is a DAO (Decentralized Autonomous Organization)"
+        registration_number:
+          type: string
+          example: "REG123456789"
+          description: "Business registration number"
+        registration_date:
+          type: string
+          format: date
+          example: "2020-01-15"
+          description: "Business registration date"
+        tax_identification_number:
+          type: string
+          example: "TIN123456789"
+          description: "Tax identification number"
+        phone_country_code:
+          type: string
+          pattern: '^\+[1-9]\d{0,3}$'
+          example: "+234"
+          description: "Country code for phone number"
+        account_purpose_explanation:
+          type: string
+          maxLength: 1000
+          example: "To facilitate international payments for our e-commerce business and manage supplier relationships"
+          description: "Detailed explanation of account purpose"
+        expected_monthly_payments_usd:
+          type: number
+          minimum: 0
+          example: 10000
+          description: "Expected monthly payments in USD"
+        business_owners:
+          type: array
+          description: "Array of business owners/associated persons (required for certain business types)"
+          items:
+            $ref: '#/components/schemas/BusinessOwner'
+        user_documents:
+          type: array
+          description: "Array of supporting documents for KYC verification"
+          items:
+            $ref: '#/components/schemas/UserDocument'
 
     IndividualCustomer:
       type: object
@@ -5317,7 +5776,7 @@ components:
         - expected_monthly_income
         - most_recent_occupation
         - source_of_funds
-        - address
+        - registered_address
       properties:
         customer_type:
           type: string
@@ -5326,69 +5785,1325 @@ components:
           default: individual
         first_name:
           type: string
+          minLength: 1
+          maxLength: 50
           example: "John"
+          description: "First name of the individual"
         middle_name:
           type: string
+          maxLength: 50
           example: "Oluwaseun"
+          description: "Middle name of the individual (optional)"
         last_name:
           type: string
+          minLength: 1
+          maxLength: 50
           example: "Ola"
+          description: "Last name of the individual"
         email:
           type: string
           format: email
           example: "olajohn3@gmail.com"
+          description: "Email address of the individual"
         phone:
           type: string
+          pattern: '^\+[1-9]\d{1,14}$'
           example: "+2348918945668"
+          description: "Phone number with country code"
         birth_date:
           type: string
           format: date
           example: "1990-01-15"
+          description: "Date of birth (must be 18+ years old)"
         account_purpose:
           type: string
-          example: "personal savings"
+          enum:
+            - "CHARITABLE_DONATIONS"
+            - "ECOMMERCE_RETAIL_PAYMENTS"
+            - "INVESTMENT_PURPOSES"
+            - "OPERATING_A_COMPANY"
+            - "PAYMENTS_TO_FRIENDS_OR_FAMILY_ABROAD"
+            - "OTHER"
+            - "PERSONAL_OR_LIVING_EXPENSES"
+            - "PROTECT_WEALTH"
+            - "PURCHASE_GOODS_AND_SERVICES"
+            - "RECEIVE_PAYMENT_FOR_FREELANCING"
+            - "RECEIVE_SALARY"
+          example: "PERSONAL_OR_LIVING_EXPENSES"
+          description: "Primary purpose for using the account"
         employment_status:
           type: string
-          example: "employed"
+          enum:
+            - "EMPLOYED"
+            - "SELF_EMPLOYED"
+            - "UNEMPLOYED"
+            - "STUDENT"
+            - "RETIRED"
+            - "OTHER"
+          example: "EMPLOYED"
+          description: "Current employment status"
         expected_monthly_income:
           type: number
+          minimum: 0
           example: 500000
+          description: "Expected monthly income in local currency"
         most_recent_occupation:
           type: string
-          example: "Software Engineer"
+          enum:
+            - "132011"
+            - "272011"
+            - "152011"
+            - "291291"
+            - "519191"
+            - "113012"
+            - "112011"
+            - "413011"
+            - "172011"
+            - "131011"
+            - "194010"
+            - "191010"
+            - "172021"
+            - "452011"
+            - "532020"
+            - "493011"
+            - "532010"
+            - "512011"
+            - "533011"
+            - "452021"
+            - "392021"
+            - "339011"
+            - "392011"
+            - "171011"
+            - "173011"
+            - "119041"
+            - "254010"
+            - "271010"
+            - "192010"
+            - "272021"
+            - "192021"
+            - "291181"
+            - "492097"
+            - "493021"
+            - "493022"
+            - "493023"
+            - "492091"
+            - "396010"
+            - "333011"
+            - "513011"
+            - "395011"
+            - "353011"
+            - "433011"
+            - "433021"
+            - "172031"
+            - "191020"
+            - "194021"
+            - "472011"
+            - "433031"
+            - "472020"
+            - "273011"
+            - "274010"
+            - "434011"
+            - "132031"
+            - "493031"
+            - "131199"
+            - "513020"
+            - "131021"
+            - "517011"
+            - "292031"
+            - "435011"
+            - "472031"
+            - "472040"
+            - "412010"
+            - "472050"
+            - "351011"
+            - "172041"
+            - "519010"
+            - "194031"
+            - "192030"
+            - "111011"
+            - "211021"
+            - "399011"
+            - "291011"
+            - "172051"
+            - "131030"
+            - "537061"
+            - "212011"
+            - "193033"
+            - "292010"
+            - "272022"
+            - "499091"
+            - "271021"
+            - "499092"
+            - "432099"
+            - "113111"
+            - "131141"
+            - "131041"
+            - "151221"
+            - "113021"
+            - "172061"
+            - "151241"
+            - "519160"
+            - "151299"
+            - "151251"
+            - "151230"
+            - "151211"
+            - "492011"
+            - "191030"
+            - "474011"
+            - "472070"
+            - "472061"
+            - "119021"
+            - "499010"
+            - "5370XX"
+            - "352010"
+            - "333012"
+            - "434021"
+            - "131051"
+            - "211019"
+            - "412021"
+            - "435021"
+            - "273092"
+            - "434031"
+            - "537021"
+            - "132041"
+            - "434041"
+            - "132070"
+            - "339091"
+            - "519020"
+            - "434051"
+            - "519030"
+            - "514031"
+            - "272030"
+            - "439021"
+            - "15124X"
+            - "519080"
+            - "319091"
+            - "291292"
+            - "291020"
+            - "475010"
+            - "439031"
+            - "333021"
+            - "292032"
+            - "29205X"
+            - "291031"
+            - "359011"
+            - "212021"
+            - "272091"
+            - "359021"
+            - "435032"
+            - "419091"
+            - "533030"
+            - "472080"
+            - "475023"
+            - "193011"
+            - "273041"
+            - "119030"
+            - "211012"
+            - "492092"
+            - "173023"
+            - "172070"
+            - "492093"
+            - "49209X"
+            - "499051"
+            - "512020"
+            - "472111"
+            - "492096"
+            - "252020"
+            - "474021"
+            - "434061"
+            - "3940XX"
+            - "119161"
+            - "292042"
+            - "291214"
+            - "512031"
+            - "172199"
+            - "272099"
+            - "119070"
+            - "172081"
+            - "194040"
+            - "192041"
+            - "519194"
+            - "475022"
+            - "436011"
+            - "291128"
+            - "399031"
+            - "475032"
+            - "519041"
+            - "113013"
+            - "119013"
+            - "271022"
+            - "353023"
+            - "474031"
+            - "434071"
+            - "132051"
+            - "433099"
+            - "132061"
+            - "113031"
+            - "332020"
+            - "332011"
+            - "552010"
+            - "471011"
+            - "331011"
+            - "451011"
+            - "331021"
+            - "351012"
+            - "371011"
+            - "371012"
+            - "491011"
+            - "411012"
+            - "431011"
+            - "331012"
+            - "511011"
+            - "331099"
+            - "411011"
+            - "331091"
+            - "333031"
+            - "453031"
+            - "532031"
+            - "271023"
+            - "513091"
+            - "513092"
+            - "513093"
+            - "359099"
+            - "352021"
+            - "513099"
+            - "353041"
+            - "119051"
+            - "454011"
+            - "514020"
+            - "131131"
+            - "119171"
+            - "519051"
+            - "517021"
+            - "433041"
+            - "393010"
+            - "111021"
+            - "19204X"
+            - "472121"
+            - "452041"
+            - "271024"
+            - "514033"
+            - "395012"
+            - "474041"
+            - "291299"
+            - "211022"
+            - "499021"
+            - "493040"
+            - "499098"
+            - "519198"
+            - "473010"
+            - "474051"
+            - "499031"
+            - "311121"
+            - "359031"
+            - "434081"
+            - "434161"
+            - "113121"
+            - "131070"
+            - "49904X"
+            - "172110"
+            - "113051"
+            - "537051"
+            - "434199"
+            - "151212"
+            - "519061"
+            - "472130"
+            - "439041"
+            - "413021"
+            - "132053"
+            - "271025"
+            - "273091"
+            - "434111"
+            - "37201X"
+            - "519071"
+            - "231020"
+            - "231012"
+            - "537062"
+            - "171012"
+            - "373011"
+            - "516011"
+            - "231011"
+            - "436012"
+            - "232099"
+            - "111031"
+            - "254022"
+            - "434121"
+            - "254031"
+            - "292061"
+            - "191099"
+            - "434131"
+            - "499094"
+            - "534010"
+            - "119081"
+            - "454020"
+            - "131081"
+            - "537063"
+            - "514041"
+            - "292035"
+            - "372012"
+            - "439051"
+            - "499071"
+            - "499043"
+            - "131111"
+            - "119199"
+            - "395092"
+            - "499095"
+            - "172121"
+            - "131161"
+            - "112021"
+            - "211013"
+            - "319011"
+            - "172131"
+            - "152021"
+            - "172141"
+            - "274099"
+            - "273099"
+            - "119111"
+            - "319092"
+            - "292072"
+            - "191040"
+            - "436013"
+            - "319094"
+            - "131121"
+            - "211023"
+            - "211014"
+            - "271026"
+            - "514050"
+            - "435041"
+            - "553010"
+            - "551010"
+            - "554010"
+            - "499044"
+            - "172151"
+            - "452090"
+            - "474090"
+            - "292090"
+            - "518090"
+            - "193090"
+            - "493090"
+            - "514060"
+            - "419010"
+            - "514070"
+            - "519195"
+            - "394031"
+            - "533099"
+            - "272041"
+            - "272042"
+            - "119121"
+            - "151244"
+            - "434141"
+            - "273023"
+            - "172161"
+            - "29203X"
+            - "194051"
+            - "291151"
+            - "291161"
+            - "291171"
+            - "311131"
+            - "195010"
+            - "291122"
+            - "312010"
+            - "439199"
+            - "439061"
+            - "439071"
+            - "152031"
+            - "292081"
+            - "291041"
+            - "434151"
+            - "31113X"
+            - "5120XX"
+            - "21109X"
+            - "27102X"
+            - "17301X"
+            - "2590XX"
+            - "17302X"
+            - "3930XX"
+            - "4750XX"
+            - "1320XX"
+            - "37301X"
+            - "299000"
+            - "31909X"
+            - "49909X"
+            - "1940XX"
+          example: "151211"
+          description: "Most recent occupation based on SOC codes - use the code value for API requests"
         source_of_funds:
           type: string
-          example: "salary"
-        address:
-          $ref: "#/components/schemas/Address"
+          enum:
+            - "BUSINESS_LOANS"
+            - "GRANTS"
+            - "INTER_COMPANY_FUNDS"
+            - "INVESTMENT_PROCEEDS"
+            - "LEGAL_SETTLEMENT"
+            - "OWNERS_CAPITAL"
+            - "PENSION_RETIREMENT"
+            - "SALE_OF_ASSETS"
+            - "SALES_OF_GOODS_AND_SERVICES"
+            - "TAX_REFUND"
+            - "THIRD_PARTY_FUNDS"
+            - "TREASURY_RESERVES"
+            - "ASSETS_SALE"
+            - "BUSINESS_INCOME"
+            - "CASH_DEPOSITS"
+            - "COMPANY_FUNDS"
+            - "ECOMMERCE_RESELLER"
+            - "GAMBLING_PROCEEDS"
+            - "GIFTS"
+            - "GOVERNMENT_BENEFITS"
+            - "INHERITANCE"
+            - "INVESTMENTS_LOANS"
+            - "SALARY"
+            - "SALE_OF_ASSETS_REAL_ESTATE"
+            - "SAVINGS"
+            - "SOMEONE_ELSES_FUNDS"
+          example: "SALARY"
+          description: "Primary source of funds"
+        registered_address:
+          $ref: "#/components/schemas/RegisteredAddress"
+        # Optional enhanced fields
+        phone_country_code:
+          type: string
+          pattern: '^\+[1-9]\d{0,3}$'
+          example: "+234"
+          description: "Country code for phone number"
+        account_purpose_explanation:
+          type: string
+          maxLength: 1000
+          example: "To save money for future investments and handle personal international transactions"
+          description: "Detailed explanation of account purpose"
+        expected_monthly_payments_usd:
+          type: number
+          minimum: 0
+          example: 1000
+          description: "Expected monthly payments in USD"
+        acting_as_intermediary:
+          type: boolean
+          default: false
+          description: "Whether acting as an intermediary for third parties"
+        tax_identification_number:
+          type: string
+          example: "TIN987654321"
+          description: "Tax identification number (optional)"
+        user_documents:
+          type: array
+          description: "Array of supporting documents for KYC verification"
+          items:
+            $ref: '#/components/schemas/UserDocument'
 
-    Address:
+    RegisteredAddress:
       type: object
+      description: "Address information (used for both individual and business customers)"
       required:
-        - line_1
+        - street1
         - city
         - state
-        - country
         - postal_code
+        - country
       properties:
-        line_1:
+        street1:
           type: string
+          minLength: 1
+          maxLength: 100
           example: "123 Main St"
-        line_2:
+          description: "Primary address line"
+        street2:
           type: string
+          maxLength: 100
           example: "Suite 456"
+          description: "Secondary address line (optional)"
         city:
           type: string
+          minLength: 1
+          maxLength: 50
           example: "Lagos"
+          description: "City name"
         state:
           type: string
-          example: "Lagos"
+          minLength: 1
+          maxLength: 50
+          example: "DE"
+          description: "State or province code with country prefix (e.g., DE for Delware, LA for Lagos)"
         postal_code:
           type: string
+          minLength: 1
+          maxLength: 20
           example: "214578"
+          description: "Postal or ZIP code"
         country:
           type: string
-          example: "Nigeria"
+          enum:
+            - AF
+            - AL
+            - DZ
+            - AD
+            - AO
+            - AG
+            - AR
+            - AM
+            - AU
+            - AT
+            - AZ
+            - BS
+            - BH
+            - BD
+            - BB
+            - BY
+            - BE
+            - BZ
+            - BJ
+            - BT
+            - BO
+            - BA
+            - BW
+            - BR
+            - BN
+            - BG
+            - BF
+            - BI
+            - CV
+            - KH
+            - CM
+            - CA
+            - CF
+            - TD
+            - CL
+            - CN
+            - CO
+            - KM
+            - CG
+            - CR
+            - HR
+            - CU
+            - CY
+            - CZ
+            - CD
+            - DK
+            - DJ
+            - DM
+            - DO
+            - EC
+            - EG
+            - SV
+            - GQ
+            - ER
+            - EE
+            - SZ
+            - ET
+            - FJ
+            - FI
+            - FR
+            - GA
+            - GM
+            - GE
+            - DE
+            - GH
+            - GR
+            - GD
+            - GT
+            - GN
+            - GW
+            - GY
+            - HT
+            - HN
+            - HU
+            - IS
+            - IN
+            - ID
+            - IR
+            - IQ
+            - IE
+            - IL
+            - IT
+            - JM
+            - JP
+            - JO
+            - KZ
+            - KE
+            - KI
+            - KW
+            - KG
+            - LA
+            - LV
+            - LB
+            - LS
+            - LR
+            - LY
+            - LI
+            - LT
+            - LU
+            - MG
+            - MW
+            - MY
+            - MV
+            - ML
+            - MT
+            - MH
+            - MR
+            - MU
+            - MX
+            - FM
+            - MD
+            - MC
+            - MN
+            - ME
+            - MA
+            - MZ
+            - MM
+            - NA
+            - NR
+            - NP
+            - NL
+            - NZ
+            - NI
+            - NE
+            - NG
+            - KP
+            - MK
+            - NO
+            - OM
+            - PK
+            - PW
+            - PS
+            - PA
+            - PG
+            - PY
+            - PE
+            - PH
+            - PL
+            - PT
+            - QA
+            - RO
+            - RU
+            - RW
+            - KN
+            - LC
+            - VC
+            - WS
+            - SM
+            - ST
+            - SA
+            - SN
+            - RS
+            - SC
+            - SL
+            - SG
+            - SK
+            - SI
+            - SB
+            - SO
+            - ZA
+            - KR
+            - SS
+            - ES
+            - LK
+            - SD
+            - SR
+            - SE
+            - CH
+            - SY
+            - TW
+            - TJ
+            - TZ
+            - TH
+            - TL
+            - TG
+            - TO
+            - TT
+            - TN
+            - TR
+            - TM
+            - TV
+            - UG
+            - UA
+            - AE
+            - GB
+            - US
+            - UY
+            - UZ
+            - VU
+            - VA
+            - VE
+            - VN
+            - YE
+            - ZM
+            - ZW
+          example: "NG"
+          description: "ISO 3166-1 alpha-2 country code"
+
+    BusinessOwner:
+      type: object
+      description: "Business owner or associated person information"
+      required:
+        - first_name
+        - last_name
+        - email
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: "Jane"
+          description: "First name of the business owner"
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: "Smith"
+          description: "Last name of the business owner"
+        email:
+          type: string
+          format: email
+          example: "jane.smith@example.com"
+          description: "Email address of the business owner"
+        phone_number:
+          type: string
+          pattern: '^\+[1-9]\d{1,14}$'
+          example: "+2348918945670"
+          description: "Phone number with country code"
+        date_of_birth:
+          type: string
+          format: date
+          example: "1985-03-20"
+          description: "Date of birth (must be 18+ years old)"
+        relationship_establishment_date:
+          type: string
+          format: date
+          example: "2020-01-15"
+          description: "Date when relationship with business was established"
+        ownership_percentage:
+          type: number
+          minimum: 0
+          maximum: 100
+          example: 25.5
+          description: "Percentage ownership in the business (0-100)"
+        is_control_person:
+          type: boolean
+          default: false
+          description: "Whether this person has control over the business"
+        is_signer:
+          type: boolean
+          default: false
+          description: "Whether this person is an authorized signer"
+        is_beneficial_owner:
+          type: boolean
+          default: false
+          description: "Whether this person is a beneficial owner (typically 25%+ ownership)"
+        title:
+          type: string
+          enum:
+            - "Chief Executive Officer"
+            - "Chief Financial Officer"
+            - "Chief Technology Officer"
+            - "Chief Operating Officer"
+            - "President"
+            - "Vice President"
+            - "Director"
+            - "Manager"
+            - "Partner"
+            - "Owner"
+            - "Founder"
+            - "Co-Founder"
+            - "Board Member"
+            - "Secretary"
+            - "Treasurer"
+            - "Other"
+          example: "Chief Executive Officer"
+          description: "Official title within the business"
+        address:
+          type: object
+          description: "Business owner's address"
+          required:
+            - street1
+            - city
+            - state
+            - postal_code
+            - country
+          properties:
+            street1:
+              type: string
+              minLength: 1
+              maxLength: 100
+              example: "789 Owner Ave"
+              description: "Primary address line"
+            street2:
+              type: string
+              maxLength: 100
+              example: "Apt 123"
+              description: "Secondary address line (optional)"
+            city:
+              type: string
+              minLength: 1
+              maxLength: 50
+              example: "TX"
+              description: "City name"
+            state:
+              type: string
+              minLength: 1
+              maxLength: 50
+              example: "LA"
+              description: "State or province"
+            postal_code:
+              type: string
+              minLength: 1
+              maxLength: 20
+              example: "214578"
+              description: "Postal or ZIP code"
+            country:
+              type: string
+              example: "US"
+              description: "Country name"
+        id_number:
+          type: string
+          example: "ID123456789"
+          description: "PASSPORT  Number"
+        nationality:
+          type: string
+          enum:
+            - AF
+            - AL
+            - DZ
+            - AD
+            - AO
+            - AG
+            - AR
+            - AM
+            - AU
+            - AT
+            - AZ
+            - BS
+            - BH
+            - BD
+            - BB
+            - BY
+            - BE
+            - BZ
+            - BJ
+            - BT
+            - BO
+            - BA
+            - BW
+            - BR
+            - BN
+            - BG
+            - BF
+            - BI
+            - CV
+            - KH
+            - CM
+            - CA
+            - CF
+            - TD
+            - CL
+            - CN
+            - CO
+            - KM
+            - CG
+            - CR
+            - HR
+            - CU
+            - CY
+            - CZ
+            - CD
+            - DK
+            - DJ
+            - DM
+            - DO
+            - EC
+            - EG
+            - SV
+            - GQ
+            - ER
+            - EE
+            - SZ
+            - ET
+            - FJ
+            - FI
+            - FR
+            - GA
+            - GM
+            - GE
+            - DE
+            - GH
+            - GR
+            - GD
+            - GT
+            - GN
+            - GW
+            - GY
+            - HT
+            - HN
+            - HU
+            - IS
+            - IN
+            - ID
+            - IR
+            - IQ
+            - IE
+            - IL
+            - IT
+            - JM
+            - JP
+            - JO
+            - KZ
+            - KE
+            - KI
+            - KW
+            - KG
+            - LA
+            - LV
+            - LB
+            - LS
+            - LR
+            - LY
+            - LI
+            - LT
+            - LU
+            - MG
+            - MW
+            - MY
+            - MV
+            - ML
+            - MT
+            - MH
+            - MR
+            - MU
+            - MX
+            - FM
+            - MD
+            - MC
+            - MN
+            - ME
+            - MA
+            - MZ
+            - MM
+            - NA
+            - NR
+            - NP
+            - NL
+            - NZ
+            - NI
+            - NE
+            - NG
+            - KP
+            - MK
+            - NO
+            - OM
+            - PK
+            - PW
+            - PS
+            - PA
+            - PG
+            - PY
+            - PE
+            - PH
+            - PL
+            - PT
+            - QA
+            - RO
+            - RU
+            - RW
+            - KN
+            - LC
+            - VC
+            - WS
+            - SM
+            - ST
+            - SA
+            - SN
+            - RS
+            - SC
+            - SL
+            - SG
+            - SK
+            - SI
+            - SB
+            - SO
+            - ZA
+            - KR
+            - SS
+            - ES
+            - LK
+            - SD
+            - SR
+            - SE
+            - CH
+            - SY
+            - TW
+            - TJ
+            - TZ
+            - TH
+            - TL
+            - TG
+            - TO
+            - TT
+            - TN
+            - TR
+            - TM
+            - TV
+            - UG
+            - UA
+            - AE
+            - GB
+            - US
+            - UY
+            - UZ
+            - VU
+            - VA
+            - VE
+            - VN
+            - YE
+            - ZM
+            - ZW
+          example: "NG"
+          description: "ISO 3166-1 alpha-2 nationality code of the business owner"
+        front_image:
+          type: string
+          format: uri
+          example: "https://example.com/id-front.jpg"
+          description: "URL to front image of ID document"
+
+    UserDocument:
+      type: object
+      description: "Supporting document for KYC verification"
+      required:
+        - doc_type
+        - doc_image
+      properties:
+        doc_type:
+          type: string
+          enum:
+            - "OTHER"
+            - "BUSINESS_FORMATION"
+            - "PROOF_OF_NATURE_OF_BUSINESS"
+            - "status_report"
+            - "PROOF_OF_ADDRESS"
+            - "REGULATORY_LICENSE_REGISTRATION"
+            - "valid_ids"
+            - "utility_bill"
+            - "OWNERSHIP_INFORMATION"
+            - "due_diligence_checklist"
+            - "AML_POLICY"
+            - "kyc_policy"
+            - "data_protection"
+            - "BANK_STATEMENT"
+            - "OWNERSHIP_CHART"
+            - "POWER_OF_ATTORNEY"
+            - "PROOF_OF_ACCOUNT_PURPOSE"
+            - "PROOF_OF_TAX_IDENTIFICATION"
+          example: "valid_ids"
+          description: "Type of document being submitted - supports both individual and business KYC requirements"
+        sub_type:
+          type: string
+          enum:
+            - "UTILITY_BILL"
+            - "BANK_STATEMENT"
+          example: "front"
+          description: "Sub-type of document if applicable (e.g., front/back of ID)"
+        doc_image:
+          type: string
+          format: byte
+          example: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ..."
+          description: "Base64 encoded image data or URL to document image"
+        doc_country:
+          type: string
+          enum:
+            - AF
+            - AL
+            - DZ
+            - AD
+            - AO
+            - AG
+            - AR
+            - AM
+            - AU
+            - AT
+            - AZ
+            - BS
+            - BH
+            - BD
+            - BB
+            - BY
+            - BE
+            - BZ
+            - BJ
+            - BT
+            - BO
+            - BA
+            - BW
+            - BR
+            - BN
+            - BG
+            - BF
+            - BI
+            - CV
+            - KH
+            - CM
+            - CA
+            - CF
+            - TD
+            - CL
+            - CN
+            - CO
+            - KM
+            - CG
+            - CR
+            - HR
+            - CU
+            - CY
+            - CZ
+            - CD
+            - DK
+            - DJ
+            - DM
+            - DO
+            - EC
+            - EG
+            - SV
+            - GQ
+            - ER
+            - EE
+            - SZ
+            - ET
+            - FJ
+            - FI
+            - FR
+            - GA
+            - GM
+            - GE
+            - DE
+            - GH
+            - GR
+            - GD
+            - GT
+            - GN
+            - GW
+            - GY
+            - HT
+            - HN
+            - HU
+            - IS
+            - IN
+            - ID
+            - IR
+            - IQ
+            - IE
+            - IL
+            - IT
+            - JM
+            - JP
+            - JO
+            - KZ
+            - KE
+            - KI
+            - KW
+            - KG
+            - LA
+            - LV
+            - LB
+            - LS
+            - LR
+            - LY
+            - LI
+            - LT
+            - LU
+            - MG
+            - MW
+            - MY
+            - MV
+            - ML
+            - MT
+            - MH
+            - MR
+            - MU
+            - MX
+            - FM
+            - MD
+            - MC
+            - MN
+            - ME
+            - MA
+            - MZ
+            - MM
+            - NA
+            - NR
+            - NP
+            - NL
+            - NZ
+            - NI
+            - NE
+            - NG
+            - KP
+            - MK
+            - NO
+            - OM
+            - PK
+            - PW
+            - PS
+            - PA
+            - PG
+            - PY
+            - PE
+            - PH
+            - PL
+            - PT
+            - QA
+            - RO
+            - RU
+            - RW
+            - KN
+            - LC
+            - VC
+            - WS
+            - SM
+            - ST
+            - SA
+            - SN
+            - RS
+            - SC
+            - SL
+            - SG
+            - SK
+            - SI
+            - SB
+            - SO
+            - ZA
+            - KR
+            - SS
+            - ES
+            - LK
+            - SD
+            - SR
+            - SE
+            - CH
+            - SY
+            - TW
+            - TJ
+            - TZ
+            - TH
+            - TL
+            - TG
+            - TO
+            - TT
+            - TN
+            - TR
+            - TM
+            - TV
+            - UG
+            - UA
+            - AE
+            - GB
+            - US
+            - UY
+            - UZ
+            - VU
+            - VA
+            - VE
+            - VN
+            - YE
+            - ZM
+            - ZW
+          example: "NG"
+          description: "ISO 3166-1 alpha-2 country code where document was issued"
 
     BusinessCustomerResponse:
       type: object
@@ -5436,7 +7151,7 @@ components:
           type: string
           example: "active"
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: "#/components/schemas/RegisteredAddress"
         financial_info:
           type: object
           properties:
@@ -5490,7 +7205,7 @@ components:
           type: string
           example: "active"
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: "#/components/schemas/RegisteredAddress"
         personal_info:
           type: object
           properties:
@@ -5914,3 +7629,171 @@ components:
         code:
           type: string
           example: ERROR_CODE
+
+    ValidationErrorResponse:
+      type: object
+      description: "Validation error response with detailed field errors"
+      properties:
+        status:
+          type: string
+          enum: ["error"]
+          example: "error"
+        message:
+          type: string
+          example: "Validation failed"
+        code:
+          type: string
+          enum: 
+            - "VALIDATION_ERROR"
+            - "INVALID_INPUT"
+            - "MISSING_REQUIRED_FIELD"
+            - "INVALID_FORMAT"
+            - "INVALID_ENUM_VALUE"
+            - "AGE_RESTRICTION"
+            - "PHONE_FORMAT_ERROR"
+            - "EMAIL_FORMAT_ERROR"
+          example: "VALIDATION_ERROR"
+        errors:
+          type: array
+          description: "Array of specific field validation errors"
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: "email"
+                description: "Field name that failed validation"
+              message:
+                type: string
+                example: "Invalid email format"
+                description: "Specific error message for the field"
+              code:
+                type: string
+                example: "INVALID_EMAIL"
+                description: "Error code for the specific validation failure"
+
+    CustomerCreationErrorResponse:
+      type: object
+      description: "Customer creation specific error response"
+      properties:
+        status:
+          type: string
+          enum: ["error"]
+          example: "error"
+        message:
+          type: string
+          example: "Failed to create customer"
+        code:
+          type: string
+          enum:
+            - "CUSTOMER_CREATION_FAILED"
+            - "DUPLICATE_EMAIL"
+            - "DUPLICATE_PHONE"
+            - "INVALID_CUSTOMER_TYPE"
+            - "KYC_VERIFICATION_FAILED"
+            - "DOCUMENT_UPLOAD_FAILED"
+            - "BUSINESS_OWNER_VALIDATION_FAILED"
+            - "ADDRESS_VALIDATION_FAILED"
+            - "WALAPAY_INTEGRATION_ERROR"
+            - "DATABASE_ERROR"
+          example: "CUSTOMER_CREATION_FAILED"
+        errors:
+          type: array
+          description: "Detailed error information"
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: "business_owners[0].email"
+              message:
+                type: string
+                example: "Business owner email is required"
+              code:
+                type: string
+                example: "MISSING_BUSINESS_OWNER_EMAIL"
+
+    AuthenticationErrorResponse:
+      type: object
+      description: "Authentication and authorization error response"
+      properties:
+        status:
+          type: string
+          enum: ["error"]
+          example: "error"
+        message:
+          type: string
+          example: "Authentication failed"
+        code:
+          type: string
+          enum:
+            - "AUTHENTICATION_FAILED"
+            - "INVALID_API_KEY"
+            - "ACCESS_DENIED"
+            - "TOKEN_EXPIRED"
+            - "INSUFFICIENT_PERMISSIONS"
+            - "RATE_LIMIT_EXCEEDED"
+          example: "AUTHENTICATION_FAILED"
+
+    ServerErrorResponse:
+      type: object
+      description: "Server error response"
+      properties:
+        status:
+          type: string
+          enum: ["error"]
+          example: "error"
+        message:
+          type: string
+          example: "Internal server error"
+        code:
+          type: string
+          enum:
+            - "INTERNAL_SERVER_ERROR"
+            - "SERVICE_UNAVAILABLE"
+            - "DATABASE_CONNECTION_ERROR"
+            - "EXTERNAL_SERVICE_ERROR"
+            - "TIMEOUT_ERROR"
+          example: "INTERNAL_SERVER_ERROR"
+        details:
+          type: string
+          example: "An unexpected error occurred while processing your request"
+          description: "Additional error details (optional)"
+
+    FieldValidationError:
+      type: object
+      description: "Individual field validation error"
+      required:
+        - field
+        - message
+        - code
+      properties:
+        field:
+          type: string
+          example: "birth_date"
+          description: "Name of the field that failed validation"
+        message:
+          type: string
+          example: "Customer must be at least 18 years old"
+          description: "Human-readable error message"
+        code:
+          type: string
+          enum:
+            - "REQUIRED_FIELD_MISSING"
+            - "INVALID_FORMAT"
+            - "INVALID_LENGTH"
+            - "INVALID_RANGE"
+            - "INVALID_ENUM_VALUE"
+            - "DUPLICATE_VALUE"
+            - "AGE_REQUIREMENT_NOT_MET"
+            - "INVALID_PHONE_NUMBER"
+            - "INVALID_EMAIL_ADDRESS"
+            - "INVALID_DATE_FORMAT"
+            - "FUTURE_DATE_NOT_ALLOWED"
+            - "INVALID_PERCENTAGE"
+            - "INVALID_AMOUNT"
+            - "INVALID_COUNTRY_CODE"
+            - "UNSUPPORTED_DOCUMENT_TYPE"
+            - "INVALID_BASE64_IMAGE"
+          example: "AGE_REQUIREMENT_NOT_MET"
+          description: "Specific validation error code"
