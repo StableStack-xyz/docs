@@ -28,7 +28,6 @@ Creates a new business customer account with comprehensive KYC processing.
   "account_purpose": "OPERATING_A_COMPANY",
   "source_of_funds": "SALES_OF_GOODS_AND_SERVICES",
   "expected_monthly_income": 5000000,
-  "legal_structure": "LLC",
   "trading_name": "Akande Trading Co",
   "nature_of_business": "Retail and e-commerce operations",
   "industry": "541512",
@@ -45,6 +44,7 @@ Creates a new business customer account with comprehensive KYC processing.
   "estimated_annual_revenue_usd": "HUNDRED_THOUSAND_TO_MILLION",
   "operates_in_prohibited_countries": false,
   "is_dao": false,
+  "conducts_money_services": false,
   "registration_number": "REG123456789",
   "registration_date": "2020-01-15",
   "tax_identification_number": "TIN123456789",
@@ -74,10 +74,22 @@ Creates a new business customer account with comprehensive KYC processing.
       },
       "id_number": "ID123456789",
       "nationality": "NG",
-      "front_image": "https://example.com/id-front.jpg"
+      "front_image": "https://example.com/id-front.jpg",
+      "supporting_documents": [
+        {
+          "doc_type": "IDENTITY_DOCUMENT",
+          "doc_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+          "doc_country": "NG"
+        },
+        {
+          "doc_type": "PROOF_OF_ADDRESS",
+          "doc_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+          "doc_country": "NG"
+        }
+      ]
     }
   ],
-  "user_documents": [
+  "documents": [
     {
       "doc_type": "BUSINESS_FORMATION",
       "doc_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
@@ -86,7 +98,8 @@ Creates a new business customer account with comprehensive KYC processing.
     {
       "doc_type": "PROOF_OF_TAX_IDENTIFICATION",
       "doc_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
-      "doc_country": "NG"
+      "doc_country": "NG",
+      "sub_type":""
     }
   ]
 }
@@ -94,7 +107,6 @@ Creates a new business customer account with comprehensive KYC processing.
 
 ### Enhanced Business Fields:
 
-- **legal_structure**: Legal structure of the business (LLC, Corporation, etc.)
 - **trading_name**: Trading or DBA name if different from legal name
 - **nature_of_business**: Description of business activities
 - **industry**: Industry classification (use NAICS codes like "541512" for Computer Systems Design)
@@ -104,15 +116,29 @@ Creates a new business customer account with comprehensive KYC processing.
 - **estimated_annual_revenue_usd**: Estimated annual revenue range in USD (enum values: "UNDER_HUNDRED_THOUSAND", "HUNDRED_THOUSAND_TO_MILLION", "MILLION_TO_TEN_MILLION", "TEN_MILLION_TO_FIFTY_MILLION", "FIFTY_MILLION_TO_HUNDRED_MILLION", "OVER_HUNDRED_MILLION")
 - **operates_in_prohibited_countries**: Whether business operates in prohibited countries
 - **is_dao**: Whether the business is a DAO
+- **conducts_money_services**: Whether the business conducts money services activities (e.g., money transmission, currency exchange, payment processing)
 - **registration_number**: Business registration number
 - **registration_date**: Business registration date
 - **business_owners**: Array of business owners/associated persons
-- **user_documents**: Array of supporting documents for KYC
+- **supporting_documents**: Array of additional supporting documents for business owners (identity documents, proof of address, etc.)
+- **documents**: Array of supporting documents for KYC
 
 
 ### Business Owners Array:
 
-Each business owner object should include personal information, ownership details, and identification documents for compliance purposes.
+Each business owner object should include personal information, ownership details, and identification documents for compliance purposes. The `supporting_documents` field within each business owner allows for additional documentation beyond the primary `front_image` identification.
+
+<Info>
+**Required Supporting Documents:**
+
+**For Business Documents:**
+- `BUSINESS_FORMATION` (incorporation certificate)
+- `OWNERSHIP_INFORMATION` (articles of incorporation)
+- `BANK_STATEMENT` (business bank statement)
+
+**For Business Owners:**
+- `PROOF_OF_ADDRESS` (e.g., utility bill, bank statement, etc.)
+</Info>
 
 ### Document Requirements:
 

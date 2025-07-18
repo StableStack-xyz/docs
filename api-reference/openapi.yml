@@ -5263,6 +5263,7 @@ components:
         - customer_type
         - business_name
         - business_type
+        - business_website
         - email
         - phone
         - account_purpose
@@ -5271,6 +5272,21 @@ components:
         - registered_address
         - industry
         - estimated_annual_revenue_usd
+        - trading_name
+        - nature_of_business
+        - contact_person_email
+        - contact_person_phone
+        - operates_in_prohibited_countries
+        - is_dao
+        - registration_number
+        - registration_date
+        - tax_identification_number
+        - phone_country_code
+        - conducts_money_services
+        - account_purpose_explanation
+        - expected_monthly_payments_usd
+        - business_owners
+        - documents
 
       properties:
         customer_type:
@@ -5285,6 +5301,11 @@ components:
         business_type:
           type: string
           enum:
+            - "B_CORPORATION"
+            - "C_CORPORATION"
+            - "S_CORPORATION"
+            - "CLOSE_CORPORATION"
+            - "COOPERATIVE"
             - "GENERAL_PARTNERSHIP"
             - "LIMITED_PARTNERSHIP"
             - "LIMITED_LIABILITY_PARTNERSHIP"
@@ -5293,13 +5314,14 @@ components:
             - "SOLE_PROPRIETORSHIP"
             - "TRUST"
             - "NON_US"
+
           example: "LIMITED_LIABILITY_COMPANY"
           description: "Legal structure of the business"
         business_website:
           type: string
           format: uri
           example: "https://example.com"
-          description: "Business website URL (optional)"
+          description: "Business website URL (Recommended)"
         email:
           type: string
           format: email
@@ -5308,8 +5330,8 @@ components:
         phone:
           type: string
           pattern: '^\+[1-9]\d{1,14}$'
-          example: "+2347918945668"
-          description: "Business phone number with country code e.g +100000000"
+          example: "+14155552671"
+          description: "Business phone number with country code e.g +14155552671"
         account_purpose:
           type: string
           enum:
@@ -5680,11 +5702,6 @@ components:
           description: "Industry classification based on NAICS codes - use the code value for API requests"
         registered_address:
           $ref: "#/components/schemas/RegisteredAddress"
-        # Optional enhanced fields
-        legal_structure:
-          type: string
-          example: "LLC"
-          description: "Legal structure of the business (deprecated - use business_type)"
         trading_name:
           type: string
           example: "Example Trading Co"
@@ -5741,6 +5758,10 @@ components:
           pattern: '^\+[1-9]\d{0,3}$'
           example: "+234"
           description: "Country code for phone number"
+        conducts_money_services:
+          type: boolean
+          default: false
+          description: "Whether the business conducts money services activities (e.g., money transmission, currency exchange, payment processing)"
         account_purpose_explanation:
           type: string
           maxLength: 1000
@@ -5756,7 +5777,7 @@ components:
           description: "Array of business owners/associated persons (required for certain business types)"
           items:
             $ref: '#/components/schemas/BusinessOwner'
-        user_documents:
+        documents:
           type: array
           description: "Array of supporting documents for KYC verification"
           items:
@@ -5821,14 +5842,17 @@ components:
             - "CHARITABLE_DONATIONS"
             - "ECOMMERCE_RETAIL_PAYMENTS"
             - "INVESTMENT_PURPOSES"
-            - "OPERATING_A_COMPANY"
             - "PAYMENTS_TO_FRIENDS_OR_FAMILY_ABROAD"
             - "OTHER"
+            - "PAYROLL"
             - "PERSONAL_OR_LIVING_EXPENSES"
             - "PROTECT_WEALTH"
             - "PURCHASE_GOODS_AND_SERVICES"
             - "RECEIVE_PAYMENT_FOR_FREELANCING"
             - "RECEIVE_SALARY"
+            - "TAX_OPTIMIZATION"
+            - "THIRD_PARTY_MONEY_TRANSMISSION"
+            - "TREASURY_MANAGEMENT"
           example: "PERSONAL_OR_LIVING_EXPENSES"
           description: "Primary purpose for using the account"
         employment_status:
@@ -6284,7 +6308,7 @@ components:
           type: string
           example: "TIN987654321"
           description: "Tax identification number (optional)"
-        user_documents:
+        documents:
           type: array
           description: "Array of supporting documents for KYC verification"
           items:
@@ -6537,6 +6561,20 @@ components:
         - first_name
         - last_name
         - email
+        - phone_number
+        - date_of_birth
+        - relationship_establishment_date
+        - ownership_percentage
+        - is_control_person
+        - is_signer
+        - is_beneficial_owner
+        - title
+        - address
+        - id_number
+        - nationality
+        - front_image
+        - supporting_documents
+        
       properties:
         first_name:
           type: string
@@ -6569,7 +6607,7 @@ components:
           type: string
           format: date
           example: "2020-01-15"
-          description: "Date when relationship with business was established"
+          description: "Date when relationship with business was established YYYY-MM-DD"
         ownership_percentage:
           type: number
           minimum: 0
@@ -6591,10 +6629,10 @@ components:
         title:
           type: string
           enum:
-            - "Chief Executive Officer"
-            - "Chief Financial Officer"
-            - "Chief Technology Officer"
-            - "Chief Operating Officer"
+            - "CEO"
+            - "CFO"
+            - "CTO"
+            - "COO"
             - "President"
             - "Vice President"
             - "Director"
@@ -6861,6 +6899,16 @@ components:
           format: uri
           example: "https://example.com/id-front.jpg"
           description: "URL to front image of ID document"
+        back_image:
+          type: string
+          format: uri
+          example: "https://example.com/id-back.jpg"
+          description: "URL to back image of ID document (optional)"
+        supporting_documents:
+          type: array
+          description: "Array of supporting documents for business owner KYC verification"
+          items:
+            $ref: '#/components/schemas/UserDocument'
 
     UserDocument:
       type: object
@@ -6868,28 +6916,36 @@ components:
       required:
         - doc_type
         - doc_image
+        - doc_country
+
       properties:
         doc_type:
           type: string
           enum:
-            - "OTHER"
+            - "AML_COMFORT_LETTER"
             - "BUSINESS_FORMATION"
-            - "PROOF_OF_NATURE_OF_BUSINESS"
-            - "status_report"
-            - "PROOF_OF_ADDRESS"
-            - "REGULATORY_LICENSE_REGISTRATION"
-            - "valid_ids"
-            - "utility_bill"
-            - "OWNERSHIP_INFORMATION"
-            - "due_diligence_checklist"
-            - "AML_POLICY"
-            - "kyc_policy"
-            - "data_protection"
-            - "BANK_STATEMENT"
+            - "DIRECTORS_REGISTRY"
+            - "E_SIGNATURE_CERTIFICATE"
+            - "EVIDENCE_OF_GOOD_STANDING"
+            - "FLOW_OF_FUNDS"
+            - "MARKETING_MATERIALS"
             - "OWNERSHIP_CHART"
-            - "POWER_OF_ATTORNEY"
+            - "OWNERSHIP_INFORMATION"
             - "PROOF_OF_ACCOUNT_PURPOSE"
+            - "BANK_STATEMENT"
+            - "PROOF_OF_ADDRESS"
+            - "PROOF_OF_INDIVIDUAL_NAME_CHANGE"
+            - "PROOF_OF_ENTITY_NAME_CHANGE"
+            - "PROOF_OF_NATURE_OF_BUSINESS"
+            - "PROOF_OF_RELATIONSHIP"
+            - "PROOF_OF_SIGNATORY_AUTHORITY"
+            - "PROOF_OF_SOURCE_OF_FUNDS"
+            - "PROOF_OF_SOURCE_OF_WEALTH"
             - "PROOF_OF_TAX_IDENTIFICATION"
+            - "LIVENESS_CHECK"
+            - "SELFIE"
+            - "SHAREHOLDER_REGISTER"
+            - "OTHER"
           example: "valid_ids"
           description: "Type of document being submitted - supports both individual and business KYC requirements"
         sub_type:
@@ -6897,6 +6953,9 @@ components:
           enum:
             - "UTILITY_BILL"
             - "BANK_STATEMENT"
+            - "TAX_DOCUMENT"
+            - "GOVERNMENT_CORRESPONDENCE"
+            - "RENTAL_AGREEMENT"
           example: "front"
           description: "Sub-type of document if applicable (e.g., front/back of ID)"
         doc_image:
