@@ -59,7 +59,7 @@ Creates a new individual customer account with comprehensive KYC processing.
 - **acting_as_intermediary**: Whether acting as an intermediary for third parties
 - **tax_identification_number**: Tax identification number
 - **most_recent_occupation**: SOC occupation code (e.g., "151211" for Computer Systems Analyst)
-- **user_documents**: Array of supporting documents for KYC
+- **documents**: Array of supporting documents for KYC
 
 
 ### Document Requirements:
@@ -70,13 +70,6 @@ Common document types for individual customers:
 - `BANK_STATEMENT`
 - `PROOF_OF_ADDRESS`
 - `OTHER` (additional supporting documents)
-
-### KYC Integration:
-
-The system automatically submits customer information to WalaPay for KYC processing. All provided documents are:
-1. Stored locally in the `customer_documents` table
-2. Sent to WalaPay for verification
-3. Tracked through the KYC processing queue
 
 ### Validation Notes:
 
