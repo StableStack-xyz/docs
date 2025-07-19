@@ -82,8 +82,7 @@
         "api-reference/customers/get-customer",
         "api-reference/customers/get-customers",
         "api-reference/customers/update-business-customer",
-        "api-reference/customers/update-individual-customer",
-        "api-reference/customers/upload-document"
+        "api-reference/customers/update-individual-customer"
       ]
     },
     {
